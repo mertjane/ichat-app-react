@@ -1,13 +1,4 @@
 import styled from "styled-components";
-// const Wrapper = styled.section`
-//   width: 80%;
-//   height: 93%;
-//   position: absolute;
-//   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-//   background: #f0f2f5;
-//   top: 20px;
-// `;
-
 
 /****************** Autentication Styles ********************/
 
@@ -73,4 +64,5 @@ export const HomeWrapper = styled.div`
    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
    background: #f0f2f5;
    top: 20px;
+   display: flex;
  `;
