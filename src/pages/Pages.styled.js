@@ -21,7 +21,7 @@ export const FormWrapper = styled.div`
     padding: 20px 60px;
     color: #78848c;
     .logo {
-      color: #00a884;
+      color: #bfa2db;
       width: 70px;
       height: 70px;
       align-self: center;
@@ -39,7 +39,7 @@ export const FormWrapper = styled.div`
       }
     }
     button {
-      background-color: #00a884;
+      background-color: #bfa2db;
       color: white;
       padding: 15px;
       font-size: large;
@@ -47,6 +47,9 @@ export const FormWrapper = styled.div`
       border: none;
       cursor: pointer;
       margin-top: 10px;
+      &:disabled{
+        cursor: not-allowed;
+      }
     }
     p{
         font-size: 12px;
@@ -54,6 +57,11 @@ export const FormWrapper = styled.div`
     }
   }
 `;
+
+  export const Error = styled.span`
+    font-size: 8px;
+    color: red;
+  `
 
   /************************ HOME STYLES *********************/
 
