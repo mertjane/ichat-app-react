@@ -5,6 +5,9 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -14,15 +17,15 @@ const Container = styled.div`
   .background {
     width: 100%;
     height: 220px;
-    background: #bfa2db;
+    background: #292C6D;
     position: absolute;
   }
 `;
 
 const App = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  const auth = useSelector((state) => state.auth);
   const ProtectedRoute = ({ children }) => {
-    if (!user) {
+    if (!auth._id) {
       return <Navigate to="/login" />;
     }
     return children;
@@ -30,6 +33,7 @@ const App = () => {
 
   return (
     <Container>
+      <ToastContainer />
       <div className="background" />
       <Routes>
         <Route path="/">

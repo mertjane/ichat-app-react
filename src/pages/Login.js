@@ -1,47 +1,59 @@
-import { FormWrapper, Error } from "./Pages.styled";
-import { RiKakaoTalkLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { login } from "../features/auth/apiCalls";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/auth/services";
+import { FormWrapper } from "./Pages.styled";
+import { Link, useNavigate } from "react-router-dom";
+import LoginError from "../components/Error/LoginError";
+import Loading from "../components/Loading/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isFetching, error } = useSelector((state) => state.user);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(dispatch, { username, password });
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    if (auth._id) {
       navigate("/");
-    } catch (err) {
-      return console.log(error);
     }
+  }, [auth._id, navigate]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //console.log(user)
+    dispatch(loginUser(user));
   };
+
   return (
     <FormWrapper>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <RiKakaoTalkLine className="logo" />
+        <div className="logo" />
         <span>Login</span>
         <input
           placeholder="Username"
           type="text"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUser({ ...user, username: e.target.value })}
         />
         <input
           placeholder="Password"
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
-        {error && <Error>Something went wrong...</Error>}
-        <button type="submit " disabled={isFetching}>
-          Sign in
-        </button>
+        {auth.loginStatus === "rejected" ? <LoginError /> : null}
+        {auth.loginStatus === "pending" ? (
+          <Loading />
+        ) : (
+          <button type="submit">Sign in</button>
+        )}
         <p>
-          Don't you have an account? <Link to="/register">Register</Link>
+          Don't you have an account?{" "}
+          <Link className="switch" to="/register">
+            Register
+          </Link>
         </p>
       </form>
     </FormWrapper>
