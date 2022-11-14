@@ -40,7 +40,7 @@ export const NavWrapper = styled.nav`
 
 export const ChatWrapper = styled.div`
   height: calc(100% - 200px);
-  background-color: #f3f1f5;
+  background-color: #e1d6ec;
   padding: 40px;
   display: flex;
   flex-direction: column;

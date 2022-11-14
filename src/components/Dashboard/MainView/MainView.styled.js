@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  flex: 1;
-`;
-
 export const NavWrapper = styled.div`
   height: 40px;
   border-right: 1px solid lightgray;
@@ -59,7 +55,7 @@ export const NavWrapper = styled.div`
       transform: translateY(-20px);
       transition: var(--speed) ease;
     }
-    li {
+    .menu-item {
       overflow: hidden;
       list-style: none;
       display: flex;
@@ -67,6 +63,8 @@ export const NavWrapper = styled.div`
       height: 100%;
       padding-left: 12px;
       font-size: 14px;
+      text-decoration: none;
+      color: #54656f;
       cursor: pointer;
       &:hover {
         background-color: #f5f2f2;

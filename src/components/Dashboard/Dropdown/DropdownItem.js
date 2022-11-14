@@ -9,8 +9,8 @@ const DropdownItem = () => {
   const dispatch = useDispatch();
   return (
     <>
-      <li className="menu-item">Profile</li>
-      <li className="menu-item">Settings</li>
+      <li onClick={() => navigate("/profile")} className="menu-item">Profile</li>
+      <li onClick={() => navigate("/settings")} className="menu-item">Settings</li>
       <li
         onClick={() => {
           dispatch(logoutUser(null));

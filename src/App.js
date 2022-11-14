@@ -16,8 +16,8 @@ const Container = styled.div`
   justify-content: center;
   .background {
     width: 100%;
-    height: 220px;
-    background: #292C6D;
+    height: 144px;
+    background: #292c6d;
     position: absolute;
   }
 `;
@@ -36,8 +36,9 @@ const App = () => {
       <ToastContainer />
       <div className="background" />
       <Routes>
-        <Route path="/">
+        <Route>
           <Route
+            path="/*"
             index
             element={
               <ProtectedRoute>

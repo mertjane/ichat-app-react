@@ -1,5 +1,5 @@
 import React from "react";
-import { SearchWrapper } from "./Dashboard.styled";
+import {SearchWrapper} from "./MainView.styled"
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFilter } from "react-icons/bs";
 

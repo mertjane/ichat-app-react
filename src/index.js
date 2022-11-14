@@ -11,11 +11,11 @@ root.render(
   //<React.StrictMode>
   <Provider store={store}>
     {/*<PersistGate loading={null} persistor={persistor}>*/}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<App />} />
+      </Routes>
+    </BrowserRouter>
     {/*</PersistGate>*/}
   </Provider>
   //</React.StrictMode>

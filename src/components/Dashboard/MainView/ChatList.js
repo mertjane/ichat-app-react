@@ -1,10 +1,10 @@
 import React from "react";
-import { ListContainer, ChatWrapper } from "./Dashboard.styled";
+import { ListContainer, ChatWrapper } from "./MainView.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import avatar from "..//..//assets/girl.png";
-import avatar2 from "..//..//assets/man2.png";
-import avatar3 from "..//..//assets/man3.png";
-import avatar4 from "..//..//assets/man4.png";
+import avatar from "..//..//../assets/girl.png";
+import avatar2 from "..//..//../assets/man2.png";
+import avatar3 from "..//..//../assets/man3.png";
+import avatar4 from "..//..//../assets/man4.png";
 
 const ChatList = () => {
   return (
