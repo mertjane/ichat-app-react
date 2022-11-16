@@ -31,12 +31,14 @@ const Header = () => {
               location.pathname === "/settings/privacy/profile-photo"
             ) {
               navigate("/settings/privacy");
-            } else if (
-              location.pathname === "/settings/privacy/about-me"
-            ) {
+            } else if (location.pathname === "/settings/privacy/about-me") {
               navigate("/settings/privacy");
             } else if (
               location.pathname === "/settings/privacy/message-duration"
+            ) {
+              navigate("/settings/privacy");
+            } else if (
+              location.pathname === "/settings/privacy/blocked-contacts"
             ) {
               navigate("/settings/privacy");
             } else {
@@ -58,10 +60,11 @@ const Header = () => {
             "Last seen and online"}
           {location.pathname === "/settings/privacy/profile-photo" &&
             "Profile photo"}
-            {location.pathname === "/settings/privacy/about-me" &&
-            "About me"}
-            {location.pathname === "/settings/privacy/message-duration" &&
+          {location.pathname === "/settings/privacy/about-me" && "About me"}
+          {location.pathname === "/settings/privacy/message-duration" &&
             "Default message duration"}
+          {location.pathname === "/settings/privacy/blocked-contacts" &&
+            "Blocked contacts"}
         </h2>
       </div>
     </HeaderWrapper>

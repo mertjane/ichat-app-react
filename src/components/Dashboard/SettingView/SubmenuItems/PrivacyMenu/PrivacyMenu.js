@@ -58,7 +58,7 @@ const PrivacyMenu = () => {
           <MdKeyboardArrowRight className="icon" />
         </div>
       </div>
-      <div className="contentWrapper">
+      <div onClick={() => navigate("blocked-contacts")} className="contentWrapper">
         <div className="selection">
           <label>
             blocked contacts

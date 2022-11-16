@@ -16,6 +16,7 @@ import LastSeen from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/Last
 import ProfilePhoto from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/ProfilePhoto/ProfilePhoto";
 import AboutMe from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/AboutMe/AboutMe";
 import MsgDuration from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/MessageDuration/MsgDuration";
+import BlockedUsers from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/BlockedContacts/BlockedUsers";
 
 export const Wrapper = styled.div`
   flex: 1;
@@ -42,6 +43,10 @@ const Dashboard = () => {
         <Route
           path="/settings/privacy/message-duration"
           element={<MsgDuration />}
+        />
+        <Route
+          path="/settings/privacy/blocked-contacts"
+          element={<BlockedUsers />}
         />
         <Route path="/settings/security" element={<SecurityMenu />} />
         <Route path="/settings/wallpaper" element={<WallpaperMenu />} />

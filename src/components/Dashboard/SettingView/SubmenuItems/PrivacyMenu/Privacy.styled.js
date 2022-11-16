@@ -10,7 +10,8 @@ export const Wrapper = styled.section`
     flex-direction: column;
     background-color: #ffff;
     padding: 20px 30px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+      rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     margin-bottom: 18px;
     h5 {
       font-weight: 500;
@@ -30,10 +31,12 @@ export const Wrapper = styled.section`
         flex-direction: column;
         font-size: 14.6px;
         line-height: 20px;
+        cursor: pointer;
         span {
           color: #485157ac;
           font-size: 13.4px;
           font-weight: 500;
+          cursor: pointer;
         }
       }
       .icon {
