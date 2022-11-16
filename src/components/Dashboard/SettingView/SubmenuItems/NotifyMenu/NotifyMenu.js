@@ -1,10 +1,16 @@
 import React from "react";
-import Header from "../Header";
-import {MsgWrap, Label, CheckBox, SoundWrap} from "./Styles/NotifyMenu.styled"
+import Header from "../../Header";
+import {
+  Wrapper,
+  MsgWrap,
+  Label,
+  CheckBox,
+  SoundWrap,
+} from "./NotifyMenu.styled";
 
 const NotifyMenu = () => {
   return (
-    <>
+    <Wrapper>
       <Header />
       <MsgWrap>
         <div className="contentWrapper">
@@ -29,7 +35,7 @@ const NotifyMenu = () => {
           <Label />
         </div>
       </SoundWrap>
-    </>
+    </Wrapper>
   );
 };
 

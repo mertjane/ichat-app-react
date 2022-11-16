@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import check from "..//..//..//..//..//assets/check.png";
 
+export const Wrapper = styled.section`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
 export const MsgWrap = styled.section`
   width: 100%;
   height: 152px;

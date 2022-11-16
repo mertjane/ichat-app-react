@@ -5,7 +5,7 @@ import check from "..//..//..//..//..//assets/check.png";
 
 export const Wrapper = styled.section`
   width: 100%;
-  height: calc(100% - 14.4%);
+  height: 100%;
   overflow: none;
   display: flex;
   flex-direction: column;
