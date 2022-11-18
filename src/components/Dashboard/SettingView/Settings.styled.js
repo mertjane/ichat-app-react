@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 // Header Component
 export const HeaderWrapper = styled.section`
   width: 100%;
@@ -47,6 +54,7 @@ export const ContentWrapper = styled.section`
       width: 60%;
       height: 70%;
       object-fit: cover;
+      animation: fadeIn 0.1s;
     }
   }
   .user-status {
@@ -68,12 +76,13 @@ export const ContentWrapper = styled.section`
   }
 `;
 
+// List Component
 export const MenuWrapper = styled.section`
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 28.6%);
+  height: calc(100% - 248px);
   .icon-group {
     height: 60px;
     display: flex;
@@ -83,11 +92,11 @@ export const MenuWrapper = styled.section`
     &:hover {
       background-color: #eeecec;
     }
-    &:nth-child(9) {
-        li{
-          border: none;
-        }
+    &:nth-child(7) {
+      li {
+        border: none;
       }
+    }
     .icon {
       color: #677780;
       height: 30px;

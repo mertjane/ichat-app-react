@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const NavWrapper = styled.div`
   height: 40px;
   border-right: 1px solid lightgray;
@@ -46,8 +53,17 @@ export const NavWrapper = styled.div`
     &.active {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
-      transition: var(--speed) ease;
+      // transform: translateY(0);
+      // transition: var(--speed) ease;
+      @keyframes dropdownIn {
+        from {
+          scale: 0;
+        }
+        to {
+          scale: 1;
+        }
+      }
+      animation: dropdownIn 0.3s;
     }
     &.inactive {
       opacity: 0;

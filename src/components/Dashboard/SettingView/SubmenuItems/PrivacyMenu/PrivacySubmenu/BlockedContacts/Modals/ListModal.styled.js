@@ -45,13 +45,22 @@ export const Overlay = styled.section`
       height: 36px;
       align-items: center;
       padding: 10px 15px;
+      .searchBtn {
+        color: #464d52;
+        cursor: pointer;
+        border-radius: 8px 0 0 8px;
+        background-color: #dddddd90;
+        height: 38px;
+        width: 22px;
+        padding-left: 16px;
+      }
       input {
         width: 100%;
         height: 100%;
-        border-radius: 8px;
+        border-radius: 0 8px 8px 0;
         outline: none;
         border: none;
-        padding-left: 56px;
+        padding-left: 18px;
         background-color: #dddddd90;
       }
     }

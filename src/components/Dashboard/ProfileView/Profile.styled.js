@@ -1,6 +1,14 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+`;
+
+export const AvatarWrapper = styled.section`
   height: 256px;
   width: 100%;
   display: flex;
@@ -12,6 +20,17 @@ export const Wrapper = styled.section`
     border-radius: 50%;
     cursor: pointer;
     position: relative;
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        scale: 0;
+      }
+      to {
+        opacity: 1;
+        scale: 1;
+      }
+    }
+    animation: scaleIn 1s;
     img {
       height: 190px;
       width: 200px;
@@ -46,77 +65,78 @@ export const Wrapper = styled.section`
   }
 `;
 
-export const PersonalWrapper = styled.section`
-  width: 100%;
-  height: 106px;
-  background-color: #ffffff;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+export const StyledStatus = styled.section`
   display: flex;
   flex-direction: column;
-  p {
-    flex: 1;
+  .personalWrapper {
+    width: 100%;
+    height: 106px;
+    background-color: #ffffff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     display: flex;
-    align-items: center;
-    color: #485157;
-    font-size: 13px;
-    padding: 0 30px;
-  }
-  div {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 0 30px;
-    justify-content: space-between;
-    
-    .btn {
-      height: 26px;
-      width: 26px;
-      color: #81919b;
-      cursor: pointer;
+    flex-direction: column;
+    p {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      color: #485157;
+      font-size: 13px;
+      padding: 0 30px;
+    }
+    div {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      padding: 0 30px;
+      justify-content: space-between;
+
+      .btn {
+        height: 26px;
+        width: 26px;
+        color: #81919b;
+        cursor: pointer;
+      }
     }
   }
-`;
-
-export const InfoWrapper = styled.section`
+  .infoWrapper {
     width: 100%;
     height: 86px;
     text-align: start;
     display: flex;
-    span{
-        padding: 20px 30px;
-        font-size: 13px;
-        color: #81919b;
-    }
-`
-
-
-export const StatusWrapper = styled.section`
-  width: 100%;
-  height: 106px;
-  background-color: #ffffff;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  display: flex;
-  flex-direction: column;
-  p {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    color: #485157;
-    font-size: 13px;
-    padding: 0 30px;
-  }
-  div {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 0 30px;
-    justify-content: space-between;
-    
-    .btn {
-      height: 26px;
-      width: 26px;
+    span {
+      padding: 20px 30px;
+      font-size: 13px;
       color: #81919b;
-      cursor: pointer;
+    }
+  }
+  .statusWrapper {
+    width: 100%;
+    height: 106px;
+    background-color: #ffffff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    display: flex;
+    flex-direction: column;
+    p {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      color: #485157;
+      font-size: 13px;
+      padding: 0 30px;
+    }
+    div {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      padding: 0 30px;
+      justify-content: space-between;
+
+      .btn {
+        height: 26px;
+        width: 26px;
+        color: #81919b;
+        cursor: pointer;
+      }
     }
   }
 `;

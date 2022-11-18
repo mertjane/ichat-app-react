@@ -15,6 +15,7 @@ import Modal from "./SubmenuItems/ThemeModal/Modal";
 const List = () => {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+
   return (
     <MenuWrapper>
       <div onClick={() => navigate("notifications")} className="icon-group">

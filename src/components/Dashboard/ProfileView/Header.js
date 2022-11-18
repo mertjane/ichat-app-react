@@ -3,7 +3,7 @@ import { TfiArrowLeft } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <HeaderWrapper>
       <div>

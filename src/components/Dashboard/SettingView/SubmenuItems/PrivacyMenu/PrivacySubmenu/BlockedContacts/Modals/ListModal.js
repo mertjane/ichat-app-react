@@ -3,6 +3,7 @@ import { Overlay } from "./ListModal.styled";
 import { IoMdClose } from "react-icons/io";
 import User from "./UserList/User";
 import { motion } from "framer-motion";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const ListModal = ({ open, onClose }) => {
   if (!open) return null;
@@ -19,7 +20,8 @@ const ListModal = ({ open, onClose }) => {
           <h3>Add blocked contact</h3>
         </div>
         <div className="searchWrapper">
-          <input type="text" />
+          <AiOutlineSearch className="searchBtn" />
+          <input type="text" placeholder="Search in contacts" />
         </div>
         <div className="userList">
           <User />

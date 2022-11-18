@@ -1,31 +1,31 @@
 import React from "react";
-import { PersonalWrapper, InfoWrapper, StatusWrapper } from "./Profile.styled";
+import { StyledStatus } from "./Profile.styled";
 import { MdEdit } from "react-icons/md";
 
 const StatusDisplay = () => {
   return (
-    <>
-      <PersonalWrapper>
+    <StyledStatus>
+      <div className="personalWrapper">
         <p>Your name</p>
         <div>
           <span>Display name</span>
           <MdEdit className="btn" />
         </div>
-      </PersonalWrapper>
-      <InfoWrapper>
+      </div>
+      <div className="infoWrapper">
         <span>
           This is not your username or key. This name is visible to your ichat
           contacts.
         </span>
-      </InfoWrapper>
-      <StatusWrapper>
+      </div>
+      <div className="statusWrapper">
         <p>About me</p>
         <div>
           <span>available</span>
           <MdEdit className="btn" />
         </div>
-      </StatusWrapper>
-    </>
+      </div>
+    </StyledStatus>
   );
 };
 
