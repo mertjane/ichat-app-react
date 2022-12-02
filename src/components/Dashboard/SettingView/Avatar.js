@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Avatar = () => {
   const navigate = useNavigate();
   return (
-    <ContentWrapper onClick={() => navigate("/profile")}>
+    <ContentWrapper onClick={() => navigate("/user/:id/profile")}>
       <div className="avatar">
         <img src={profileIMG} alt="avatar" />
       </div>

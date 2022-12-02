@@ -12,12 +12,12 @@ const Register = () => {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (auth._id) {
+    if (auth.userId) {
       navigate("/");
     }
-  }, [auth._id, navigate]);
+  }, [auth.userId, navigate]);
 
-  const [user, setUser] = useState({
+  const [createUser, setCreateUser] = useState({
     username: "",
     email: "",
     password: "",
@@ -26,7 +26,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(user));
+    dispatch(registerUser(createUser));
     //console.log(auth);
   };
 
@@ -38,23 +38,23 @@ const Register = () => {
         <input
           placeholder="Username"
           type="text"
-          onChange={(e) => setUser({ ...user, username: e.target.value })}
+          onChange={(e) => setCreateUser({ ...createUser, username: e.target.value })}
         />
         <input
           placeholder="Email"
           type="text"
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
+          onChange={(e) => setCreateUser({ ...createUser, email: e.target.value })}
         />
         <input
           placeholder="Password"
           type="password"
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          onChange={(e) => setCreateUser({ ...createUser, password: e.target.value })}
         />
         <input
           placeholder="Confirm password"
           type="password"
           onChange={(e) =>
-            setUser({ ...user, confirmPassword: e.target.value })
+            setCreateUser({ ...createUser, confirmPassword: e.target.value })
           }
         />
         {auth.registerStatus === "rejected" ? <RegisterError /> : null}

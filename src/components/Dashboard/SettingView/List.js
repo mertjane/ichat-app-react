@@ -12,7 +12,9 @@ import {
 } from "react-icons/md";
 import Modal from "./SubmenuItems/ThemeModal/Modal";
 
+
 const List = () => {
+  
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 

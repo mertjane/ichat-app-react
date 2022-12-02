@@ -18,6 +18,8 @@ export const AvatarWrapper = styled.section`
     height: 190px;
     width: 200px;
     border-radius: 50%;
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
     position: relative;
     @keyframes scaleIn {
@@ -41,7 +43,7 @@ export const AvatarWrapper = styled.section`
         filter: blur(1px);
       }
     }
-    div {
+    label {
       position: absolute;
       display: flex;
       flex-direction: column;
@@ -51,6 +53,11 @@ export const AvatarWrapper = styled.section`
       text-align: center;
       top: 70px;
       left: 30px;
+      cursor: pointer;
+      input{
+        position: absolute;
+        visibility: hidden;
+      }
       .btn {
         width: 30px;
         height: 30px;
@@ -68,36 +75,6 @@ export const AvatarWrapper = styled.section`
 export const StyledStatus = styled.section`
   display: flex;
   flex-direction: column;
-  .personalWrapper {
-    width: 100%;
-    height: 106px;
-    background-color: #ffffff;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    display: flex;
-    flex-direction: column;
-    p {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      color: #485157;
-      font-size: 13px;
-      padding: 0 30px;
-    }
-    div {
-      flex: 1;
-      display: flex;
-      align-items: flex-start;
-      padding: 0 30px;
-      justify-content: space-between;
-
-      .btn {
-        height: 26px;
-        width: 26px;
-        color: #81919b;
-        cursor: pointer;
-      }
-    }
-  }
   .infoWrapper {
     width: 100%;
     height: 86px;
@@ -107,36 +84,6 @@ export const StyledStatus = styled.section`
       padding: 20px 30px;
       font-size: 13px;
       color: #81919b;
-    }
-  }
-  .statusWrapper {
-    width: 100%;
-    height: 106px;
-    background-color: #ffffff;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    display: flex;
-    flex-direction: column;
-    p {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      color: #485157;
-      font-size: 13px;
-      padding: 0 30px;
-    }
-    div {
-      flex: 1;
-      display: flex;
-      align-items: flex-start;
-      padding: 0 30px;
-      justify-content: space-between;
-
-      .btn {
-        height: 26px;
-        width: 26px;
-        color: #81919b;
-        cursor: pointer;
-      }
     }
   }
 `;

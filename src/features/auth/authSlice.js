@@ -6,11 +6,11 @@ const initialState = {
   token: localStorage.getItem("token"),
   username: "",
   email: "",
-  _id: "",
-  registerStatus: "",
-  registerError: "",
-  loginStatus: "",
-  loginError: "",
+  userId: "",
+  registerStatus: "idle",
+  registerError: null,
+  loginStatus: "idle",
+  loginError: null,
   userLoaded: false,
 };
 
@@ -18,23 +18,22 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loadUser(state, action) {
+    loadUser(state) {
       const token = state.token;
 
       if (token) {
         const user = jwtDecode(token);
-
         return {
           ...state,
           token,
           username: user.username,
           email: user.email,
-          _id: user._id,
+          userId: user._id,
           userLoaded: true,
         };
       }
     },
-    logoutUser(state, action) {
+    logoutUser(state) {
       localStorage.removeItem("token");
 
       return {
@@ -42,18 +41,18 @@ export const authSlice = createSlice({
         token: "",
         username: "",
         email: "",
-        _id: "",
-        registerStatus: "",
-        registerError: "",
-        loginStatus: "",
-        loginError: "",
+        userId: "",
+        userLoaded: false,
+        registerStatus: "idle",
+        registerError: null,
+        loginStatus: "idle",
+        loginError: null,
       };
     },
   },
   extraReducers: (builder) => {
-
-    // User Register
-    builder.addCase(registerUser.pending, (state, action) => {
+    // USER REGISTER
+    builder.addCase(registerUser.pending, (state) => {
       return { ...state, registerStatus: "pending" };
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
@@ -65,7 +64,7 @@ export const authSlice = createSlice({
           token: action.payload,
           username: user.username,
           email: user.email,
-          _id: user._id,
+          userId: user._id,
           registerStatus: "success",
         };
       } else return state;
@@ -78,8 +77,8 @@ export const authSlice = createSlice({
       };
     });
 
-    // User Login
-    builder.addCase(loginUser.pending, (state, action) => {
+    // USER LOGIN
+    builder.addCase(loginUser.pending, (state) => {
       return { ...state, loginStatus: "pending" };
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
@@ -89,8 +88,9 @@ export const authSlice = createSlice({
           ...state,
           token: action.payload,
           username: user.username,
+          email: user.email,
           password: user.password,
-          _id: user._id,
+          userId: user._id,
           loginStatus: "success",
         };
       } else return state;

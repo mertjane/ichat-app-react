@@ -25,7 +25,7 @@ const Container = styled.div`
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const ProtectedRoute = ({ children }) => {
-    if (!auth._id) {
+    if (!auth.userId) {
       return <Navigate to="/login" />;
     }
     return children;

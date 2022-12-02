@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { url } from "./apiCalls";
+import { url } from "../apiCalls";
 
 // Register
 export const registerUser = createAsyncThunk(
@@ -14,25 +14,24 @@ export const registerUser = createAsyncThunk(
       });
 
       localStorage.setItem("token", token.data);
-
       return token.data;
     } catch (err) {
-      console.log(err.response.data)
-      return rejectWithValue(err.response.data)
+      console.log(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
 
 // Login
 export const loginUser = createAsyncThunk(
-  "auth/loginUser",
+  "user/loginUser",
   async (user, { rejectWithValue }) => {
     try {
       const token = await axios.post(`${url}/login`, {
         username: user.username,
         password: user.password,
+        email: user.email,
       });
-
       localStorage.setItem("token", token.data);
       return token.data;
     } catch (error) {
@@ -41,5 +40,3 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-
-

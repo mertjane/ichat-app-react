@@ -11,21 +11,21 @@ const Login = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const [user, setUser] = useState({
+  const [currentUser, setCurrentUser] = useState({
     username: "",
     password: "",
   });
 
   useEffect(() => {
-    if (auth._id) {
+    if (auth.userId) {
       navigate("/");
     }
-  }, [auth._id, navigate]);
+  }, [auth.userId, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(user)
-    dispatch(loginUser(user));
+    //console.log(currentUser)
+    dispatch(loginUser(currentUser));
   };
 
   return (
@@ -36,12 +36,12 @@ const Login = () => {
         <input
           placeholder="Username"
           type="text"
-          onChange={(e) => setUser({ ...user, username: e.target.value })}
+          onChange={(e) => setCurrentUser({ ...currentUser, username: e.target.value })}
         />
         <input
           placeholder="Password"
           type="password"
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          onChange={(e) => setCurrentUser({ ...currentUser, password: e.target.value })}
         />
         {auth.loginStatus === "rejected" ? <LoginError /> : null}
         {auth.loginStatus === "pending" ? (

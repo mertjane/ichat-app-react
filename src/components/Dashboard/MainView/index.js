@@ -5,6 +5,7 @@ import ChatList from "./ChatList";
 import { Wrapper } from './MainView.styled';
 
 const Main = () => {
+  
   return (
     <Wrapper>
       <Navbar/>

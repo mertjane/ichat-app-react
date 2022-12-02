@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { NavWrapper } from "./MainView.styled";
 import DropdownItem from "../Dropdown/DropdownItem";
-import userAvatar from "..//..//../assets/man.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiChatNewFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const auth = useSelector((state) => state.auth);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { name } = useSelector((state) => state.user.userInfo);
+  const { avatar } = useSelector((state) => state.user.userInfo);
   const [open, setOpen] = useState(false);
 
   const menuRef = useRef();
@@ -27,8 +28,8 @@ const Navbar = () => {
   return (
     <NavWrapper ref={menuRef}>
       <div className="userInfo">
-        <img src={userAvatar} alt="user" />
-        <span>{auth.username}</span>
+        <img src={avatar ? PF + avatar : PF + "user.png"} alt="user" />
+        <span>{name}</span>
       </div>
       <div className="BtnGroup">
         <RiChatNewFill className="btn" />
