@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { MdEdit } from "react-icons/md";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FiCheck } from "react-icons/fi";
+import EmojiList from "../../../EmojiPicker/EmojiList";
+import { EmojiWrapper2 } from "../../../EmojiPicker/Emoji.styled";
 import { updatedAbout } from "../../../../features/user/services";
 
 export const Wrapper = styled.div`
@@ -82,6 +84,9 @@ const DisplayAbout = () => {
   const [about, setAbout] = useState("");
   const [editAbout, setEditAbout] = useState(false);
 
+  // emoji list
+  const [showList, setShowList] = useState(false);
+
   const handleUpdateAbout = () => {
     if (about.length > 30) {
       toast.warning(`This field cannot be more than 30 characters`, {
@@ -95,15 +100,21 @@ const DisplayAbout = () => {
       });
     }
   };
+
+  const onEmojiClick = (event, emojiObject) => {
+    setAbout((prevInput) => prevInput + emojiObject.emoji);
+    setShowList(false);
+  };
+
   return (
     <Wrapper>
       <p>About me</p>
       <div>
         {editAbout ? (
           <div className="editAbout">
-            <input onChange={(e) => setAbout(e.target.value)} type="text" />
+            <input value={about} onChange={(e) => setAbout(e.target.value)} type="text" />
             <label>
-              <BsEmojiSmile className="icon" />
+              <BsEmojiSmile onClick={() => setShowList(!showList)} className="icon" />
               <FiCheck onClick={handleUpdateAbout} className="checkIcon" />
             </label>
           </div>
@@ -112,6 +123,12 @@ const DisplayAbout = () => {
             <span>{displayAbout}</span>{" "}
             <MdEdit onClick={() => setEditAbout(true)} className="btn" />
           </>
+        )}
+        {showList && (
+          <EmojiWrapper2>
+              <EmojiList onEmojiClick={onEmojiClick} />
+              <span className="bubble"/>
+          </EmojiWrapper2>
         )}
       </div>
     </Wrapper>

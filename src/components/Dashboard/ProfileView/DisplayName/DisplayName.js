@@ -1,11 +1,14 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import { toast } from "react-toastify";
 import { MdEdit } from "react-icons/md";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FiCheck } from "react-icons/fi";
+import EmojiList from "../../../EmojiPicker/EmojiList";
+import { EmojiWrapper } from "../../../EmojiPicker/Emoji.styled";
 import { updatedName } from "../../../../features/user/services";
+
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -82,24 +85,35 @@ const DisplayName = () => {
   const [name, setName] = useState("");
   const [editName, setEditName] = useState(false);
 
-  
+  // input controller
+  const MAX_CHARS = 25;
+  const remaining = MAX_CHARS - name.length;
+  const color = remaining <= 0 ? "red" : null;
+
+  // emoji list
+  const [showList, setShowList] = useState(false);
 
   const handleUpdateName = () => {
     if (name === "") {
       toast.error(`Display name cannot be empty`, {
         position: "bottom-left",
       });
-    } else if (name.length > 13) {
-      toast.warning(`Display name cannot be more than 13 characters`, {
+    } else if (name.length > 25) {
+      toast.warning(`Display name cannot be more than 25 characters`, {
         position: "bottom-left",
       });
     } else {
-      updatedName({name, id},dispatch);
+      updatedName({ name, id }, dispatch);
       setEditName(false);
       toast.success(`Display name changed for ${name}`, {
         position: "bottom-left",
       });
     }
+  };
+
+  const onEmojiClick = (event, emojiObject) => {
+    setName((prevInput) => prevInput + emojiObject.emoji);
+    setShowList(false);
   };
 
   return (
@@ -108,10 +122,19 @@ const DisplayName = () => {
       <div>
         {editName ? (
           <div className="editName">
-            <input onChange={(e) => setName(e.target.value)} type="text" />
-            <label>
-              13
-              <BsEmojiSmile className="icon" />
+            <input
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              type="text"
+            />
+            <label style={{ color: color }}>
+              {remaining}
+              <BsEmojiSmile
+                onClick={() => setShowList(!showList)}
+                className="icon"
+              />
               <FiCheck onClick={handleUpdateName} className="checkIcon" />
             </label>
           </div>
@@ -120,6 +143,12 @@ const DisplayName = () => {
             <span>{showName}</span>{" "}
             <MdEdit onClick={() => setEditName(true)} className="btn" />
           </>
+        )}
+        {showList && (
+          <EmojiWrapper>
+              <EmojiList onEmojiClick={onEmojiClick} />
+              <span className="bubble"/>
+          </EmojiWrapper>
         )}
       </div>
     </Wrapper>

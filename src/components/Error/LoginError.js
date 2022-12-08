@@ -7,10 +7,10 @@ const ErrorText = styled.p`
 `;
 
 const LoginError = () => {
-  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
   return (
     <ErrorText>
-     {user.loginError}
+     {auth.loginError}
     </ErrorText>
   );
 };

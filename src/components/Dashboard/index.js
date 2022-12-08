@@ -1,7 +1,8 @@
-// import { useSelector } from "react-redux";
 import Main from "./MainView";
 import ProfileView from "./ProfileView";
 import SettingsView from "./SettingView";
+import Contacts from "./ContactList/Contacts";
+
 import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
 
@@ -19,6 +20,7 @@ import AboutMe from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/About
 import MsgDuration from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/MessageDuration/MsgDuration";
 import BlockedUsers from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/BlockedContacts/BlockedUsers";
 
+
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -34,6 +36,7 @@ const Dashboard = () => {
     <Wrapper>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/contacts" element={<Contacts />} />
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/notifications" element={<NotifyMenu />} />
         <Route path="/settings/privacy" element={<PrivacyMenu />} />

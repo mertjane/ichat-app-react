@@ -48,6 +48,7 @@ const Header = () => {
           className="btn"
         />
         <h2>
+          {location.pathname === "/contacts" && "New Conversation"}
           {location.pathname === "/settings" && "Settings"}
           {location.pathname === "/settings/notifications" && "Notifications"}
           {location.pathname === "/settings/security" && "Security"}
