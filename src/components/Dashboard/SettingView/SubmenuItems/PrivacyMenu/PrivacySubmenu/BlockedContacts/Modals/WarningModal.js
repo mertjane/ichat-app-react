@@ -38,7 +38,7 @@ export const Overlay = styled.section`
       button {
         height: 45px;
         width: 110px;
-        color: #292c6d;
+        color: #128C7E;
         background-color: #ffff;
         font-weight: 600;
         font-size: 14px;
@@ -57,13 +57,13 @@ export const Overlay = styled.section`
         color: #ffff;
         font-weight: 500;
         font-size: 14px;
-        background-color: #454aac;
+        background-color: #128C7E;
         outline: none;
         border-radius: 3px;
         border: none;
         cursor: pointer;
         :hover {
-          background-color: #3a3e8f;
+          background-color: #19aa99d6;
           transition: 600ms ease;
         }
       }

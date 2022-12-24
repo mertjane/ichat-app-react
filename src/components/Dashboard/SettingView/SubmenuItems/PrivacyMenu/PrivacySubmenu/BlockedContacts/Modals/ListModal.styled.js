@@ -23,7 +23,7 @@ export const Overlay = styled.section`
     z-index: 999;
     .header {
       height: 70px;
-      background-color: #262969;
+      background-color: #075E54;
       border-radius: 3px 3px 0 0;
       display: flex;
       align-items: center;

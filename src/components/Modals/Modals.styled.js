@@ -21,7 +21,7 @@ export const Overlay = styled.div`
       display: flex;
       align-items: center;
       padding: 20px 30px;
-      background-color: #292c6d;
+      background-color: #075E54;
       border-radius: 6px 6px 0 0;
       gap: 36px;
       .btn {

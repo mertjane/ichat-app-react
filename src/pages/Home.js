@@ -1,30 +1,26 @@
-import {useState, useEffect} from "react";
-import Dashboard from "../components/Dashboard";
-import Chat from "../components/Chat";
-import { HomeWrapper } from "./Pages.styled";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDetails } from "../features/user/services";
-
+import { getConversations } from "../features/conversation/services";
+import { HomeWrapper } from "./Pages.styled";
+import Dashboard from "../components/Dashboard";
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const {userId} = useSelector((state) => state.auth)
-  let ID = userId
-  const [userInfo] = useState({
-    avatar: "",
-    name: "",
-    about: "",
-    id: userId,
-  })
+  const dispatch = useDispatch();
+  const { userId } = useSelector((state) => state.auth);
+  const [userInfo] = useState({});
 
   useEffect(() => {
-      getDetails({userInfo, ID}, dispatch)
-  }, [userInfo, ID, dispatch])
-  
+    getDetails({ userInfo, userId }, dispatch);
+  }, [userInfo, userId, dispatch]);
+
+  useEffect(() => {
+    getConversations({ userId }, dispatch);
+  }, [dispatch, userId]);
+
   return (
     <HomeWrapper>
       <Dashboard />
-      <Chat />
     </HomeWrapper>
   );
 };

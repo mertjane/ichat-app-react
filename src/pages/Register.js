@@ -5,6 +5,7 @@ import { registerUser } from "../features/auth/services";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterError from "../components/Error/RegisterError";
 import Loading from "../components/Loading/Loading";
+import logo from "../assets/logo.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -33,22 +34,28 @@ const Register = () => {
   return (
     <FormWrapper>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <div className="logo" />
+        <img src={logo} alt="ichat" className="logo register" />
         Register
         <input
           placeholder="Username"
           type="text"
-          onChange={(e) => setCreateUser({ ...createUser, username: e.target.value })}
+          onChange={(e) =>
+            setCreateUser({ ...createUser, username: e.target.value })
+          }
         />
         <input
           placeholder="Email"
           type="text"
-          onChange={(e) => setCreateUser({ ...createUser, email: e.target.value })}
+          onChange={(e) =>
+            setCreateUser({ ...createUser, email: e.target.value })
+          }
         />
         <input
           placeholder="Password"
           type="password"
-          onChange={(e) => setCreateUser({ ...createUser, password: e.target.value })}
+          onChange={(e) =>
+            setCreateUser({ ...createUser, password: e.target.value })
+          }
         />
         <input
           placeholder="Confirm password"

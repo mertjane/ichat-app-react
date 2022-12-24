@@ -29,7 +29,7 @@ export const Overlay = styled.div`
       height: 50px;
       display: flex;
       align-items: center;
-      background-color: #292c6d;
+      background-color: #075E54;
       padding: 0 30px;
       box-sizing: border-box;
       gap: 24px;
@@ -67,7 +67,7 @@ export const Overlay = styled.div`
         color: #ffff;
         padding: 10px;
         border-radius: 50%;
-        background-color: #3e428d;
+        background-color: #128C7E;
         width: 40px;
         height: 40px;
         position: absolute;

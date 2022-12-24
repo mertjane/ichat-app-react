@@ -1,14 +1,16 @@
 import React from "react";
 import { ContentWrapper } from "./Settings.styled";
-import profileIMG from "..//..//..//assets/man.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Avatar = () => {
   const navigate = useNavigate();
+  const { avatar } = useSelector((state) => state.user.userInfo);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
-    <ContentWrapper onClick={() => navigate("/user/:id/profile")}>
+    <ContentWrapper onClick={() => navigate("/profile")}>
       <div className="avatar">
-        <img src={profileIMG} alt="avatar" />
+        <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
       </div>
       <div className="user-status">
         <p>Display name</p>

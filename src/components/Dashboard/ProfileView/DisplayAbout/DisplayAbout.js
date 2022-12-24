@@ -37,7 +37,7 @@ export const Wrapper = styled.div`
       align-items: flex-start;
       box-sizing: border-box;
       padding: 0;
-      border-bottom: 2px solid #292c6d;
+      border-bottom: 2px solid #128C7E;
       input {
         height: 75%;
         width: 60%;

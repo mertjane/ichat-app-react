@@ -8,9 +8,9 @@ import {
 } from "./userSlice";
 
 // Get Current user Informations
-export const getDetails = async ({ userInfo, ID }, dispatch) => {
+export const getDetails = async ({ userInfo, userId }, dispatch) => {
   try {
-    const res = await axios.get(`${getUserURL}/${ID}`, userInfo);
+    const res = await axios.get(`${getUserURL}/${userId}`, userInfo);
     dispatch(loadDetails(res.data));
   } catch (err) {
     console.log(err.response.data);
@@ -66,13 +66,4 @@ export const updatedAvatar = async ({ file, avatar, id }, dispatch) => {
     const { data } = axios.put(`${updateURL}/${id}`, newAvatar);
     dispatch(updateAvatar(data));
   } catch (err) {}
-  /*  try {
-    const user = {
-      avatar,
-    };
-    const {data} = await axios.put(`${updateURL}/${id}`, user);
-    dispatch(updateAbout(data));
-  } catch (err) {
-    console.log(err.response.data)
-  } */
 };

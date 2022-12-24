@@ -1,10 +1,8 @@
 import { useState } from "react";
 import Modal from "./UploadPreview/Modal";
 import { useDispatch, useSelector } from "react-redux";
-// import { updateURL } from "../../../features/apiCalls";
 import { AvatarWrapper } from "./Profile.styled";
 import { MdPhotoCamera } from "react-icons/md";
-// import axios from "axios";
 import { updatedAvatar } from "../../../features/user/services";
 
 const AvatarDisplay = () => {
@@ -22,28 +20,6 @@ const AvatarDisplay = () => {
     e.preventDefault();
     updatedAvatar({file, id},dispatch);
     window.location.reload();
-    /* e.preventDefault();
-    const newAvatar = {
-      image: avatar,
-    };
-    const formData = new FormData();
-    console.log(formData);
-    const fileName = file.name;
-    formData.append("avatar", file);
-    newAvatar.avatar = fileName;
-    try {
-      axios.post(`${updateURL}/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    try {
-      axios.put(`${updateURL}/${id}`, newAvatar);
-      window.location.reload();
-    } catch (err) {} */
   };
 
   return (

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import logo from "../assets/chat.png";
 
 /****************** Autentication Styles ********************/
 
@@ -9,7 +8,7 @@ export const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  padding: 14px 0 14px 0;
+  padding: 26px 10px;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   background-color: #ffff;
@@ -17,20 +16,32 @@ export const FormWrapper = styled.div`
   text-align: center;
   form {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 15px;
-    padding: 20px 60px;
+    padding: 0 60px;
     color: #78848c;
     .logo {
-      background-image: url(${logo});
-      background-repeat: no-repeat;
-      background-size: contain;
-      width: 70px;
-      height: 70px;
+      object-fit: fill;
+      box-sizing: border-box;
+      top: -10px;
+      position: absolute;
+      width: 50%;
+      height: 50%;
       align-self: center;
+      &.register {
+        object-fit: fill;
+        box-sizing: border-box;
+        top: -50px;
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        align-self: center;
+      }
     }
+
     span {
       font-size: 16px;
     }
@@ -44,7 +55,7 @@ export const FormWrapper = styled.div`
       }
     }
     button {
-      background-color: #ec255a;
+      background-color: #128c7e;
       color: white;
       padding: 15px;
       font-size: large;
@@ -59,11 +70,11 @@ export const FormWrapper = styled.div`
     p {
       font-size: 14px;
       margin-top: 10px;
-      .switch{
+      .switch {
         color: #78848c;
         text-decoration: none;
         font-weight: 500;
-        &:hover{
+        &:hover {
           text-decoration: underline;
         }
       }

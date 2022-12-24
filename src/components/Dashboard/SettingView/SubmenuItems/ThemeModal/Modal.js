@@ -49,7 +49,7 @@ export const Overlay = styled.div`
       button {
         height: 45px;
         width: 110px;
-        color: #292c6d;
+        color: #128C7E;
         background-color: #ffff;
         font-weight: 500;
         font-size: 15px;
@@ -68,13 +68,13 @@ export const Overlay = styled.div`
         color: #ffff;
         font-weight: 500;
         font-size: 15px;
-        background-color: #454aac;
+        background-color: #128C7E;
         outline: none;
         border-radius: 3px;
         border: none;
         cursor: pointer;
         :hover {
-          background-color: #3a3e8f;
+          background-color: #1aa393;
           transition: 600ms ease;
         }
       }

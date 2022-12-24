@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  flex: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;
 export const NavWrapper = styled.nav`
   height: 40px;
@@ -38,12 +40,13 @@ export const NavWrapper = styled.nav`
   }
 `;
 
-export const ChatWrapper = styled.div`
-  height: calc(100% - 200px);
-  background-color: #e1d6ec;
+export const ChatBoxContainer = styled.div`
+  height: 100%;
+  background-color: #1d2326;
   padding: 40px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 14px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -53,6 +56,9 @@ export const ChatWrapper = styled.div`
     background: #e0e0e0;
     border-radius: 2px;
   }
+`
+
+export const MessageWrapper = styled.div`
   .message {
     display: flex;
     .messageContent {
@@ -64,7 +70,8 @@ export const ChatWrapper = styled.div`
       gap: 24px;
       padding: 12px 20px;
       border-radius: 0 10px 10px 10px;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
       p {
         font-size: 14px;
         font-weight: 500;
@@ -82,7 +89,7 @@ export const ChatWrapper = styled.div`
     &.owner {
       flex-direction: row-reverse;
       .messageContent {
-        background: #f0d9ff;
+        background: #dcf8c6;
         border-radius: 10px 0 10px 10px;
         p {
           font-size: 14px;
@@ -92,14 +99,6 @@ export const ChatWrapper = styled.div`
     }
   }
 `;
-
-// export const MessageWrapper = styled.div`
-//   width: 99.8%;
-//   display: flex;
-//   border: 1px solid black;
-//   justify-content: space-between;
-//
-// `;
 
 export const InputWrapper = styled.div`
   height: 40px;
@@ -135,7 +134,7 @@ export const InputWrapper = styled.div`
     button {
       padding: 6px 16px;
       border: none;
-      background-color: #bfa2db;
+      background-color: #128C7E;
       color: white;
       font-size: 18px;
       font-weight: 600;

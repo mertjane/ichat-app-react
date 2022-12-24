@@ -11,7 +11,7 @@ export const Wrapper = styled.section`
 export const HeaderWrapper = styled.section`
   width: 100%;
   height: 124px;
-  background-color: #1b1e49;
+  background-color: #075E54;
   display: flex;
   align-items: flex-end;
   color: #ffff;

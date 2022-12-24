@@ -1,18 +1,16 @@
-import React from 'react'
-import Navbar from './Navbar';
+import Navbar from "./Navbar";
 import Search from "./Search";
 import ChatList from "./ChatList";
-import { Wrapper } from './MainView.styled';
+import { Wrapper } from "./MainView.styled";
 
-const Main = () => {
-  
+const Main = ({ setCurrentChat }) => {
   return (
     <Wrapper>
-      <Navbar/>
-      <Search/>
-      <ChatList/>
+      <Navbar />
+      <Search />
+      <ChatList setCurrentChat={setCurrentChat} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

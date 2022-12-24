@@ -1,9 +1,9 @@
-import React from "react";
 import { InputWrapper } from "./Chat.styled";
 import { BsEmojiSmile } from "react-icons/bs";
 import { IoMdAttach } from "react-icons/io";
 
-const Input = () => {
+const Input = ({ handleForm, handleInput, newMessage}) => {
+
   return (
     <InputWrapper>
       <div className="btnGroup">
@@ -13,10 +13,15 @@ const Input = () => {
           <IoMdAttach className="btn" />
         </label>
       </div>
-      <div className="textGroup">
-        <input type="text" placeholder="Type a message" />
-        <button>Send</button>
-      </div>
+      <form onSubmit={handleForm} className="textGroup">
+        <input
+          value={newMessage}
+          onChange={handleInput}
+          type="text"
+          placeholder="Type a message"
+        />
+        <button type="submit">Send</button>
+      </form>
     </InputWrapper>
   );
 };

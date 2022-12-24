@@ -9,7 +9,7 @@ export const StyledList = styled.div`
   height: 80px;
   padding: 8px 0;
   cursor: pointer;
-  &:hover{
+  &:hover {
     background-color: #dddddda4;
   }
   .user-avatar {

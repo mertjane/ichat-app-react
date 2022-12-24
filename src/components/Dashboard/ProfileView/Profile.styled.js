@@ -61,12 +61,12 @@ export const AvatarWrapper = styled.section`
       .btn {
         width: 30px;
         height: 30px;
-        color: #313131;
+        color: #ffff;
       }
       span {
         font-weight: 600;
         font-size: 12px;
-        color: #313131;
+        color: #ffff;
       }
     }
   }
