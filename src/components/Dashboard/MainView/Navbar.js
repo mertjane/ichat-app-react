@@ -37,9 +37,9 @@ const Navbar = () => {
         <span>{name}</span>
       </div>
       <div className="BtnGroup">
-        <TiUserAdd onClick={() => setOpenModal(true)} className="btn" />
-        <RiChatNewFill onClick={() => navigate("/contacts")} className="btn" />
-        <BsThreeDotsVertical onClick={() => setOpen(!open)} className="btn" />
+        <TiUserAdd title="Add User" onClick={() => setOpenModal(true)} className="btn" />
+        <RiChatNewFill title="New Chat" onClick={() => navigate("/contacts")} className="btn" />
+        <BsThreeDotsVertical title="Settings" onClick={() => setOpen(!open)} className="btn" />
       </div>
       <div className={`dropdownMenu ${open ? "active" : "inactive"}`}>
         <DropdownItem />

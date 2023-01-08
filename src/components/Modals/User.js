@@ -9,14 +9,34 @@ import { toast } from "react-toastify";
 const User = ({ _id, avatar, username, user }) => {
   const id = useSelector((state) => state.auth.userId);
   const currentUsername = useSelector((state) => state.auth.username);
-  const { contactList } = useSelector((state) => state.contacts);
+  const contactList = useSelector((state) => state.contacts.contactList);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  const [followed, setFollowed] = useState(contactList.includes(user._id));
+  const { ...searchedUser } = user;
+
+  const [followed, setFollowed] = useState(
+    contactList.map((f) => f._id).includes(searchedUser[0]._id)
+  );
+
+  const ButtonRendering = () => {
+    if (followed) {
+      return (
+        <button onClick={handleClick} className="addBtn">
+          <MdOutlineRemoveCircleOutline className="icon" />
+        </button>
+      );
+    } else {
+      return (
+        <button onClick={handleClick} className="addBtn">
+          <MdOutlineAdd className="icon" />
+        </button>
+      );
+    }
+  };
 
   const handleClick = async () => {
     try {
-      if (followed) {
+      if (followed === true) {
         await axios.put(`${addContactURL}/${id}/remove`, {
           userId: user[0]?._id,
         });
@@ -46,15 +66,7 @@ const User = ({ _id, avatar, username, user }) => {
       />
       <div className="user-info">
         <label>{username}</label>
-        {username !== currentUsername && (
-          <button onClick={handleClick} className="addBtn">
-            {followed ? (
-              <MdOutlineRemoveCircleOutline className="icon" />
-            ) : (
-              <MdOutlineAdd className="icon" />
-            )}
-          </button>
-        )}
+        {username !== currentUsername && <ButtonRendering />}
       </div>
     </UserWrapper>
   );

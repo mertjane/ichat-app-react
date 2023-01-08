@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Skeleton from "./components/Skeleton/Skeleton";
 
 const Container = styled.div`
   width: 100%;
@@ -17,12 +18,13 @@ const Container = styled.div`
   .background {
     width: 100%;
     height: 144px;
-    background: #128C7E;
+    background: #00a884;
     position: absolute;
   }
 `;
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const auth = useSelector((state) => state.auth);
   const ProtectedRoute = ({ children }) => {
     if (!auth.userId) {
@@ -30,6 +32,15 @@ const App = () => {
     }
     return children;
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        setIsLoading(false);
+    }, 3000);
+    }
+  }, [isLoading]);
+  
 
   return (
     <Container>
@@ -42,7 +53,7 @@ const App = () => {
             index
             element={
               <ProtectedRoute>
-                <Home />
+                {isLoading ? <Skeleton /> : <Home />}
               </ProtectedRoute>
             }
           />

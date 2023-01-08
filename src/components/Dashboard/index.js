@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import noChatIMG from "../../assets/chat_img.svg";
+import { io } from "socket.io-client";
 import styled from "styled-components";
 
 import Main from "./MainView";
@@ -22,33 +24,44 @@ import MsgDuration from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/M
 import BlockedUsers from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/BlockedContacts/BlockedUsers";
 
 export const Wrapper = styled.div`
-  width: 33%;
+  width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
 `;
 export const ChatWrapper = styled.div`
-  width: 67%;
+  width: 73%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  .no-chat-span {
-    font-size: 46px;
-    padding-top: 128px;
-    align-self: center;
-    color: #8685857f;
+  .svg-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .no-chat-img {
+      height: 50%;
+      width: 50%;
+      object-fit: contain;
+    }
   }
 `;
 
 const Dashboard = () => {
   const [currentChat, setCurrentChat] = useState(null);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setSocket(io(process.env.REACT_APP_SOCKET_ENDPOINT));
+  }, []);
 
   return (
     <>
       <Wrapper>
         <Routes>
           <Route path="/" element={<Main setCurrentChat={setCurrentChat} />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/contacts" element={<Contacts setCurrentChat={setCurrentChat} currentChat={currentChat}/>} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/settings/notifications" element={<NotifyMenu />} />
           <Route path="/settings/privacy" element={<PrivacyMenu />} />
@@ -79,9 +92,11 @@ const Dashboard = () => {
       </Wrapper>
       <ChatWrapper>
         {currentChat ? (
-          <Chat currentChat={currentChat} />
+          <Chat socket={socket} currentChat={currentChat} />
         ) : (
-          <span className="no-chat-span">Start a conversation</span>
+          <div className="svg-box">
+            <img src={noChatIMG} alt="visual" className="no-chat-img" />
+          </div>
         )}
       </ChatWrapper>
     </>

@@ -7,13 +7,13 @@ import { MdVideocam } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-const Navbar = ({ currentChat, istyping }) => {
+const Navbar = ({ currentChat, istyping, isOnline}) => {
   const { userId } = useSelector((state) => state.auth);
   const [user, setUser] = useState([]);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
-    const friendId = currentChat.members.find((m) => m !== userId);
+    const friendId = currentChat?.members?.find((m) => m !== userId);
     const getUser = async () => {
       try {
         const res = await axios(`${getUserURL}/${friendId}`);
@@ -25,6 +25,18 @@ const Navbar = ({ currentChat, istyping }) => {
     getUser();
   }, [currentChat.members, userId]);
 
+  const StatusDisplay = () => {
+    if (istyping) {
+      return <span className="status-text">typing...</span>;
+    } else if(isOnline) {
+      return <span className="status-text">online</span>;
+    } else if(!istyping && isOnline){
+      return <span className="status-text">online</span>
+    } else {
+      return <></>
+    }
+  };
+
   return (
     <NavWrapper>
       <div className="contactInfo">
@@ -32,7 +44,10 @@ const Navbar = ({ currentChat, istyping }) => {
           src={user?.avatar ? PF + user.avatar : PF + "user.png"}
           alt="avatar"
         />
-        {istyping ? (<span>typing...</span>) : (<span>{user?.name}</span>)}
+        <span className="displayName">
+        {user?.name}
+        {<StatusDisplay />}
+        </span>
       </div>
       <div className="btnGroup">
         <MdVideocam className="btn" />

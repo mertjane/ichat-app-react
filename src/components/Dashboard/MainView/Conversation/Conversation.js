@@ -1,27 +1,23 @@
 import { useState, useEffect } from "react";
-// import LastMessage from "../LastMessage/LastMessage";
 import { useSelector } from "react-redux";
-//import { getLastMessage } from "../../../../features/messages/services";
 import { getUserURL } from "../../../../features/apiCalls";
 import { ConversationWrapper } from "./Conversation.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
-
 import axios from "axios";
+import moment from "moment";
 
 const Conversation = ({ c, setCurrentChat }) => {
-  // const dispatch = useDispatch();
-  const [list, setList] = useState(null);
   const { userId } = useSelector((state) => state.auth);
+  const [chatList, setChatList] = useState();
+
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  // const lastMessage = messages.length - 1
-
   useEffect(() => {
-    const friendId = c.members.find((m) => m !== userId);
     const getUser = async () => {
+      const friendId = c?.members?.find((c) => c !== userId);
       try {
         const res = await axios(`${getUserURL}/${friendId}`);
-        setList(res.data);
+        setChatList(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -29,19 +25,40 @@ const Conversation = ({ c, setCurrentChat }) => {
     getUser();
   }, [c.members, userId]);
 
+  const TimeRender = () => {
+    const today = new Date();
+    const chatDate = new Date(c.lastMessages[0].createdAt);
+    const difference = today.getTime() - chatDate.getTime();
+    Math.ceil(difference / (1000 * 3600 * 24));
+
+    if (difference <= 86400000) {
+      return <span>{moment(c?.lastMessages[0].createdAt).format("LT")}</span>;
+    } else if (difference > 86400000 && difference < 604800000) {
+      return <span>{moment(c?.lastMessages[0].createdAt).format("dddd")}</span>;
+    } else {
+      return (
+        <span>
+          {moment(c?.lastMessages[0].createdAt).add(10, "days").calendar()}
+        </span>
+      );
+    }
+  };
+
   return (
     <ConversationWrapper onClick={() => setCurrentChat(c)}>
       <img
-        src={list?.avatar ? PF + list.avatar : PF + "user.png"}
+        src={chatList?.avatar ? PF + chatList.avatar : PF + "user.png"}
         alt="avatar"
       />
-      <div className="chatInfo">
-        <span>{list?.name}</span>
-        <p>last message</p>
-      </div>
-      <div className="chatTime">
-        <span>1:55 pm</span>
-        <MdKeyboardArrowDown className="optionBtn" />
+      <div className="wrapper">
+        <div className="chatInfo">
+          <p>{chatList?.name}</p>
+          <span>{c?.lastMessages[0]?.text}</span>
+        </div>
+        <div className="chatTime">
+          <TimeRender />
+          <MdKeyboardArrowDown className="optionBtn" />
+        </div>
       </div>
     </ConversationWrapper>
   );

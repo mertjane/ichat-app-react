@@ -11,6 +11,7 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
     if (auth.userId) {
@@ -27,7 +28,15 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(createUser));
+    if (
+      createUser.password !== createUser.confirmPassword ||
+      createUser.confirmPassword === ""
+    ) {
+      setPasswordError(true);
+    } else {
+      dispatch(registerUser(createUser));
+      setPasswordError(false);
+    }
     //console.log(auth);
   };
 
@@ -64,6 +73,9 @@ const Register = () => {
             setCreateUser({ ...createUser, confirmPassword: e.target.value })
           }
         />
+        {passwordError && (
+          <span style={{ color: "red" }}>Passwords do not match!</span>
+        )}
         {auth.registerStatus === "rejected" ? <RegisterError /> : null}
         {auth.registerStatus === "pending" ? (
           <Loading />

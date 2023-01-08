@@ -6,7 +6,7 @@ import Search from "./Search";
 import List from "./List";
 import { Wrapper } from "./Contacts.styled";
 
-const Contacts = ({ setCurrentChat }) => {
+const Contacts = ({setCurrentChat}) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
   const [contactInfo] = useState([]);
@@ -20,7 +20,7 @@ const Contacts = ({ setCurrentChat }) => {
     <Wrapper>
       <Header />
       <Search onChange={(e) => setQuery(e.target.value)} />
-      <List query={query} />
+      <List setCurrentChat={setCurrentChat} query={query} />
     </Wrapper>
   );
 };

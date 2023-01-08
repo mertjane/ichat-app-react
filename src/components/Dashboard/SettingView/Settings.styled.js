@@ -36,6 +36,7 @@ export const HeaderWrapper = styled.section`
 // Avatar Component
 
 export const ContentWrapper = styled.section`
+  border: 1px solid black;
   width: 100%;
   height: 124px;
   display: flex;
@@ -51,8 +52,8 @@ export const ContentWrapper = styled.section`
     justify-content: center;
     img {
       border-radius: 50%;
-      width: 60%;
-      height: 70%;
+      width: 65%;
+      height: 65%;
       object-fit: cover;
       animation: fadeIn 0.1s;
     }

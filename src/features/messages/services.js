@@ -11,15 +11,6 @@ export const getMessages = async ({ currentChat, messages }, dispatch) => {
   }
 };
 
-export const getLastMessage = async ({ id }, dispatch) => {
-  try {
-    const res = await axios.get(`${getMessagesURL}/${id}`);
-    dispatch(loadMessages(res.data));
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 export const sendMessage = async (
   { currentChat, newMessage, userId },
   dispatch

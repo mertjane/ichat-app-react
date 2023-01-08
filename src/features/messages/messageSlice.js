@@ -1,25 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const messageSlice = createSlice({
-    name: "messages",
-    initialState: {
-        userMessages: [],
+  name: "messages",
+  initialState: {
+    userMessages: [],
+    page: 1,
+  },
+  reducers: {
+    loadMessages: (state, action) => {
+      state.userMessages = action.payload;
     },
-    reducers: {
-        loadMessages: (state, action) => {
-            state.userMessages = action.payload
-            const lastMessage = action.payload.length - 1
-            state.latestMessages = [state.userMessages[lastMessage].text]
-        },
-        /* loadLatestMsgs: (state, action) => {
-            state.latestMessages = action
-        }, */
-        sendNewMessage: (state, action) => {
-            state.userMessages = [...state.userMessages, action.payload]
-        }
+    loadMoreMessages: (state, action) => {
+      state.page = action.payload + 1
     },
-    extraReducers: {}
-})
+    sendNewMessage: (state, action) => {
+      state.userMessages = [...state.userMessages, action.payload];
+    },
+  },
+  extraReducers: {},
+});
 
-export const { loadMessages, sendNewMessage} = messageSlice.actions;
+export const { loadMessages, sendNewMessage, loadMoreMessages } = messageSlice.actions;
 export default messageSlice.reducer;

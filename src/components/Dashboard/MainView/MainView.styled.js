@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 
 export const NavWrapper = styled.div`
   height: 40px;
-  border-right: 1px solid lightgray;
+  border-right: 2px solid #f0ededd6;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,7 +45,7 @@ export const NavWrapper = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 4px;
-    left: 360px;
+    left: 260px;
     top: 50px;
     z-index: 9999;
     background-color: #ffff;
@@ -91,7 +91,7 @@ export const NavWrapper = styled.div`
 `;
 
 export const ListContainer = styled.div`
-  height: calc(100% - 125px);
+  height: calc(100% - 118px);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -105,13 +105,13 @@ export const ListContainer = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  height: 40px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
   border-bottom: 1px solid lightgray;
-  padding: 12px 8px;
+  padding: 10px 8px;
   input {
     padding: 8px;
     border: none;

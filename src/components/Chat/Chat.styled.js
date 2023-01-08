@@ -21,10 +21,17 @@ export const NavWrapper = styled.nav`
       border-radius: 50%;
       object-fit: cover;
     }
-    span {
-      font-size: 18px;
+    .displayName {
+      font-size: 16px;
       font-weight: 500;
       color: #111b21d3;
+      display: flex;
+      flex-direction: column;
+      .status-text {
+        font-size: 14px;
+        font-weight: 500;
+        color: #555555dd;
+      }
     }
   }
   .btnGroup {
@@ -53,10 +60,10 @@ export const ChatBoxContainer = styled.div`
     width: 7px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #e0e0e0;
-    border-radius: 2px;
+    background: #9e9d99;
+    
   }
-`
+`;
 
 export const MessageWrapper = styled.div`
   .message {
@@ -134,7 +141,7 @@ export const InputWrapper = styled.div`
     button {
       padding: 6px 16px;
       border: none;
-      background-color: #128C7E;
+      background-color: #128c7e;
       color: white;
       font-size: 18px;
       font-weight: 600;
