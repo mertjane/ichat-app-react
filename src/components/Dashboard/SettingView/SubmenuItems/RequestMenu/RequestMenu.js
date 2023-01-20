@@ -2,10 +2,12 @@ import React from "react";
 import Header from "../../Header";
 import { Wrapper } from "./Request.styled";
 import { HiDocumentText } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 const RequestMenu = () => {
+  const { theme } = useSelector((state) => state.user.userInfo)
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Header />
       <div className="iconWrapper">
         <HiDocumentText className="icon" />

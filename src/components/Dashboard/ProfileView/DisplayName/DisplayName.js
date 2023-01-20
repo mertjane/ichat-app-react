@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import { NameWrapper } from "../Profile.styled";
 import { toast } from "react-toastify";
 import { MdEdit } from "react-icons/md";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -9,77 +9,11 @@ import EmojiList from "../../../EmojiPicker/EmojiList";
 import { EmojiWrapper } from "../../../EmojiPicker/Emoji.styled";
 import { updatedName } from "../../../../features/user/services";
 
-
-export const Wrapper = styled.div`
-  width: 100%;
-  height: 106px;
-  background-color: #ffffff;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  display: flex;
-  flex-direction: column;
-  p {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    color: #485157;
-    font-size: 13px;
-    padding: 0 30px;
-  }
-  div {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 0 30px;
-    justify-content: space-between;
-    .editName {
-      width: 100%;
-      height: 75%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      box-sizing: border-box;
-      padding: 0;
-      border-bottom: 2px solid #128C7E;
-      input {
-        height: 75%;
-        width: 60%;
-        font-size: 16px;
-        outline: none;
-        border: none;
-      }
-      label {
-        color: #c9c8c8;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        .icon {
-          color: #b3b3b3;
-          height: 18px;
-          width: 18px;
-          cursor: pointer;
-        }
-        .checkIcon {
-          color: #7e7d7d;
-          height: 24px;
-          width: 24px;
-          cursor: pointer;
-        }
-      }
-    }
-    .btn {
-      height: 26px;
-      width: 26px;
-      color: #81919b;
-      cursor: pointer;
-    }
-  }
-`;
-
 const DisplayName = () => {
   const dispatch = useDispatch();
   const showName = useSelector((state) => state.user.userInfo.name);
   const { userId } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.user.userInfo);
 
   const id = userId;
   const [name, setName] = useState("");
@@ -117,7 +51,7 @@ const DisplayName = () => {
   };
 
   return (
-    <Wrapper>
+    <NameWrapper theme={theme}>
       <p>Your name</p>
       <div>
         {editName ? (
@@ -151,7 +85,7 @@ const DisplayName = () => {
           </EmojiWrapper>
         )}
       </div>
-    </Wrapper>
+    </NameWrapper>
   );
 };
 

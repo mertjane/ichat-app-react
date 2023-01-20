@@ -9,6 +9,7 @@ import axios from "axios";
 
 const Navbar = ({ currentChat, istyping, isOnline}) => {
   const { userId } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.user.userInfo)
   const [user, setUser] = useState([]);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -38,7 +39,7 @@ const Navbar = ({ currentChat, istyping, isOnline}) => {
   };
 
   return (
-    <NavWrapper>
+    <NavWrapper theme={theme}>
       <div className="contactInfo">
         <img
           src={user?.avatar ? PF + user.avatar : PF + "user.png"}

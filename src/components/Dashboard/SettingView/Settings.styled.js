@@ -9,12 +9,14 @@ export const Wrapper = styled.section`
 
 // Header Component
 export const HeaderWrapper = styled.section`
-  width: 100%;
+  width: 100%; 
   height: 124px;
-  background-color: #075E54;
+  // background-color: #075E54;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#2a373f" : "#075E54"};
   display: flex;
   align-items: flex-end;
-  color: #ffff;
+  color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#ffff")};
   div {
     display: flex;
     align-items: center;
@@ -34,16 +36,16 @@ export const HeaderWrapper = styled.section`
 `;
 
 // Avatar Component
-
 export const ContentWrapper = styled.section`
-  border: 1px solid black;
   width: 100%;
   height: 124px;
   display: flex;
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"}; 
   &:hover {
-    background-color: #f8f7f7;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f8f7f7"};
   }
   .avatar {
     flex: 0.8;
@@ -68,18 +70,19 @@ export const ContentWrapper = styled.section`
     p {
       font-weight: 400;
       font-size: 20px;
-      color: #33383b;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
     }
     span {
       font-size: 15px;
-      color: #5a6369;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#5a6369")};
     }
   }
 `;
 
 // List Component
 export const MenuWrapper = styled.section`
-  background-color: #ffffff;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -91,7 +94,8 @@ export const MenuWrapper = styled.section`
     gap: 24px;
     padding-left: 34px;
     &:hover {
-      background-color: #eeecec;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#eeecec"};
     }
     &:nth-child(7) {
       li {
@@ -99,12 +103,12 @@ export const MenuWrapper = styled.section`
       }
     }
     .icon {
-      color: #677780;
+      color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#677780")};
       height: 30px;
       width: 30px;
     }
     li {
-      color: #33383b;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
       display: flex;
       width: 100%;
       height: 60px;
@@ -113,7 +117,8 @@ export const MenuWrapper = styled.section`
       box-sizing: border-box;
       cursor: pointer;
       list-style: none;
-      border-bottom: 1px solid #eeecec;
+      border-bottom: ${(props) =>
+        props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #eeecec"};
     }
   }
 `;

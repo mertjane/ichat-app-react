@@ -3,20 +3,28 @@ import check from "..//..//..//..//..//assets/check.png";
 
 export const Wrapper = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "none")};
   .contentWrapper {
     display: flex;
     flex-direction: column;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b29" : "#ffff"};
     padding: 20px 30px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-      rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    box-shadow: ${(props) =>
+      props.theme === "dark"
+        ? "none"
+        : "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,rgba(0, 0, 0, 0.1) 0px 0px 1px 0px"};
     margin-bottom: 18px;
+    .selection:nth-child(8) {
+      padding: 28px 0px;
+    }
     h5 {
       font-weight: 500;
       font-size: 13.4px;
-      color: #3b3e86;
+      color: ${(props) => (props.theme === "dark" ? "#128C7E" : "#128C7E")};
       padding-bottom: 16px;
     }
     .selection {
@@ -32,8 +40,10 @@ export const Wrapper = styled.section`
         font-size: 14.6px;
         line-height: 20px;
         cursor: pointer;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#252525")};
         span {
-          color: #485157ac;
+          color: ${(props) =>
+            props.theme === "dark" ? "#96969e" : "#485157ac"};
           font-size: 13.4px;
           font-weight: 500;
           cursor: pointer;
@@ -42,7 +52,7 @@ export const Wrapper = styled.section`
       .icon {
         height: 25px;
         width: 25px;
-        color: #252525a2;
+        color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#252525a2")};
       }
     }
     hr {
@@ -53,10 +63,12 @@ export const Wrapper = styled.section`
 
 export const Label = styled.label`
   position: absolute;
-  background: #ffffff;
-  border: 2px solid #7d7d7e;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+  border: ${(props) =>
+    props.theme === "dark" ? "2px solid #d9dee0" : "2px solid #7d7d7e"};
   border-radius: 2px;
-  left: 458px;
+  left: 365px;
   width: 16px;
   height: 16px;
 `;
@@ -66,22 +78,21 @@ export const CheckBox = styled.input`
   cursor: pointer;
   width: 16px;
   height: 16px;
-  &:hover ~ ${Label} {
-    background: #ffffff;
-    &::after {
-      //content: url(${check});
-      display: block;
-      color: white;
-      width: 16px;
-      height: 16px;
-    }
+  &::after {
+    //content: url(${check});
+    display: block;
+    color: white;
+    width: 16px;
+    height: 16px;
   }
   &:checked {
-    border: 1px solid #34377a;
+    border: ${(props) =>
+      props.theme === "dark" ? "2px solid #005c4b" : "2px solid #7d7d7e"};
   }
   &:checked + ${Label} {
-    background: #34377a;
-    border: 1px solid #34377a;
+    background: ${(props) => (props.theme === "dark" ? "#005c4b" : "#005c4b")};
+    border: ${(props) =>
+      props.theme === "dark" ? "2px solid #005c4b" : "2px solid #7d7d7e"};
     &::after {
       content: url(${check});
       position: relative;

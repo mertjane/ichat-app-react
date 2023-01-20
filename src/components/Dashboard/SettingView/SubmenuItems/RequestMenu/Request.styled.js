@@ -4,8 +4,10 @@ export const Wrapper = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #ffff;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+  box-shadow: ${(props) =>
+    props.theme === "dark" ? "none" : "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"};
   .iconWrapper {
     padding: 30px 0 10px 0;
     display: flex;
@@ -13,15 +15,16 @@ export const Wrapper = styled.section`
     align-items: center;
     justify-content: center;
     .icon {
-      color: #3e4192b9;
+      color: #ffff;
       height: 80px;
       width: 80px;
       padding: 16px;
       border-radius: 50%;
-      background-color: #a7aad86f;
+      background-color: ${(props) =>
+      props.theme === "dark" ? "#07cd9e" : "#07cd9e"};
     }
     p {
-      color: #485157ce;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#485157ce")};
       font-size: 13.4px;
       line-height: 22px;
       font-weight: 500;
@@ -29,23 +32,27 @@ export const Wrapper = styled.section`
       span {
         font-weight: 500;
         font-size: 13.4px;
-        color: #3e4192;
+        color: #2199EB;
       }
     }
   }
   .selection {
     padding: 20px 30px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-top: ${(props) =>
+      props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #dddd"};
+    border-bottom: ${(props) =>
+      props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #dddd"};
     display: flex;
     align-items: center;
     gap: 20px;
     cursor: pointer;
+    color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
     &:hover {
-      background-color: #eeecec;
+      background-color: ${(props) =>
+      props.theme === "dark" ? "#ffffff22" : "#eeecec"};
     }
     .icon {
-      color: #677780ae;
+      color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#677780ae")};
       height: 30px;
       width: 30px;
     }
@@ -56,7 +63,7 @@ export const Wrapper = styled.section`
     gap: 12px;
     padding: 30px 30px;
     p {
-      color: #485157ce;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#485157ce")};
       font-size: 13.4px;
       line-height: 22px;
       font-weight: 500;

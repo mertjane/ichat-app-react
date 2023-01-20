@@ -5,9 +5,10 @@ import { useSelector } from "react-redux";
 
 const List = ({ query, setCurrentChat }) => {
   const { contactList } = useSelector((state) => state.contacts);
+  const { theme } = useSelector((state) => state.user.userInfo);
 
   return (
-    <ListWrapper>
+    <ListWrapper theme={theme}>
         {contactList
         .filter((user) => user.name.toLowerCase().includes(query))
         ?.map((user) => (

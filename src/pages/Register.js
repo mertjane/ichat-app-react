@@ -5,7 +5,6 @@ import { registerUser } from "../features/auth/services";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterError from "../components/Error/RegisterError";
 import Loading from "../components/Loading/Loading";
-import logo from "../assets/logo.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -37,13 +36,12 @@ const Register = () => {
       dispatch(registerUser(createUser));
       setPasswordError(false);
     }
-    //console.log(auth);
   };
 
   return (
     <FormWrapper>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <img src={logo} alt="ichat" className="logo register" />
+        <h3 className="logo register">iChat Web</h3>
         Register
         <input
           placeholder="Username"

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const Overlay = styled.div`
-  background-color: #f8f8f89b;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21d1" : "#f8f8f89b"};
   position: fixed;
   width: 100%;
   height: 100%;
@@ -13,25 +14,28 @@ export const Overlay = styled.div`
     height: 640px;
     border-radius: 6px;
     position: absolute;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b21d1" : "#ffff"};
     top: 16%;
     left: 36%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: ${(props) =>
+      props.theme === "dark" ? "none" : "rgba(0, 0, 0, 0.24) 0px 3px 8px"};
     .header {
       display: flex;
       align-items: center;
       padding: 20px 30px;
-      background-color: #075E54;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#075E54"};
       border-radius: 6px 6px 0 0;
       gap: 36px;
       .btn {
-        color: #dddd;
+        color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#dddd")};
         height: 25px;
         width: 25px;
         cursor: pointer;
       }
       h3 {
-        color: #ffff;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#ffff")};
         font-weight: 600;
       }
     }
@@ -48,14 +52,21 @@ export const SearchWrapper = styled.div`
     border: none;
     border-radius: 0 6px 6px 0;
     outline: none;
-    background-color: #f0f2f5;
+    color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     width: 85%;
+    ::placeholder {
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+      font-weight: 500;
+    }
   }
   .searcBtn {
-    color: #505355;
+    color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#505355")};
     cursor: pointer;
     border-radius: 6px 0 0 6px;
-    background-color: #f0f2f5;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     padding: 9px;
     height: 20px;
     width: 20px;
@@ -71,7 +82,8 @@ export const ListWrapper = styled.div`
     width: 7px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #e0e0e0;
+    background: ${(props) =>
+          props.theme === "dark" ? "#435058" : "#9e9d99"};
     border-radius: 2px;
   }
 `;
@@ -83,9 +95,9 @@ export const UserWrapper = styled.div`
   gap: 14px;
   padding: 0 0 0 12px;
   height: 75px;
-
   &:hover {
-    background-color: #f0f2f5;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
   }
   img {
     height: 60px;
@@ -98,10 +110,13 @@ export const UserWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #ddd;
+    color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+    border-bottom: ${(props) =>
+      props.theme === "dark" ? "1px solid #a7a5a531" : "1px solid #ddd"};
     width: 100%;
     height: 100%;
     padding: 0 12px 0 0;
+    box-sizing: border-box;
     .addBtn {
       outline: none;
       border: none;
@@ -116,7 +131,7 @@ export const UserWrapper = styled.div`
         height: 30px;
         width: 30px;
         color: #858585;
-        &:hover{
+        &:hover {
           color: #85858578;
         }
       }

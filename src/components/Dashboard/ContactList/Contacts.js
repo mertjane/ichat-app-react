@@ -9,15 +9,15 @@ import { Wrapper } from "./Contacts.styled";
 const Contacts = ({setCurrentChat}) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
-  const [contactInfo] = useState([]);
+  const { theme } = useSelector((state) => state.user.userInfo);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    getContacts({ contactInfo, userId }, dispatch);
-  }, [userId, contactInfo, dispatch]);
+    dispatch(getContacts({ userId }));
+  }, [userId, dispatch]);
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Header />
       <Search onChange={(e) => setQuery(e.target.value)} />
       <List setCurrentChat={setCurrentChat} query={query} />

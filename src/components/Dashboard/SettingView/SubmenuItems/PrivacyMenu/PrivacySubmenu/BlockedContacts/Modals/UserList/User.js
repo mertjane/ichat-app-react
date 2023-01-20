@@ -1,66 +1,41 @@
-import React from "react";
-import styled from "styled-components";
-import avatar from "..//..//..//..//..//..//..//..//..//assets/user.png";
+import { useCallback } from "react";
+import { UserWrapper } from "../ListModal.styled";
+import { useSelector, useDispatch } from "react-redux";
+import { blockUser, getBlockedContacts} from "../../../../../../../../../features/contacts/services";
+import { toast } from "react-toastify";
 
-export const StyledList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-  padding: 8px 0;
-  cursor: pointer;
-  &:hover {
-    background-color: #dddddda4;
-  }
-  .user-avatar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px 15px;
-    .avatar {
-      height: 52px;
-      width: 52px;
-      border-radius: 50%;
-      background-image: url(${avatar});
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-  }
-  .user-info {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 8px 0;
-    border-bottom: 1px solid #ddddddb0;
-    label {
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      span {
-        color: #485157ce;
-        font-size: 13.7px;
-        font-weight: 500;
-        cursor: pointer;
-      }
-    }
-  }
-`;
 
-const User = () => {
+const User = ({ contact }) => {
+  const dispatch = useDispatch();
+  const { userId } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.user.userInfo);
+
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  const handleBlock = useCallback( async () => {
+    const friendId = contact?._id;
+    await blockUser({ userId, friendId }, dispatch);
+    toast.warning(`${contact?.name} blocked`, { position: "bottom-left" });
+    dispatch(getBlockedContacts({ userId }))
+  }, [contact?._id, contact?.name, dispatch, userId])
+  
+
   return (
-    <StyledList>
+    <UserWrapper theme={theme} onClick={handleBlock}>
       <div className="user-avatar">
-        <div className="avatar" />
+        <img
+          src={contact?.avatar ? PF + contact.avatar : "user.png"}
+          alt="avatar"
+          className="avatar"
+        />
       </div>
       <div className="user-info">
         <label>
-          Username
-          <span>status</span>
+          {contact?.name}
+          <span>{contact?.about}</span>
         </label>
       </div>
-    </StyledList>
+    </UserWrapper>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { MenuWrapper } from "./Settings.styled";
 import { IoMdNotifications } from "react-icons/io";
 import { HiDocumentText } from "react-icons/hi";
@@ -12,13 +13,13 @@ import {
 } from "react-icons/md";
 import Modal from "./SubmenuItems/ThemeModal/Modal";
 
-
 const List = () => {
+  const { theme } = useSelector((state) => state.user.userInfo);
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   return (
-    <MenuWrapper>
+    <MenuWrapper theme={theme}>
       <div onClick={() => navigate("notifications")} className="icon-group">
         <IoMdNotifications className="icon" />
         <li>Notifications</li>

@@ -1,13 +1,17 @@
 import React from "react";
 import { HeaderWrapper } from "./Settings.styled";
+import { useSelector } from "react-redux";
 import { TfiArrowLeft } from "react-icons/tfi";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useSelector((state) => state.user.userInfo);
+  
+  
   return (
-    <HeaderWrapper>
+    <HeaderWrapper theme={theme}>
       <div>
         <TfiArrowLeft
           onClick={() => {

@@ -1,20 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getDetails } from "./services";
 
 const initialState = {
   userInfo: {
+    theme: "default",
     avatar: "",
     name: "",
     about: "",
   },
+  status: "idle",
+  error: null,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loadDetails: (state, action) => {
-      state.userInfo = action.payload;
-    },
     updateAvatar: (state, { payload: { avatar } }) => {
       state.userInfo.avatar = avatar;
     },
@@ -24,9 +25,24 @@ export const userSlice = createSlice({
     updateAbout: (state, { payload: { about } }) => {
       state.userInfo.about = about;
     },
+    changeTheme: (state, { payload: { theme } }) => {
+      state.userInfo.theme = theme;
+    }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getDetails.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getDetails.fulfilled, (state, action) => {
+      state.userInfo = action.payload;
+      state.status = "success";
+    });
+    builder.addCase(getDetails.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload.message;
+    });
   },
 });
 
-export const { loadDetails,loadContacts, updateAvatar, updateName, updateAbout } =
-  userSlice.actions;
+export const { updateAvatar, updateName, updateAbout, changeTheme } = userSlice.actions;
 export default userSlice.reducer;

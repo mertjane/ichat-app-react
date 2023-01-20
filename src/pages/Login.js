@@ -5,7 +5,6 @@ import { FormWrapper } from "./Pages.styled";
 import { Link, useNavigate } from "react-router-dom";
 import LoginError from "../components/Error/LoginError";
 import Loading from "../components/Loading/Loading";
-import logo from "../assets/logo.png"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,14 +24,13 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(currentUser)
     dispatch(loginUser(currentUser));
   };
 
   return (
     <FormWrapper>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <img src={logo} alt="ichat" className="logo" />
+        <h3 className="logo">iChat Web</h3>
         <span>Login</span>
         <input
           placeholder="Username"

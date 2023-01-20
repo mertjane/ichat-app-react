@@ -10,13 +10,17 @@ export const Wrapper = styled.section`
     gap: 20px;
     padding: 18px 30px;
     cursor: pointer;
-    background-color: #ffff;
-    border-bottom: 1px solid #dddd;
+    color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+    background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"}; 
+    border-bottom: ${(props) =>
+      props.theme === "dark" ? "1px solid #96969632" : "1px solid #dddd"};
     &:hover {
-      background-color: #dddd;
+      background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#dddd"};
     }
     .icon {
-      color: #677780;
+      color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#677780")};
       height: 24px;
       width: 24px;
     }
@@ -24,7 +28,8 @@ export const Wrapper = styled.section`
   .listWrapper {
     overflow: auto;
     max-height: 585px;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b29" : "#ffff"};
     &::-webkit-scrollbar {
       width: 7px;
     }
@@ -37,7 +42,7 @@ export const Wrapper = styled.section`
     height: 100px;
     padding: 16px 30px;
     span {
-      color: #949292dd;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#949292dd")};
       font-size: 13.4px;
       font-weight: 500;
     }

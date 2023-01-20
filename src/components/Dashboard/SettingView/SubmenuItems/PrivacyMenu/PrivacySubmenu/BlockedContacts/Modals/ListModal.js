@@ -1,14 +1,28 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import User from "./UserList/User";
+import { useSelector, useDispatch } from "react-redux";
+import { getContacts } from "../../../../../../../../features/contacts/services";
 import { Overlay } from "./ListModal.styled";
 import { IoMdClose } from "react-icons/io";
-import User from "./UserList/User";
 import { motion } from "framer-motion";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const ListModal = ({ open, onClose }) => {
+  const dispatch = useDispatch();
+  const { contactList } = useSelector((state) => state.contacts);
+  const { userId } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.user.userInfo);
+
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    dispatch(getContacts({ userId }));
+  }, [dispatch, userId]);
+
   if (!open) return null;
+
   return (
-    <Overlay>
+    <Overlay theme={theme}>
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -21,20 +35,18 @@ const ListModal = ({ open, onClose }) => {
         </div>
         <div className="searchWrapper">
           <AiOutlineSearch className="searchBtn" />
-          <input type="text" placeholder="Search in contacts" />
+          <input
+            onChange={(e) => setQuery(e.target.value)}
+            type="text"
+            placeholder="Search in contacts"
+          />
         </div>
         <div className="userList">
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
+          {contactList
+            ?.filter((contact) => contact.name.toLowerCase().includes(query))
+            ?.map((contact) => (
+              <User key={contact?._id} contact={contact} />
+            ))}
         </div>
       </motion.div>
     </Overlay>

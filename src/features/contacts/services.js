@@ -1,12 +1,34 @@
-import { getContactsURL } from "../apiCalls";
-import {loadContacts} from "./contactSlice"
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getContactsURL, getBlockedURL, getUserURL } from "../apiCalls";
+import { blockContact, unBlockContact } from "./contactSlice"
 import axios from "axios";
 
-export const getContacts = async ({ userId }, dispatch) => {
+export const getContacts = createAsyncThunk('contacts/getContacts', async ({userId}) => {
+  const res = await axios.get(`${getContactsURL}/${userId}`);
+  return res.data;
+});
+
+
+export const getBlockedContacts = createAsyncThunk('contacts/getBlocked', async ({userId}) => {
+  const res = await axios.get(`${getBlockedURL}/${userId}`);
+  return res.data;
+});
+
+export const blockUser = async ({ userId, friendId}, dispatch) => {
   try {
-    const res = await axios.get(`${getContactsURL}/${userId}`);
-    dispatch(loadContacts(res.data));
+    const res = await axios.put(`${getUserURL}/${userId}/block`, {friendId});
+    dispatch(blockContact(res.data));
   } catch (err) {
     console.log(err);
   }
 };
+
+export const unBlockUser = async ({ userId, friendId}, dispatch) => {
+  try {
+    const res = await axios.put(`${getUserURL}/${userId}/unblock`, {friendId});
+    dispatch(unBlockContact(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+

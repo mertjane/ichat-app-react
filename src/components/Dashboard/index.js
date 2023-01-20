@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import noChatIMG from "../../assets/chat_img.svg";
+import noChatIMGdark from "../../assets/darkThemeChat.svg";
 import { io } from "socket.io-client";
 import styled from "styled-components";
 
@@ -28,6 +30,7 @@ export const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "none")};
 `;
 export const ChatWrapper = styled.div`
   width: 73%;
@@ -38,17 +41,36 @@ export const ChatWrapper = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column; 
     align-items: center;
-    justify-content: center;
+    gap: 14px;
     .no-chat-img {
-      height: 50%;
-      width: 50%;
+      height: 40%;
+      width: 40%;
       object-fit: contain;
+      position: relative;
+      top: 164px;
+    }
+    h2 {
+      font-size: 36px;
+      font-weight: 300;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#3d3d3dc7")};
+      position: relative;
+      top: 110px;
+    }
+    p {
+      position: relative;
+      top: 110px;
+      font-size: 12.8px;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#949393")};
+      width: 50%;
+      text-align: center;
     }
   }
 `;
 
 const Dashboard = () => {
+  const { theme } = useSelector((state) => state.user.userInfo);
   const [currentChat, setCurrentChat] = useState(null);
   const [socket, setSocket] = useState(null);
 
@@ -58,10 +80,21 @@ const Dashboard = () => {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper theme={theme}>
         <Routes>
-          <Route path="/" element={<Main setCurrentChat={setCurrentChat} />} />
-          <Route path="/contacts" element={<Contacts setCurrentChat={setCurrentChat} currentChat={currentChat}/>} />
+          <Route
+            path="/"
+            element={<Main socket={socket} setCurrentChat={setCurrentChat} />}
+          />
+          <Route
+            path="/contacts"
+            element={
+              <Contacts
+                setCurrentChat={setCurrentChat}
+                currentChat={currentChat}
+              />
+            }
+          />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/settings/notifications" element={<NotifyMenu />} />
           <Route path="/settings/privacy" element={<PrivacyMenu />} />
@@ -90,12 +123,26 @@ const Dashboard = () => {
           <Route path="/profile" element={<ProfileView />} />
         </Routes>
       </Wrapper>
-      <ChatWrapper>
+      <ChatWrapper theme={theme}>
         {currentChat ? (
-          <Chat socket={socket} currentChat={currentChat} />
+          <Chat
+            socket={socket}
+            currentChat={currentChat}
+            setCurrentChat={setCurrentChat}
+          />
         ) : (
           <div className="svg-box">
-            <img src={noChatIMG} alt="visual" className="no-chat-img" />
+            {theme === "dark" ? (
+              <img src={noChatIMGdark} alt="visual" className="no-chat-img" />
+            ) : (
+              <img src={noChatIMG} alt="visual" className="no-chat-img" />
+            )}
+
+            <h2>iChat Web</h2>
+            <p>
+              iChat is an encrypted instant messaging service that allows users
+              to communicate securely without sharing their phone numbers.
+            </p>
           </div>
         )}
       </ChatWrapper>

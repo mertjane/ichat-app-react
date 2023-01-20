@@ -1,21 +1,24 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserURL, updateURL } from "../apiCalls";
-import {
-  loadDetails,
-  updateName,
-  updateAbout,
-  updateAvatar,
-} from "./userSlice";
+import { updateName, updateAbout, updateAvatar, changeTheme} from "./userSlice";
 
-// Get Current user Informations
-export const getDetails = async ({ userInfo, userId }, dispatch) => {
+export const updateTheme = async ({userId, theme}, dispatch) => {
   try {
-    const res = await axios.get(`${getUserURL}/${userId}`, userInfo);
-    dispatch(loadDetails(res.data));
-  } catch (err) {
-    console.log(err.response.data);
+    const res = await axios.put(`${getUserURL}/${userId}/theme`, {theme});
+    dispatch(changeTheme(res.data));
+  } catch (error) {
+    console.log(error);
   }
 };
+
+export const getDetails = createAsyncThunk(
+  "user/getDetails",
+  async ({ userId }) => {
+    const res = await axios.get(`${getUserURL}/${userId}`);
+    return res.data;
+  }
+);
 
 // Update Name
 export const updatedName = async ({ name, id }, dispatch) => {

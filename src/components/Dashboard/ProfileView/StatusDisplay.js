@@ -2,11 +2,13 @@ import React from "react";
 import DisplayName from "./DisplayName/DisplayName";
 import DisplayAbout from "./DisplayAbout/DisplayAbout";
 import { StyledStatus } from "./Profile.styled";
+import { useSelector } from "react-redux";
 
 const StatusDisplay = () => {
+  const { theme } = useSelector((state) => state.user.userInfo);
 
   return (
-    <StyledStatus>
+    <StyledStatus theme={theme}>
       <DisplayName />
       <div className="infoWrapper">
         <span>
@@ -14,7 +16,7 @@ const StatusDisplay = () => {
           contacts.
         </span>
       </div>
-      <DisplayAbout/>
+      <DisplayAbout />
     </StyledStatus>
   );
 };

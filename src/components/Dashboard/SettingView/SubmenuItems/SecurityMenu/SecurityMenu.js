@@ -6,10 +6,12 @@ import { ImAttachment } from "react-icons/im";
 import { BsTelephone } from "react-icons/bs";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { Wrapper, CheckBox, Label } from "./SecurityMenu.styled";
+import { useSelector } from "react-redux";
 
 const SecurityMenu = () => {
+  const { theme } = useSelector((state) => state.user.userInfo)
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Header />
       <div className="iconWrapper">
         <MdLock className="icon" />
@@ -48,8 +50,8 @@ const SecurityMenu = () => {
       <hr />
       <div className="selectionWrapper">
         <div className="checkbox">
-          <CheckBox type="checkbox" />
-          <Label />
+          <CheckBox theme={theme} type="checkbox" />
+          <Label theme={theme}/>
           <span>Show Security notifications on this computer</span>
         </div>
         <p>

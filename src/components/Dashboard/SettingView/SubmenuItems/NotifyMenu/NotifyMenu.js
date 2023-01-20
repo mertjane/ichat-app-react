@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Header from "../../Header";
 import {
   Wrapper,
@@ -9,10 +10,12 @@ import {
 } from "./NotifyMenu.styled";
 
 const NotifyMenu = () => {
+  const { theme } = useSelector((state) => state.user.userInfo)
+
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Header />
-      <MsgWrap>
+      <MsgWrap theme={theme}>
         <div className="contentWrapper">
           <p>MESSAGES</p>
         </div>
@@ -21,18 +24,18 @@ const NotifyMenu = () => {
             Message notifications
             <span>Show notifications for new messages</span>
           </p>
-          <CheckBox type="checkbox" />
-          <Label />
+          <CheckBox theme={theme} type="checkbox" />
+          <Label theme={theme}/>
         </div>
       </MsgWrap>
-      <SoundWrap>
+      <SoundWrap theme={theme}>
         <div className="checkboxWrapper">
           <p>
             Sounds
             <span>Incoming messages are notified with voice alerts</span>
           </p>
-          <CheckBox type="checkbox" />
-          <Label />
+          <CheckBox theme={theme} type="checkbox" />
+          <Label theme={theme}/>
         </div>
       </SoundWrap>
     </Wrapper>

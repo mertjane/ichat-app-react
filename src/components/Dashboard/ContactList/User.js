@@ -10,6 +10,7 @@ const User = ({ user, _id, avatar, name, about, setCurrentChat }) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversations.info)
+  const { theme } = useSelector((state) => state.user.userInfo)
   
   const [members, setMembers] = useState({
     senderId: userId,
@@ -18,9 +19,7 @@ const User = ({ user, _id, avatar, name, about, setCurrentChat }) => {
 
 
   const handleNewConversation = () => {
-    // const x = conversation?.map(i => i.members.find(m => m !== members))
     const getChatId = conversation.find(c => c.members.find(mem => mem === members.receiverId))
-    // console.log(getChatId)
     if(!getChatId){
       startConversation({ members }, dispatch);
       setCurrentChat(getChatId)
@@ -35,7 +34,7 @@ const User = ({ user, _id, avatar, name, about, setCurrentChat }) => {
 
 
   return (
-    <UsersWrapper onClick={handleNewConversation} key={_id}>
+    <UsersWrapper theme={theme} onClick={handleNewConversation} key={_id}>
       <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
       <div className="user-info">
         <label>{name}</label>

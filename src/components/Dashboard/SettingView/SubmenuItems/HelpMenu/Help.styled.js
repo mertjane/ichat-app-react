@@ -17,14 +17,18 @@ export const Wrapper = styled.section`
       height: 240px;
     }
     span {
-      color: #485157c7;
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#485157c7")};
       font-size: 13.4px;
       font-weight: 500;
     }
   }
   .selection {
-    background-color: #ffff;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b21" : "#ffff"};
+    box-shadow: ${(props) =>
+      props.theme === "dark"
+        ? "none"
+        : "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"};
     .icon-group {
       height: 60px;
       display: flex;
@@ -32,7 +36,8 @@ export const Wrapper = styled.section`
       gap: 24px;
       padding-left: 34px;
       &:hover {
-        background-color: #eeecec;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#2a373f" : "#eeecec"};
       }
       &:nth-child(3) {
         li {
@@ -40,12 +45,12 @@ export const Wrapper = styled.section`
         }
       }
       .icon {
-        color: #677780;
+        color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#677780")};
         height: 30px;
         width: 30px;
       }
       li {
-        color: #33383b;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
         display: flex;
         width: 100%;
         height: 60px;
@@ -54,7 +59,8 @@ export const Wrapper = styled.section`
         box-sizing: border-box;
         cursor: pointer;
         list-style: none;
-        border-bottom: 1px solid #eeecec;
+        border-bottom: ${(props) =>
+          props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #eeecec"};
       }
     }
   }

@@ -1,33 +1,39 @@
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import Header from "..//..//..//..//Header";
-import { Wrapper } from "./BlockedUsers.styled";
-import { IoMdPersonAdd } from "react-icons/io";
 import ContactList from "./ContactList/ContactList";
 import ListModal from "./Modals/ListModal";
+import { useSelector, useDispatch } from "react-redux";
+import { getBlockedContacts } from "../../../../../../../features/contacts/services";
+import { Wrapper } from "./BlockedUsers.styled";
+import { IoMdPersonAdd } from "react-icons/io";
 
 const BlockedUsers = () => {
-    const [openListModal, setOpenListModal] = useState(false)
+  const dispatch = useDispatch();
+  const [openListModal, setOpenListModal] = useState(false);
+
+  const { blockedContacts } = useSelector((state) => state.contacts);
+  const { userId } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.user.userInfo);
+
+  useEffect(() => {
+    dispatch(getBlockedContacts({ userId }));
+  }, [dispatch, userId]);
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Header />
       <div onClick={() => setOpenListModal(true)} className="contentWrapper">
         <IoMdPersonAdd className="icon" />
         <span>Add blocked contact</span>
       </div>
-      <ListModal open={openListModal} onClose={() => setOpenListModal(false)}/>
+      <ListModal open={openListModal} onClose={() => setOpenListModal(false)} />
       <div className="listWrapper">
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
-        <ContactList />
+        {blockedContacts?.map((contact) => (
+          <ContactList
+            key={contact?._id}
+            contact={contact}
+          />
+        ))}
       </div>
       <div className="infoWrapper">
         <span>

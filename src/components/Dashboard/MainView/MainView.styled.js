@@ -9,7 +9,8 @@ export const Wrapper = styled.div`
 
 export const NavWrapper = styled.div`
   height: 40px;
-  border-right: 2px solid #f0ededd6;
+  border-right: ${(props) =>
+    props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #f0ededd6"};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +26,7 @@ export const NavWrapper = styled.div`
       object-fit: cover;
     }
     span {
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#5a6369")};
       font-weight: 500;
     }
   }
@@ -32,7 +34,7 @@ export const NavWrapper = styled.div`
     display: flex;
     gap: 20px;
     .btn {
-      color: #677780;
+      color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
       height: 25px;
       width: 25px;
       cursor: pointer;
@@ -40,7 +42,7 @@ export const NavWrapper = styled.div`
   }
   .dropdownMenu {
     position: absolute;
-    width: 140px;
+    width: 140px; 
     height: 124px;
     display: flex;
     flex-direction: column;
@@ -48,7 +50,8 @@ export const NavWrapper = styled.div`
     left: 260px;
     top: 50px;
     z-index: 9999;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#ffff"};
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
       rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     &.active {
@@ -64,7 +67,7 @@ export const NavWrapper = styled.div`
           scale: 1;
         }
       }
-      animation: dropdownIn 0.3s;
+      animation: dropdownIn 0.3s ease;
     }
     &.inactive {
       opacity: 0;
@@ -81,25 +84,28 @@ export const NavWrapper = styled.div`
       padding-left: 12px;
       font-size: 14px;
       text-decoration: none;
-      color: #54656f;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#54656f")};
       cursor: pointer;
       &:hover {
-        background-color: #f5f2f2;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#111b21" : "#f5f2f2"};
       }
     }
   }
 `;
 
 export const ListContainer = styled.div`
-  height: calc(100% - 118px);
+  height: calc(100% - 116px);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: scroll;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
   &::-webkit-scrollbar {
     width: 7px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #e0e0e0;
+    background: ${(props) => (props.theme === "dark" ? "#435058" : "#9e9d99")};
     border-radius: 2px;
   }
 `;
@@ -109,26 +115,35 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
-  border-bottom: 1px solid lightgray;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+  border-bottom: ${(props) =>
+    props.theme === "dark" ? "1px solid #ffffff22" : "1px solid lightgray"};
   padding: 10px 8px;
   input {
     padding: 8px;
     border: none;
     border-radius: 0 6px 6px 0;
     outline: none;
-    background-color: #f0f2f5;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     width: 80%;
+    color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+    ::placeholder {
+      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+      font-weight: 500;
+    }
   }
   .searcBtn {
-    color: #677780;
+    color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
     cursor: pointer;
     border-radius: 6px 0 0 6px;
-    background-color: #f0f2f5;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     padding: 9px;
   }
   .filterBtn {
-    color: #677780;
+    color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
     height: 25px;
     width: 25px;
     cursor: pointer;

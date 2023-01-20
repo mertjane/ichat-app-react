@@ -1,21 +1,30 @@
-import { loadConversations, newConversation } from "./conversationSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { newConversation, deleteChat } from "./conversationSlice";
 import { getConversationURL } from "../apiCalls";
 import axios from "axios";
 
-export const getConversations = async ({ userId }, dispatch) => {
-  try {
+export const getConversations = createAsyncThunk(
+  "conversations/loadConversations",
+  async ({ userId }) => {
     const res = await axios.get(`${getConversationURL}/${userId}`);
-    dispatch(loadConversations(res.data));
+    return res.data;
+  }
+);
+
+export const startConversation = async ({ members }, dispatch) => {
+  try {
+    const res = await axios.post(`${getConversationURL}`, members);
+    dispatch(newConversation(res.data));
   } catch (err) {
     console.log(err);
   }
 };
 
-export const startConversation = async ({members}, dispatch) => {
+export const deleteConversation = async ({ conversationId }, dispatch) => {
   try {
-    const res = await axios.post(`${getConversationURL}`, members);
-    dispatch(newConversation(res.data));
-  } catch(err) {
-    console.log(err)
+    const res = await axios.delete(`${getConversationURL}/${conversationId}`);
+    dispatch(deleteChat(res.data))
+  } catch (err) {
+    console.log(err);
   }
-}
+};

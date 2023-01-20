@@ -10,6 +10,7 @@ const AvatarDisplay = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { userId } = useSelector((state) => state.auth);
   const { avatar } = useSelector((state) => state.user.userInfo);
+  const { theme } = useSelector((state) => state.user.userInfo);
   const [openModal, setOpenModal] = useState(false);
   const [display, setDisplay] = useState(false);
   const [file, setFile] = useState("");
@@ -23,7 +24,7 @@ const AvatarDisplay = () => {
   };
 
   return (
-    <AvatarWrapper>
+    <AvatarWrapper theme={theme}>
       <div
         className="avatar"
         onMouseEnter={() => setDisplay(true)}

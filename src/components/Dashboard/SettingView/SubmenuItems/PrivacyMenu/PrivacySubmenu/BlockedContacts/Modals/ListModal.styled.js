@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const Overlay = styled.section`
-  background-color: #f8f8f89b;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21d1" : "#f8f8f89b"};
   position: fixed;
   width: 100%;
   height: 100%;
@@ -14,29 +15,32 @@ export const Overlay = styled.section`
     width: 100%;
     max-width: 430px;
     height: 700px;
-    border-radius: 3px;
+    border-radius: 5px;
     position: absolute;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b21" : "#ffff"};
     top: 10%;
     left: 35%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: ${(props) =>
+      props.theme === "dark" ? "none" : "rgba(0, 0, 0, 0.24) 0px 3px 8px"};
     z-index: 999;
     .header {
       height: 70px;
-      background-color: #075E54;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#075E54"};
       border-radius: 3px 3px 0 0;
       display: flex;
       align-items: center;
       padding: 0 20px;
       gap: 26px;
       .icon {
-        color: #dddd;
+        color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#dddd")};
         height: 25px;
         width: 25px;
         cursor: pointer;
       }
       h3 {
-        color: #ffff;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#ffff")};
         font-weight: 600;
       }
     }
@@ -46,10 +50,11 @@ export const Overlay = styled.section`
       align-items: center;
       padding: 10px 15px;
       .searchBtn {
-        color: #464d52;
+        color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#464d52")};
         cursor: pointer;
         border-radius: 8px 0 0 8px;
-        background-color: #dddddd90;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#2a373f" : "#dddddd90"};
         height: 38px;
         width: 22px;
         padding-left: 16px;
@@ -61,7 +66,13 @@ export const Overlay = styled.section`
         outline: none;
         border: none;
         padding-left: 18px;
-        background-color: #dddddd90;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#2a373f" : "#dddddd90"};
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+        ::placeholder {
+          color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+          font-weight: 500;
+        }
       }
     }
     .userList {
@@ -73,8 +84,55 @@ export const Overlay = styled.section`
         width: 7px;
       }
       &::-webkit-scrollbar-thumb {
-        background: #969595a2;
+        background: ${(props) =>
+          props.theme === "dark" ? "#435058" : "#9e9d99"};
         border-radius: 2px;
+      }
+    }
+  }
+`;
+
+
+export const UserWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: 8px 0;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#dddddda4"};
+  }
+  .user-avatar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 15px;
+    .avatar {
+      height: 52px;
+      width: 52px;
+      border-radius: 50%;
+    }
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 8px 0;
+    border-bottom: ${(props) =>
+      props.theme === "dark" ? "1px solid #96969632" : "1px solid #ddddddb0"};
+    label {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+      span {
+        color: ${(props) => (props.theme === "dark" ? "#96969e" : "#485157ce")};
+        font-size: 13.7px;
+        font-weight: 500;
+        cursor: pointer;
       }
     }
   }

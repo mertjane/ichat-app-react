@@ -6,9 +6,12 @@ export const Wrapper = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #ffff;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"}; 
+  box-shadow: ${(props) =>
+      props.theme === "dark"
+        ? "none"
+        : "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,rgba(0, 0, 0, 0.1) 0px 0px 1px 0px"};
   .iconWrapper {
     width: 200px;
     height: 200px;
@@ -27,7 +30,7 @@ export const Wrapper = styled.section`
     h5 {
       font-weight: 500;
       font-size: 13.4px;
-      color: #3b3e86;
+      color: ${(props) => (props.theme === "dark" ? "#128C7E" : "#128C7E")};
       padding-bottom: 15px;
     }
     .selection {
@@ -36,15 +39,15 @@ export const Wrapper = styled.section`
       padding: 20px 0;
       gap: 22px;
       span {
-        color: #485157;
+        color: ${(props) => (props.theme === "dark" ? "#96969e" : "#485157")};
         font-size: 15px;
         font-weight: 500;
       }
     }
     .link {
-      font-weight: 600;
-      font-size: 14px;
-      color: #383ea3;
+      font-weight: 500;
+      font-size: 13.8px;
+      color: ${(props) => (props.theme === "dark" ? "#2092df" : "#2092df")};
       cursor: pointer;
       padding: 26px 0;
     }
@@ -53,8 +56,10 @@ export const Wrapper = styled.section`
 
 export const Label = styled.label`
   position: absolute;
-  background: #ffffff;
-  border: 2px solid #bebdbd;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+  border: ${(props) =>
+    props.theme === "dark" ? "2px solid #7d7d7e" : "2px solid #7d7d7e"};
   border-radius: 50%;
   width: 17px;
   height: 17px;
@@ -66,22 +71,22 @@ export const StyledRadio = styled.input`
   cursor: pointer;
   width: 18px;
   height: 18px;
-  &:hover ~ ${Label} {
-    background: #ffffff;
     &::after {
       display: block;
       color: white;
       width: 18px;
       height: 18px;
     }
-  }
   &:checked {
-    border: 2px solid #3b3e86;
+    border: ${(props) =>
+      props.theme === "dark" ? "2px solid #128C7E" : "2px solid #7d7d7e"};
   }
   &:checked + ${Label} {
-    border: 2px solid #3b3e86;
+    border: ${(props) =>
+      props.theme === "dark" ? "2px solid #128C7E" : "2px solid #128C7E"};
     &::after {
-      content: url(${customRadio});
+      content: ${(props) =>
+        props.theme === "dark" ? `url(${customRadio})` : `url(${customRadio})`};
       position: relative;
       left: 2.4px;
       bottom: 1.5px;

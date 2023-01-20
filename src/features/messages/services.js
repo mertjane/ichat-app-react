@@ -1,15 +1,23 @@
-import { loadMessages, sendNewMessage } from "./messageSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { sendNewMessage, deleteMessage } from "./messageSlice";
 import { getMessagesURL } from "../apiCalls";
 import axios from "axios";
 
-export const getMessages = async ({ currentChat, messages }, dispatch) => {
-  try {
-    const res = await axios.get(`${getMessagesURL}/${currentChat?._id}`, messages);
-    dispatch(loadMessages(res.data));
-  } catch (err) {
-    console.log(err);
+export const getMessages = createAsyncThunk(
+  "messages/getMessages",
+  async (args, thunkAPI) => {
+    try {
+      const { currentChat, messages } = args;
+      const res = await axios.get(
+        `${getMessagesURL}/${currentChat?._id}`,
+        messages
+      );
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
+);
 
 export const sendMessage = async (
   { currentChat, newMessage, userId },
@@ -23,6 +31,17 @@ export const sendMessage = async (
     };
     const res = await axios.post(`${getMessagesURL}`, message);
     dispatch(sendNewMessage(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const removeMessage = async ({ currentChat, message }, dispatch) => {
+  try {
+    const res = await axios.delete(
+      `${getMessagesURL}/${currentChat._id}/${message._id}`
+    );
+    dispatch(deleteMessage(res.data));
   } catch (err) {
     console.log(err);
   }

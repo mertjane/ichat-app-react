@@ -10,6 +10,7 @@ const User = ({ _id, avatar, username, user }) => {
   const id = useSelector((state) => state.auth.userId);
   const currentUsername = useSelector((state) => state.auth.username);
   const contactList = useSelector((state) => state.contacts.contactList);
+  const { theme } = useSelector((state) => state.user.userInfo);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const { ...searchedUser } = user;
@@ -19,7 +20,7 @@ const User = ({ _id, avatar, username, user }) => {
   );
 
   const ButtonRendering = () => {
-    if (followed) {
+    if (!followed) {
       return (
         <button onClick={handleClick} className="addBtn">
           <MdOutlineRemoveCircleOutline className="icon" />
@@ -36,7 +37,7 @@ const User = ({ _id, avatar, username, user }) => {
 
   const handleClick = async () => {
     try {
-      if (followed === true) {
+      if (!followed) {
         await axios.put(`${addContactURL}/${id}/remove`, {
           userId: user[0]?._id,
         });
@@ -58,7 +59,7 @@ const User = ({ _id, avatar, username, user }) => {
   };
 
   return (
-    <UserWrapper key={_id}>
+    <UserWrapper theme={theme} key={_id}>
       <img
         src={avatar ? PF + avatar : PF + "user.png"}
         alt="avatar"

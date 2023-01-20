@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrapper = styled.section`
   width: 100%;
@@ -15,11 +15,20 @@ export const ContentWrapper = styled.section`
   flex-wrap: wrap;
   padding: 40px;
   column-gap: 12px;
+  row-gap: 12px;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   font-size: small;
-   button{
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.theme === "dark" ? "#435058" : "#9e9d99")};
+    border-radius: 2px;
+  }
+  button {
     width: 86px;
     height: 86px;
     display: flex;
@@ -28,11 +37,11 @@ export const ContentWrapper = styled.section`
     outline: none;
     border: none;
     cursor: pointer;
-    &:hover{
-        border: 4px solid #ffff;
+    &:hover {
+      border: 4px solid #ffff;
     }
-    &:active{
-        border: 4px solid #282b6c;
+    &:active {
+      border: 4px solid #282b6c;
     }
-   }
-`   
+  }
+`;

@@ -1,14 +1,22 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { markAsRead } from "../../../../features/messages/messageSlice";
 import { getUserURL } from "../../../../features/apiCalls";
 import { ConversationWrapper } from "./Conversation.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import ChatDropDown from "../../Dropdown/ChatDropDown";
 import axios from "axios";
 import moment from "moment";
 
-const Conversation = ({ c, setCurrentChat }) => {
+const Conversation = ({ c, setCurrentChat, socket }) => {
+  const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
+  const { unreadMessages } = useSelector((state) => state.messages);
+  const { theme } = useSelector((state) => state.user.userInfo);
+
   const [chatList, setChatList] = useState();
+  const [openMenu, setOpenMenu] = useState(false);
+  const dropdownRef = useRef();
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -25,27 +33,53 @@ const Conversation = ({ c, setCurrentChat }) => {
     getUser();
   }, [c.members, userId]);
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (!dropdownRef.current.contains(e.target)) {
+        setOpenMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+    document.removeEventListener("mousedown", handler);
+    };
+  });
+
   const TimeRender = () => {
     const today = new Date();
-    const chatDate = new Date(c.lastMessages[0].createdAt);
+    const chatDate = new Date(c.lastMessages?.[0]?.createdAt);
     const difference = today.getTime() - chatDate.getTime();
     Math.ceil(difference / (1000 * 3600 * 24));
 
     if (difference <= 86400000) {
-      return <span>{moment(c?.lastMessages[0].createdAt).format("LT")}</span>;
-    } else if (difference > 86400000 && difference < 604800000) {
-      return <span>{moment(c?.lastMessages[0].createdAt).format("dddd")}</span>;
-    } else {
       return (
-        <span>
-          {moment(c?.lastMessages[0].createdAt).add(10, "days").calendar()}
-        </span>
+        <span>{moment(c?.lastMessages?.[0]?.createdAt).format("LT")}</span>
       );
+    } else if (difference > 86400000 && difference < 604800000) {
+      return (
+        <span>{moment(c?.lastMessages?.[0]?.createdAt).format("dddd")}</span>
+      );
+    } else {
+      return <span>{moment(c?.lastMessages?.[0]?.createdAt).format("l")}</span>;
     }
   };
 
+  useEffect(() => {
+    socket?.on("newNotification", (data) => {
+      const { conversationId } = data;
+      dispatch(markAsRead(conversationId));
+    });
+  }, [socket, dispatch]);
+
   return (
-    <ConversationWrapper onClick={() => setCurrentChat(c)}>
+    <ConversationWrapper
+      theme={theme}
+      ref={dropdownRef}
+      onClick={() => {
+        setCurrentChat(c);
+        dispatch(markAsRead(c?._id));
+      }}
+    >
       <img
         src={chatList?.avatar ? PF + chatList.avatar : PF + "user.png"}
         alt="avatar"
@@ -53,11 +87,22 @@ const Conversation = ({ c, setCurrentChat }) => {
       <div className="wrapper">
         <div className="chatInfo">
           <p>{chatList?.name}</p>
-          <span>{c?.lastMessages[0]?.text}</span>
+          <span>{c?.lastMessages?.[0]?.text}</span>
         </div>
         <div className="chatTime">
           <TimeRender />
-          <MdKeyboardArrowDown className="optionBtn" />
+          <div className="unread-wrapper">
+            {unreadMessages?.[c?._id] > 0 && (
+              <span className="notification">{unreadMessages?.[c?._id]}</span>
+            )}
+            <MdKeyboardArrowDown
+              className="optionBtn"
+              onClick={() => setOpenMenu(!openMenu)}
+            />
+          </div>
+          <div className={`chatDropdown ${openMenu ? "active" : "inactive"}`}>
+            <ChatDropDown c={c} />
+          </div>
         </div>
       </div>
     </ConversationWrapper>
