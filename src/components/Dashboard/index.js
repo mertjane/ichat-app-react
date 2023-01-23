@@ -31,6 +31,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "none")};
+  border-right: ${(props) =>
+    props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #f0ededd6"};
 `;
 export const ChatWrapper = styled.div`
   width: 73%;
@@ -41,7 +43,7 @@ export const ChatWrapper = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     gap: 14px;
     .no-chat-img {
@@ -67,6 +69,13 @@ export const ChatWrapper = styled.div`
       text-align: center;
     }
   }
+  .bar {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 7px;
+    background-color: #008069;
+  }
 `;
 
 const Dashboard = () => {
@@ -84,7 +93,13 @@ const Dashboard = () => {
         <Routes>
           <Route
             path="/"
-            element={<Main socket={socket} setCurrentChat={setCurrentChat} />}
+            element={
+              <Main
+                socket={socket}
+                setCurrentChat={setCurrentChat}
+                currentChat={currentChat}
+              />
+            }
           />
           <Route
             path="/contacts"
@@ -131,19 +146,23 @@ const Dashboard = () => {
             setCurrentChat={setCurrentChat}
           />
         ) : (
-          <div className="svg-box">
-            {theme === "dark" ? (
-              <img src={noChatIMGdark} alt="visual" className="no-chat-img" />
-            ) : (
-              <img src={noChatIMG} alt="visual" className="no-chat-img" />
-            )}
+          <>
+            <div className="svg-box">
+              {theme === "dark" ? (
+                <img src={noChatIMGdark} alt="visual" className="no-chat-img" />
+              ) : (
+                <img src={noChatIMG} alt="visual" className="no-chat-img" />
+              )}
 
-            <h2>iChat Web</h2>
-            <p>
-              iChat is an encrypted instant messaging service that allows users
-              to communicate securely without sharing their phone numbers.
-            </p>
-          </div>
+              <h2>iChat Web</h2>
+              <p>
+                iChat is an encrypted instant messaging service that allows
+                users to communicate securely without sharing their phone
+                numbers.
+              </p>
+            </div>
+            <div className="bar" />
+          </>
         )}
       </ChatWrapper>
     </>

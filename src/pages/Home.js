@@ -26,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getConversations({ userId }));
-  }, [dispatch, userId]);
+  }, [userId, dispatch]);
 
   return (
     <>

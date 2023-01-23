@@ -31,6 +31,7 @@ export const conversationSlice = createSlice({
         state.info = action.payload;
       })
       .addCase(getConversations.rejected, (state, action) => {
+        state.status = "rejected";
         state.error = action.error.message;
       });
   },

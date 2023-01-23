@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getContactsURL, getBlockedURL, getUserURL } from "../apiCalls";
-import { blockContact, unBlockContact } from "./contactSlice"
+import { blockContact, unBlockContact, addContact, removeContact} from "./contactSlice"
 import axios from "axios";
 
 export const getContacts = createAsyncThunk('contacts/getContacts', async ({userId}) => {
@@ -31,4 +31,26 @@ export const unBlockUser = async ({ userId, friendId}, dispatch) => {
     console.log(err);
   }
 };
+
+export const addUser = async ({ userId, friendId}, dispatch) => {
+  try {
+    const res = await axios.put(`${getUserURL}/${userId}/add`, {friendId});
+    dispatch(addContact(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const removeUser = async ({ userId, friendId}, dispatch) => {
+  try {
+    const res = await axios.put(`${getUserURL}/${userId}/remove`, {friendId});
+    dispatch(removeContact(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+
 

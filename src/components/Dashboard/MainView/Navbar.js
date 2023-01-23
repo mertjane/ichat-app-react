@@ -16,8 +16,9 @@ const Navbar = () => {
   const { theme } = useSelector((state) => state.user.userInfo);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
+  
   const menuRef = useRef();
+  const iconRef = useRef();
 
   useEffect(() => {
     const handler = (e) => {
@@ -31,13 +32,21 @@ const Navbar = () => {
     };
   });
 
+  useEffect(() => {
+    if (open && iconRef.current) {
+      const menu = document.querySelector(".dropdownMenu");
+      menu.style.top = iconRef.current.offsetTop + iconRef.current.offsetHeight + "px";
+      menu.style.left = iconRef.current.offsetLeft + 300 + "px";
+    }
+  }, [open]);
+
   return (
     <NavWrapper theme={theme} ref={menuRef}>
       <div className="userInfo">
         <img src={avatar ? PF + avatar : PF + "user.png"} alt="user" />
         <span>{name}</span>
       </div>
-      <div className="BtnGroup">
+      <div className="BtnGroup" ref={iconRef}>
         <TiUserAdd
           title="Add User"
           onClick={() => setOpenModal(true)}
@@ -49,9 +58,9 @@ const Navbar = () => {
           className="btn"
         />
         <BsThreeDotsVertical
+          className={`btn ${open ? "active" : "inactive"}`}
           title="Settings"
           onClick={() => setOpen(!open)}
-          className="btn"
         />
       </div>
       <div className={`dropdownMenu ${open ? "active" : "inactive"}`}>

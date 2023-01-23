@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { getUserURL } from "../../features/apiCalls";
 import { NavWrapper } from "./Chat.styled";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { TiUserAdd } from "react-icons/ti";
-import { MdVideocam } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -51,8 +49,6 @@ const Navbar = ({ currentChat, istyping, isOnline}) => {
         </span>
       </div>
       <div className="btnGroup">
-        <MdVideocam className="btn" />
-        <TiUserAdd className="btn" />
         <BsThreeDotsVertical className="btn" />
       </div>
     </NavWrapper>

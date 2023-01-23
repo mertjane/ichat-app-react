@@ -1,17 +1,52 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserURL, updateURL } from "../apiCalls";
-import { updateName, updateAbout, updateAvatar, changeTheme} from "./userSlice";
+import {
+  updateName,
+  updateAbout,
+  updateAvatar,
+  changeTheme,
+  changeWallpaper,
+  changeDrawings,
+} from "./userSlice";
 
-export const updateTheme = async ({userId, theme}, dispatch) => {
+// update user theme
+export const updateTheme = async ({ userId, theme }, dispatch) => {
   try {
-    const res = await axios.put(`${getUserURL}/${userId}/theme`, {theme});
+    const res = await axios.put(`${getUserURL}/${userId}/theme`, { theme });
     dispatch(changeTheme(res.data));
   } catch (error) {
     console.log(error);
   }
 };
 
+// update chatWallpaper
+export const updateWallpaper = async ({ userId, color }, dispatch) => {
+  try {
+    const res = await axios.put(
+      `${getUserURL}/${userId}/update-chat-wallpaper`,
+      { color }
+    );
+    dispatch(changeWallpaper(res.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// on/off drawings
+export const toggleDrawings = async ({ userId, drawings }, dispatch) => {
+  try {
+    const res = await axios.put(
+      `${getUserURL}/${userId}/update-chat-drawing`,
+      { drawings }
+    );
+    dispatch(changeDrawings(res.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// fetch user details
 export const getDetails = createAsyncThunk(
   "user/getDetails",
   async ({ userId }) => {

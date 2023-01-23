@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { MdOutlineClose } from "react-icons/md";
 import { FiCheck } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 export const Overlay = styled.div`
-  background-color: #f8f8f89b;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21d1" : "#f8f8f89b"};
   position: fixed;
   width: 100%;
   height: 100%;
@@ -19,28 +21,31 @@ export const Overlay = styled.div`
     width: 100%;
     height: 540px;
     position: absolute;
-    background-color: #ffff;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#111b21d1" : "#ffff"};
     top: 17%;
     left: 35%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: ${(props) =>
+      props.theme === "dark" ? "none" : "rgba(0, 0, 0, 0.24) 0px 3px 8px"};
     z-index: 999;
     .header {
       width: 100%;
       height: 50px;
       display: flex;
       align-items: center;
-      background-color: #075E54;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#075E54"};
       padding: 0 30px;
       box-sizing: border-box;
       gap: 24px;
       .btn {
-        color: #dddd;
+        color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#dddd")};
         width: 26px;
         height: 26px;
         cursor: pointer;
       }
       h3 {
-        color: #ffff;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#ffff")};
         font-weight: 600;
         font-size: 20px;
       }
@@ -48,7 +53,7 @@ export const Overlay = styled.div`
     .uploadedIMG {
       width: 100%;
       height: 395px;
-      background-color: #252525cf;
+      background-color: #0f0f0fcf;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -60,14 +65,15 @@ export const Overlay = styled.div`
       }
     }
     .footer {
-      background-color: #e9edef;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#e9edef"};
       height: calc(100% - 445px);
       position: relative;
       .submit-btn {
         color: #ffff;
         padding: 10px;
         border-radius: 50%;
-        background-color: #128C7E;
+        background-color: #18998a;
         width: 40px;
         height: 40px;
         position: absolute;
@@ -82,10 +88,12 @@ export const Overlay = styled.div`
 `;
 
 const Modal = ({ open, onClose, image, onUpload }) => {
+  const { theme } = useSelector((state) => state.user.userInfo);
+
   if (!open) return null;
 
   return (
-    <Overlay>
+    <Overlay theme={theme}>
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}

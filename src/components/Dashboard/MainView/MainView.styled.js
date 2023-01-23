@@ -10,11 +10,13 @@ export const Wrapper = styled.div`
 export const NavWrapper = styled.div`
   height: 40px;
   border-right: ${(props) =>
-    props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #f0ededd6"};
+    props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #f0ededd6"};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
+  background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f8f7f7"};
   .userInfo {
     display: flex;
     align-items: center;
@@ -26,29 +28,38 @@ export const NavWrapper = styled.div`
       object-fit: cover;
     }
     span {
-      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#5a6369")};
+      color: ${(props) => (props.theme === "dark" ? "#ddddddb9" : "#5a6369")};
       font-weight: 500;
     }
   }
   .BtnGroup {
+    position: relative;
     display: flex;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     .btn {
       color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
-      height: 25px;
-      width: 25px;
+      height: 22px;
+      width: 22px;
+      padding: 8px;
       cursor: pointer;
+    }
+    .active{
+      border-radius: 50%;
+      position: relative;
+      background-color: ${(props) => (props.theme === "dark" ? "#374248" : "#d9dbde")};
     }
   }
   .dropdownMenu {
-    position: absolute;
+    position: fixed;
     width: 140px; 
     height: 124px;
     display: flex;
     flex-direction: column;
     border-radius: 4px;
-    left: 260px;
-    top: 50px;
+    // top: 50px;
+    // left: 300px;
     z-index: 9999;
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#ffff"};
@@ -130,12 +141,12 @@ export const SearchWrapper = styled.div`
     width: 80%;
     color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
     ::placeholder {
-      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+      color: ${(props) => (props.theme === "dark" ? "#ddddddb9" : "#677780")};
       font-weight: 500;
     }
   }
   .searcBtn {
-    color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+    color: ${(props) => (props.theme === "dark" ? "#dddddd96" : "#677780")};
     cursor: pointer;
     border-radius: 6px 0 0 6px;
     background-color: ${(props) =>

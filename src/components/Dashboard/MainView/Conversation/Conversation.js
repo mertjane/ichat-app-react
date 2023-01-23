@@ -8,7 +8,7 @@ import ChatDropDown from "../../Dropdown/ChatDropDown";
 import axios from "axios";
 import moment from "moment";
 
-const Conversation = ({ c, setCurrentChat, socket }) => {
+const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
   const { unreadMessages } = useSelector((state) => state.messages);
@@ -16,7 +16,10 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
 
   const [chatList, setChatList] = useState();
   const [openMenu, setOpenMenu] = useState(false);
+  const [top, setTop] = useState(170);
+
   const dropdownRef = useRef();
+  const buttonRef = useRef();
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -33,6 +36,7 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
     getUser();
   }, [c.members, userId]);
 
+  // dropdown listener
   useEffect(() => {
     const handler = (e) => {
       if (!dropdownRef.current.contains(e.target)) {
@@ -41,9 +45,21 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
     };
     document.addEventListener("mousedown", handler);
     return () => {
-    document.removeEventListener("mousedown", handler);
+      document.removeEventListener("mousedown", handler);
     };
   });
+
+  // dropdown positioning
+  let offset = 20;
+
+  useEffect(() => {
+    if (openMenu && buttonRef.current) {
+      const conversationRect = buttonRef.current.getBoundingClientRect();
+
+      const top = conversationRect.top + offset;
+      setTop(top);
+    }
+  }, [buttonRef, openMenu, offset]);
 
   const TimeRender = () => {
     const today = new Date();
@@ -73,8 +89,10 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
 
   return (
     <ConversationWrapper
+      isActive={currentChat?._id === c?._id}
       theme={theme}
       ref={dropdownRef}
+      top={top}
       onClick={() => {
         setCurrentChat(c);
         dispatch(markAsRead(c?._id));
@@ -89,7 +107,7 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
           <p>{chatList?.name}</p>
           <span>{c?.lastMessages?.[0]?.text}</span>
         </div>
-        <div className="chatTime">
+        <div className="chatTime" ref={buttonRef}>
           <TimeRender />
           <div className="unread-wrapper">
             {unreadMessages?.[c?._id] > 0 && (
@@ -101,7 +119,7 @@ const Conversation = ({ c, setCurrentChat, socket }) => {
             />
           </div>
           <div className={`chatDropdown ${openMenu ? "active" : "inactive"}`}>
-            <ChatDropDown c={c} />
+            <ChatDropDown />
           </div>
         </div>
       </div>

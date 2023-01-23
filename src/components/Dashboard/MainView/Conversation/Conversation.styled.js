@@ -1,4 +1,15 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
+
+export const activeStyles = css`
+    background-color: ${(props) =>
+    props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
+`;
+
+export const inactiveStyles = css`
+    background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+`;
+
 
 export const ConversationWrapper = styled.div`
   min-height: 69px;
@@ -9,6 +20,15 @@ export const ConversationWrapper = styled.div`
     props.theme === "dark" ? "#111b21" : "#ffff"};
   padding: 4px 0 0 12px;
   cursor: pointer;
+  /* &.active {
+    background-color: #2a373f;
+  }
+  &.inactive {
+    background-color: #111b21;
+  } */
+  // background-color: ${props => props.isActive ? "#2a373f" : "#111b21"};
+  background-color: ${props => props.theme === "dark" && props.isActive && "#2a373f"};
+  background-color: ${props => props.theme === "open" && props.isActive && "#f0f2f5"};
   &:hover {
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#f0f2f5"}; 
@@ -104,7 +124,7 @@ export const ConversationWrapper = styled.div`
         flex-direction: column;
         border-radius: 4px;
         left: 380px;
-        top: 170px;
+        top: ${({ top }) => top}px;
         z-index: 9999;
         background-color: ${(props) =>
           props.theme === "dark" ? "#2a373f" : "#ffff"};

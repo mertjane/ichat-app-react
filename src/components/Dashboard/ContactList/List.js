@@ -10,15 +10,15 @@ const List = ({ query, setCurrentChat }) => {
   return (
     <ListWrapper theme={theme}>
         {contactList
-        .filter((user) => user.name.toLowerCase().includes(query))
+        .filter((user) => user?.name.toLowerCase().includes(query))
         ?.map((user) => (
           <User
             setCurrentChat={setCurrentChat}
             user={user}
-            key={user._id}
-            avatar={user.avatar}
-            name={user.name}
-            about={user.about}
+            key={user?._id}
+            avatar={user?.avatar}
+            name={user?.name}
+            about={user?.about}
           />
       ))}
     </ListWrapper>

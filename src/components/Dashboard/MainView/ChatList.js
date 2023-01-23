@@ -2,7 +2,7 @@ import Conversation from "./Conversation/Conversation";
 import { useSelector } from "react-redux";
 import { ListContainer } from "./MainView.styled";
 
-const ChatList = ({ setCurrentChat, socket, query }) => {
+const ChatList = ({ setCurrentChat, socket, query, currentChat}) => {
   const conversation = useSelector((state) => state.conversations.info);
   const { theme } = useSelector((state) => state.user.userInfo);
 
@@ -16,6 +16,7 @@ const ChatList = ({ setCurrentChat, socket, query }) => {
             c={c}
             key={c?._id}
             setCurrentChat={setCurrentChat}
+            currentChat={currentChat}
           />
         ))}
     </ListContainer>

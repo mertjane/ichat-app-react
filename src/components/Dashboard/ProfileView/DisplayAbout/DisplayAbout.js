@@ -62,7 +62,7 @@ const DisplayAbout = () => {
           </>
         )}
         {showList && (
-          <EmojiWrapper2>
+          <EmojiWrapper2 theme={theme}>
               <EmojiList onEmojiClick={onEmojiClick} />
               <span className="bubble"/>
           </EmojiWrapper2>

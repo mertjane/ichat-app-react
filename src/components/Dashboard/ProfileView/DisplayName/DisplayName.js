@@ -79,7 +79,7 @@ const DisplayName = () => {
           </>
         )}
         {showList && (
-          <EmojiWrapper>
+          <EmojiWrapper theme={theme}>
               <EmojiList onEmojiClick={onEmojiClick} />
               <span className="bubble"/>
           </EmojiWrapper>

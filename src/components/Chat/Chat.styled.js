@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import chatBack from "../../assets/lightback.png";
 import chatDarkBack from "../../assets/darkBack.png";
 import svg1 from "../../assets/1.svg";
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 `;
 export const NavWrapper = styled.nav`
   height: 40px;
-  padding: 10px 16px;
+  padding: 10px 22px 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -62,6 +62,14 @@ export const ChatBoxContainer = styled.div`
   // background-color: #1d2326;
   background-image: ${(props) =>
     props.theme === "dark" ? `url(${chatDarkBack})` : `url(${chatBack})`};
+  ${(props) =>
+    props.drawings === false &&
+    css`
+      background-image: none;
+    `};
+  background-color: ${(props) =>
+    props.chatWallpaper && `${props.chatWallpaper}`};
+  background-size: contain;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -69,15 +77,36 @@ export const ChatBoxContainer = styled.div`
   gap: 4px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
-    width: 7px;
+    width: 6px;
   }
   &::-webkit-scrollbar-thumb {
     background: ${(props) =>
-    props.theme === "dark" ? "#435058" : "#9e9d99"};
+      props.theme === "dark" ? "#435058ab" : "#9e9d99"};
   }
   .loader {
     width: max-content;
     align-self: center;
+  }
+  .day-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    .text {
+      color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
+      font-size: 11.8px;
+      font-weight: 500;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#1d252b" : "#f8f7f7"};
+      padding: 6px 12px;
+      border-radius: 6px;
+      max-width: max-content;
+      align-self: center;
+      box-shadow: ${(props) =>
+        props.theme === "dark"
+          ? "none"
+          : `rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px`};
+    }
   }
 `;
 
@@ -92,16 +121,18 @@ export const MessageWrapper = styled.div`
       display: flex;
       align-items: center;
       gap: 24px;
-      padding: 8px 20px;
+      padding: 8px 8px 8px 10px;
       border-radius: 0 7px 7px 7px;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
         rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
       :hover {
-        .menu-icon {
-          visibility: visible;
-        }
-        span {
-          visibility: hidden;
+        .messageTime {
+          .menu-icon {
+            visibility: visible;
+          }
+          .time {
+            visibility: hidden;
+          }
         }
       }
       p {
@@ -109,13 +140,19 @@ export const MessageWrapper = styled.div`
         font-weight: 500;
         color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
       }
-      span {
-        font-size: 11.7px;
-        color: ${(props) => (props.theme === "dark" ? "#c5c9ca" : "#8f8f8f")};
+      .messageTime {
+        // font-size: 11.7px;
+        /* color: ${(props) =>
+          props.theme === "dark" ? "#c5c9ca" : "#8f8f8f"}; */
         position: relative;
-        top: 2px;
+        top: 6px;
+        flex-direction: column;
         display: flex;
         align-items: center;
+        .time {
+          font-size: 11.4px;
+          color: ${(props) => (props.theme === "dark" ? "#c5c9ca" : "#8f8f8f")};
+        }
         .menu-icon {
           color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
           box-sizing: border-box;
@@ -123,7 +160,8 @@ export const MessageWrapper = styled.div`
           position: absolute;
           width: 27px;
           height: 27px;
-          left: 22px;
+          left: 14px;
+          top: -12px;
           visibility: hidden;
         }
       }
@@ -137,8 +175,11 @@ export const MessageWrapper = styled.div`
         display: flex;
         flex-direction: column;
         border-radius: 4px;
-        left: 535px;
-        top: 510px;
+        // left: 535px;
+        // top: 510px;
+        left: ${({ left }) => left}px;
+        top: ${({ top }) => top}px;
+        box-sizing: content-box;
         z-index: 9999;
         background-color: ${(props) =>
           props.theme === "dark" ? "#2a373f" : "#ffff"};
@@ -201,10 +242,9 @@ export const MessageWrapper = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-  // height: 40px;
   height: ${(props) => (props.showList ? `700px` : `50px`)};
   width: auto;
-  padding: 10px 16px;
+  padding: 10px 20px 10px 16px;
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.showList ? `flex-end` : `center`)};
@@ -215,12 +255,32 @@ export const InputWrapper = styled.div`
     align-items: center;
     gap: 12px;
     box-sizing: border-box;
-    .btn {
+    .btnGroup {
+      position: relative;
+      width: 90px;
+      height: 50px;
       display: flex;
-      color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
-      height: 25px;
-      width: 25px;
-      cursor: pointer;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      .btn {
+        display: flex;
+        color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
+        height: 30px;
+        width: 30px;
+        cursor: pointer;
+        padding: 8px;
+      }
+      /* .btn:nth-child(2) {
+
+        transform: rotate(45deg);
+      } */
+      .active {
+        border-radius: 50%;
+        position: relative;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#374248" : "#d9dbde"};
+      }
     }
     .textGroup {
       width: 100%;
@@ -230,7 +290,7 @@ export const InputWrapper = styled.div`
       gap: 24px;
       input {
         padding: 14px;
-        width: 85%;
+        width: 93%;
         border: none;
         border-radius: 8px;
         outline: none;
@@ -238,7 +298,8 @@ export const InputWrapper = styled.div`
           props.theme === "dark" ? "#404d55" : "#fffff"};
         color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
         ::placeholder {
-          color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+          color: ${(props) =>
+            props.theme === "dark" ? "#ddddddb2" : "#677780"};
           font-weight: 500;
         }
       }
@@ -250,6 +311,85 @@ export const InputWrapper = styled.div`
         font-size: 18px;
         font-weight: 600;
         cursor: pointer;
+        display: none;
+      }
+      .micBtn {
+        display: flex;
+        color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+      }
+    }
+    // input toggle
+    .input-toggle {
+      position: absolute;
+      max-height: min-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: transparent;
+      left: 475px;
+      bottom: 80px;
+      // left: ${({ left }) => left}px;
+      // top: ${({ top }) => top}px;
+      box-sizing: content-box;
+      z-index: 9999;
+      &.active {
+        opacity: 1;
+        visibility: visible;
+        // transform: translateY(0);
+        // transition: var(--speed) ease;
+        @keyframes toggleIn {
+          from {
+            // scale: 0;
+            height: 100px;
+            opacity: 0;
+          }
+          to {
+            //scale: 1;
+            height: 260px;
+            opacity: 1;
+          }
+        }
+        animation: toggleIn 0.4s ease-in-out;
+      }
+      &.inactive {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: var(--speed) ease;
+      }
+      .icons {
+        width: 30px;
+        height: 30px;
+        color: #fff;
+        cursor: pointer;
+      }
+      .icons:nth-child(1) {
+        background-color: #0eabf4;
+        padding: 11px;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+      .icons:nth-child(2) {
+        background-color: #5f66cd;
+        padding: 11px;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+      .icons:nth-child(3) {
+        background-color: #d3396d;
+        padding: 11px;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+      .icons:nth-child(4) {
+        background-color: #bf59cf;
+        padding: 11px;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
       }
     }
   }
@@ -257,7 +397,7 @@ export const InputWrapper = styled.div`
     // position: absolute;
     // left: 27%;
     // bottom: 6.9%;
-    z-index: 9999;
+    z-index: 999;
     visibility: ${(props) => (props.showList ? `visible` : `hidden`)};
     @keyframes scaleIn {
       from {
@@ -277,11 +417,14 @@ export const InputWrapper = styled.div`
     width: 100%;
     height: 320px;
     border-radius: 0px;
-    background: #f0f2f5;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     box-sizing: border-box;
-    // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: none;
+    box-shadow: none;
     .emoji-group:before {
-      background-color: #f0f2f5;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     }
     .emoji-categories {
       display: flex;
@@ -295,48 +438,80 @@ export const InputWrapper = styled.div`
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-animals_nature {
         background-image: url(${svg2});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-food_drink {
         background-image: url(${svg3});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-travel_places {
         background-image: url(${svg5});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-activities {
         background-image: url(${svg4});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-objects {
         background-image: url(${svg6});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-symbols {
         background-image: url(${svg7});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
       button.icn-flags {
         background-image: url(${svg8});
         background-size: 25px 25px;
         width: 50px;
         height: 50px;
+        filter: ${(props) =>
+          props.theme === "dark"
+            ? "invert(100%) sepia(1%) saturate(1427%) hue-rotate(171deg) brightness(87%) contrast(87%)"
+            : "invert(46%) sepia(21%) saturate(277%) hue-rotate(158deg) brightness(94%) contrast(90%)"};
       }
     }
     div:nth-child(3) {
@@ -349,10 +524,13 @@ export const InputWrapper = styled.div`
       .emoji-search {
         width: 100%;
         margin: 0;
-        background-color: #e9edef;
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#222e35" : "#e9edef"};
         border: none;
+        color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
         ::placeholder {
-          color: #a8a7a7d1;
+          color: ${(props) =>
+            props.theme === "dark" ? "#ddddddb9" : "#a8a7a7d1"};
           font-size: 14px;
         }
       }
@@ -367,12 +545,26 @@ export const InputWrapper = styled.div`
           width: 8px;
         }
         &::-webkit-scrollbar-thumb {
-          background: #c4c2c2;
+          background: ${(props) =>
+            props.theme === "dark" ? "#435058" : "#9e9d99"};
         }
       }
     }
     .active-category-indicator-wrapper {
-      display: none;
+      height: 5px;
+      position: relative;
+      width: 99%;
+      .active-category-indicator {
+        background-color: #00a884;
+        height: 100%;
+        border-radius: 0px;
+        bottom: 0;
+        width: 120px;
+        position: relative;
+        left: -38px;
+        opacity: 1;
+        box-sizing: border-box;
+      }
     }
   }
 `;

@@ -15,7 +15,7 @@ export const Overlay = styled.div`
     border-radius: 6px;
     position: absolute;
     background-color: ${(props) =>
-      props.theme === "dark" ? "#111b21d1" : "#ffff"};
+      props.theme === "dark" ? "#111b21" : "#ffff"};
     top: 16%;
     left: 36%;
     box-shadow: ${(props) =>

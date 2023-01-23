@@ -1,17 +1,28 @@
 import styled from "styled-components";
 import check from "..//..//..//..//..//assets/check.png";
 
-export const Wrapper = styled.section`
+export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "none")};
+  .list{
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${(props) =>
+        props.theme === "dark" ? "#435058" : "#9e9d99"};
+      border-radius: 2px;
+    }
   .contentWrapper {
     display: flex;
     flex-direction: column;
     background-color: ${(props) =>
-      props.theme === "dark" ? "#111b29" : "#ffff"};
+      props.theme === "dark" ? "#11191f" : "#ffff"};
     padding: 20px 30px;
     box-shadow: ${(props) =>
       props.theme === "dark"
@@ -57,8 +68,10 @@ export const Wrapper = styled.section`
     }
     hr {
       opacity: 0.2;
+      border: 1px solid #dddddd45;
     }
   }
+}
 `;
 
 export const Label = styled.label`

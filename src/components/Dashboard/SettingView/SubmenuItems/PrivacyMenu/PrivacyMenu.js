@@ -20,6 +20,7 @@ const PrivacyMenu = () => {
   return (
     <Wrapper theme={theme}>
       <Header />
+      <div className="list">
       <div className="contentWrapper">
         <h5>Who can see my personal information</h5>
         <div onClick={() => navigate("last-seen-online")} className="selection">
@@ -83,6 +84,7 @@ const PrivacyMenu = () => {
           </label>
           <MdKeyboardArrowRight className="icon" />
         </div>
+      </div>
       </div>
     </Wrapper>
   );

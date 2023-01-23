@@ -87,6 +87,15 @@ export const MenuWrapper = styled.section`
   flex-direction: column;
   width: 100%;
   height: calc(100% - 248px);
+  overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${(props) =>
+        props.theme === "dark" ? "#435058" : "#9e9d99"};
+      border-radius: 2px;
+    }
   .icon-group {
     height: 60px;
     display: flex;

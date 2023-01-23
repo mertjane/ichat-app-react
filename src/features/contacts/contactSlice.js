@@ -20,6 +20,14 @@ export const contactSlice = createSlice({
         (id) => id !== friendId
       );
     },
+    addContact: (state, action) => {
+      const { friendId } = action.payload;
+      state.contactList.push(friendId);
+    },
+    removeContact: (state, action) => {
+      const { friendId } = action.payload;
+      state.contactList = state.contactList.filter((id) => id !== friendId);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getContacts.pending, (state) => {
@@ -47,5 +55,6 @@ export const contactSlice = createSlice({
   },
 });
 
-export const { blockContact, unBlockContact } = contactSlice.actions;
+export const { blockContact, unBlockContact, addContact, removeContact } =
+  contactSlice.actions;
 export default contactSlice.reducer;

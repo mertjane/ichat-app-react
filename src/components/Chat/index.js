@@ -2,11 +2,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Wrapper, ChatBoxContainer } from "./Chat.styled";
 import { sendMessage, getMessages } from "../../features/messages/services";
-import { MoonLoader } from "react-spinners";
 import incomingMsg from "../../assets/incoming.mp3";
 import Navbar from "./Navbar";
 import Message from "./Message";
 import Input from "./Input";
+import Spinner from "../Loading/Spinner";
+import _ from "lodash";
+import moment from "moment";
 
 const Chat = ({ currentChat, socket }) => {
   const dispatch = useDispatch();
@@ -14,7 +16,10 @@ const Chat = ({ currentChat, socket }) => {
   const { userMessages, unreadMessages } = useSelector(
     (state) => state.messages
   );
-  const { theme } = useSelector((state) => state.user.userInfo);
+  const { theme, drawings, chatWallpaper } = useSelector(
+    (state) => state.user.userInfo
+  );
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState([]);
@@ -26,6 +31,27 @@ const Chat = ({ currentChat, socket }) => {
 
   const scrollRef = useRef();
   const containerRef = useRef(null);
+
+  // Grouping Messages && Time rendering
+  const groups = _.groupBy(userMessages, (m) => {
+    const today = new Date();
+    const messageDate = new Date(m.createdAt);
+    const difference = today.getTime() - messageDate.getTime();
+
+    if (difference <= 86400000) {
+      const currentDate = new Date();
+      const messageDate = new Date(m.createdAt);
+      if (currentDate.getDate() === messageDate.getDate()) {
+        return "Today";
+      } else {
+        return "Yesterday";
+      }
+    } else if (difference > 86400000 && difference < 604800000) {
+      return moment(m.createdAt).format("dddd");
+    } else {
+      return moment(m.createdAt).format("l");
+    }
+  });
 
   useEffect(() => {
     socket.emit("addUser", userId);
@@ -46,13 +72,18 @@ const Chat = ({ currentChat, socket }) => {
   }, [currentChat, dispatch, messages]);
 
   // scroll behavior
-  const handleScroll = useCallback((e) => {
-    const { scrollTop } = e.target;
-    if (scrollTop === 0) {
-      setIsLoading(true);
-      console.log("at the top");
-    }
-  }, []);
+  const handleScroll = useCallback(
+    (e) => {
+      const { scrollTop } = e.target;
+      if (scrollTop === 0 && userMessages.length >= 30) {
+        setIsLoading(true);
+        console.log("at the top");
+      } else {
+        setIsLoading(false);
+      }
+    },
+    [userMessages.length]
+  );
 
   // message sending
   const handleInput = (e) => {
@@ -107,8 +138,8 @@ const Chat = ({ currentChat, socket }) => {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "auto" });
-  }, [userMessages]);
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <Wrapper theme={theme}>
@@ -117,23 +148,30 @@ const Chat = ({ currentChat, socket }) => {
         istyping={istyping}
         currentChat={currentChat}
       />
-      <ChatBoxContainer theme={theme} onScroll={handleScroll} ref={containerRef}>
-        {isLoading && (
-          <div className="loader">
-            <MoonLoader color="#25D366" size={25} />
-          </div>
-        )}
-        {userMessages
+      <ChatBoxContainer
+        chatWallpaper={chatWallpaper}
+        drawings={drawings}
+        theme={theme}
+        onScroll={handleScroll}
+        ref={containerRef}
+      >
+        {isLoading && <Spinner />}
+        {Object.entries(groups)
           .slice()
           .reverse()
-          .map((m) => (
-            <div key={m._id} ref={scrollRef}>
-              <Message
-                messages={messages}
-                currentChat={currentChat}
-                message={m}
-                own={m.sender === userId}
-              />
+          .map(([day, userMessages]) => (
+            <div className="day-wrapper" key={day}>
+              <h3 className="text">{day.toUpperCase()}</h3>
+              {userMessages.map((m) => (
+                <div key={m._id} ref={scrollRef}>
+                  <Message
+                    messages={messages}
+                    currentChat={currentChat}
+                    message={m}
+                    own={m.sender === userId}
+                  />
+                </div>
+              ))}
             </div>
           ))}
       </ChatBoxContainer>
