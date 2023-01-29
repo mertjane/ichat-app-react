@@ -7,6 +7,7 @@ const Avatar = () => {
   const navigate = useNavigate();
   const { avatar } = useSelector((state) => state.user.userInfo);
   const { theme } = useSelector((state) => state.user.userInfo);
+  const { name, about } = useSelector((state) => state.user.userInfo);
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
@@ -15,8 +16,8 @@ const Avatar = () => {
         <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
       </div>
       <div className="user-status">
-        <p>Display name</p>
-        <span>Available</span>
+        <p>{name}</p>
+        <span>{about}</span>
       </div>
     </ContentWrapper>
   );

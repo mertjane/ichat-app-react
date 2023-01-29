@@ -24,38 +24,38 @@ const PrivacyMenu = () => {
       <div className="contentWrapper">
         <h5>Who can see my personal information</h5>
         <div onClick={() => navigate("last-seen-online")} className="selection">
-          <label>
+          <div className="box">
             Last seen and online
             <span>Nobody, Everyone</span>
-          </label>
+          </div>
           <MdKeyboardArrowRight className="icon" />
         </div>
         <hr />
         <div onClick={() => navigate("profile-photo")} className="selection">
-          <label>
+          <div className="box">
             Profile photo
             <span>my contacts</span>
-          </label>
+          </div>
           <MdKeyboardArrowRight className="icon" />
         </div>
         <hr />
         <div onClick={() => navigate("about-me")} className="selection">
-          <label>
+          <div className="box">
             About me
             <span>my contacts</span>
-          </label>
+          </div>
           <MdKeyboardArrowRight className="icon" />
         </div>
         <hr />
         <div className="selection">
-          <label>
+          <div className="box">
             Read receipt
             <span>
               If you disable this feature, you will not be able to send or
               receive Read Receipts. Read receipts are always sent for group
               chats.
             </span>
-          </label>
+          </div>
           <CheckBox theme={theme} type="checkbox" />
           <Label theme={theme}/>
         </div>
@@ -66,10 +66,10 @@ const PrivacyMenu = () => {
       >
         <h5>Timed messages</h5>
         <div className="selection">
-          <label theme={theme}>
+          <div className="box">
             Default message duration
             <span>Closed</span>
-          </label >
+          </div >
           <MdKeyboardArrowRight className="icon" />
         </div>
       </div>
@@ -78,10 +78,10 @@ const PrivacyMenu = () => {
         className="contentWrapper"
       >
         <div className="selection">
-          <label theme={theme}>
+          <div className="box">
             blocked contacts
             <span>{blockedContacts.length}</span>
-          </label>
+          </div>
           <MdKeyboardArrowRight className="icon" />
         </div>
       </div>

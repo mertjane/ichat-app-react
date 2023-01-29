@@ -19,7 +19,7 @@ const AvatarDisplay = () => {
 
   const upload = (e) => {
     e.preventDefault();
-    updatedAvatar({file, id},dispatch);
+    updatedAvatar({file, id}, dispatch);
     window.location.reload();
   };
 
@@ -43,7 +43,6 @@ const AvatarDisplay = () => {
             />
             <MdPhotoCamera className="btn" />
             <span>CHANGE PROFILE PICTURE</span>
-            {/* <button onClick={(e) => upload(e)}>submit</button> */}
           </label>
         ) : null}
       </div>

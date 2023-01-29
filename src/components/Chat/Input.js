@@ -1,12 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import { InputWrapper } from "./Chat.styled";
-import { BsEmojiSmile, BsFillMicFill } from "react-icons/bs";
+import { BsEmojiSmile } from "react-icons/bs"; //BsFillMicFill
 import { IoMdAttach } from "react-icons/io";
 import ChatEmoji from "../EmojiPicker/ChatEmoji";
 import ToggleMenu from "./ToggleMenu";
 import { useSelector } from "react-redux";
 
-const Input = ({ handleForm, handleInput, newMessage, setNewMessage }) => {
+const Input = ({
+  handleForm,
+  handleInput,
+  newMessage,
+  setNewMessage,
+  imageUrl,
+  setImageUrl,
+  setOpenPreview,
+}) => {
   const [showList, setShowList] = useState(false); // emojiList
   const [openMenu, setOpenMenu] = useState(false); // toggleMenu
   const { theme } = useSelector((state) => state.user.userInfo);
@@ -32,7 +40,7 @@ const Input = ({ handleForm, handleInput, newMessage, setNewMessage }) => {
   });
 
   return (
-    <InputWrapper theme={theme} showList={showList}>
+    <InputWrapper ref={toggleRef} theme={theme} showList={showList}>
       {showList && (
         <div className="emoji-container">
           <ChatEmoji onEmojiClick={onEmojiClick} />
@@ -50,7 +58,11 @@ const Input = ({ handleForm, handleInput, newMessage, setNewMessage }) => {
           />
         </div>
         <div className={`input-toggle ${openMenu ? "active" : "inactive"}`}>
-          <ToggleMenu />
+          <ToggleMenu
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            setOpenPreview={setOpenPreview}
+          />
         </div>
         <form onSubmit={handleForm} className="textGroup">
           <input
@@ -60,7 +72,7 @@ const Input = ({ handleForm, handleInput, newMessage, setNewMessage }) => {
             placeholder="Type a message"
           />
           <button type="submit">Send</button>
-          <BsFillMicFill className="micBtn" />
+          {newMessage !== "" ? <div className="confirmBtn" /> : <div className="micBtn" />}
         </form>
       </div>
     </InputWrapper>

@@ -13,7 +13,7 @@ export const Wrapper = styled.section`
 export const AvatarWrapper = styled.section`
   height: 256px;
   width: 100%;
-  display: flex;
+  display: flex; 
   align-items: center;
   justify-content: center;
   background-color: ${(props) =>

@@ -4,14 +4,26 @@ import customRadio from "..//..//..//..//..//..//../assets/custom_radio.png";
 
 export const Wrapper = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   .contentWrapper {
+    height: 100%; 
     display: flex;
     flex-direction: column;
     background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"}; 
     padding: 20px 30px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${(props) =>
+        props.theme === "dark" ? "#435058" : "#9e9d99"};
+      border-radius: 2px;
+    }
     box-shadow: ${(props) =>
       props.theme === "dark"
         ? "none"
@@ -36,6 +48,7 @@ export const Wrapper = styled.section`
     hr {
       margin: 30px 0;
       opacity: 0.3;
+      border: 1px solid #dddddd45;
     }
     .note {
       color: ${(props) => (props.theme === "dark" ? "#7d7d85" : "#485157")};
@@ -47,7 +60,7 @@ export const Wrapper = styled.section`
 `;
 
 export const Label = styled.label`
-  position: absolute;
+  position: relative;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   border: ${(props) =>
@@ -58,6 +71,7 @@ export const Label = styled.label`
 `;
 
 export const StyledRadio = styled.input`
+  position: absolute;
   opacity: -1;
   z-index: 1;
   cursor: pointer;
@@ -80,9 +94,9 @@ export const StyledRadio = styled.input`
       // content: url(${customRadio});
       content: ${(props) =>
         props.theme === "dark" ? `url(${customRadio})` : `url(${customRadio})`};
-      position: relative;
-      left: 2.4px;
-      bottom: 1.5px;
+      position: absolute;
+      left: 2px;
+      bottom: 1px;
       display: block;
       color: white;
       width: 18px;

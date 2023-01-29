@@ -6,6 +6,7 @@ import incomingMsg from "../../assets/incoming.mp3";
 import Navbar from "./Navbar";
 import Message from "./Message";
 import Input from "./Input";
+import PreviewFile from "./PreviewFile";
 import Spinner from "../Loading/Spinner";
 import _ from "lodash";
 import moment from "moment";
@@ -28,6 +29,9 @@ const Chat = ({ currentChat, socket }) => {
   const [isOnline, setIsOnline] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [openPreview, setOpenPreview] = useState(false); // file view
+  const [imageUrl, setImageUrl] = useState(""); // file view
 
   const scrollRef = useRef();
   const containerRef = useRef(null);
@@ -139,7 +143,7 @@ const Chat = ({ currentChat, socket }) => {
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [userMessages, imageUrl, openPreview]);
 
   return (
     <Wrapper theme={theme}>
@@ -148,39 +152,59 @@ const Chat = ({ currentChat, socket }) => {
         istyping={istyping}
         currentChat={currentChat}
       />
-      <ChatBoxContainer
-        chatWallpaper={chatWallpaper}
-        drawings={drawings}
-        theme={theme}
-        onScroll={handleScroll}
-        ref={containerRef}
-      >
-        {isLoading && <Spinner />}
-        {Object.entries(groups)
-          .slice()
-          .reverse()
-          .map(([day, userMessages]) => (
-            <div className="day-wrapper" key={day}>
-              <h3 className="text">{day.toUpperCase()}</h3>
-              {userMessages.map((m) => (
-                <div key={m._id} ref={scrollRef}>
-                  <Message
-                    messages={messages}
-                    currentChat={currentChat}
-                    message={m}
-                    own={m.sender === userId}
-                  />
+      {openPreview === true ? (
+        <PreviewFile
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+          currentChat={currentChat}
+          newMessage={newMessage}
+          open={openPreview}
+          image={URL.createObjectURL(imageUrl)}
+          onClose={() => setOpenPreview(false)}
+        />
+      ) : (
+        <>
+          <ChatBoxContainer
+            chatWallpaper={chatWallpaper}
+            drawings={drawings}
+            theme={theme}
+            onScroll={handleScroll}
+            ref={containerRef}
+          >
+            {isLoading && <Spinner />}
+            {Object.entries(groups)
+              .reverse()
+              .slice()
+              .map(([day, userMessages]) => (
+                <div className="day-wrapper" key={day}>
+                  <h3 className="text">{day?.toUpperCase()}</h3>
+                  {userMessages
+                    .reverse()
+                    .slice()
+                    .map((m) => (
+                      <div key={m._id} ref={scrollRef}>
+                        <Message
+                          currentChat={currentChat}
+                          imageUrl={imageUrl}
+                          messages={messages}
+                          message={m}
+                          own={m.sender === userId}
+                        />
+                      </div>
+                    ))}
                 </div>
               ))}
-            </div>
-          ))}
-      </ChatBoxContainer>
-      <Input
-        handleForm={handleForm}
-        handleInput={handleInput}
-        newMessage={newMessage}
-        setNewMessage={setNewMessage}
-      />
+          </ChatBoxContainer>
+          <Input
+            setImageUrl={setImageUrl}
+            setOpenPreview={setOpenPreview}
+            handleForm={handleForm}
+            handleInput={handleInput}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+          />
+        </>
+      )}
     </Wrapper>
   );
 };

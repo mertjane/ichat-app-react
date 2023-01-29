@@ -9,7 +9,7 @@ export const Wrapper = styled.section`
 
 // Header Component
 export const HeaderWrapper = styled.section`
-  width: 100%; 
+  width: 100%;
   height: 124px;
   // background-color: #075E54;
   background-color: ${(props) =>
@@ -38,11 +38,11 @@ export const HeaderWrapper = styled.section`
 // Avatar Component
 export const ContentWrapper = styled.section`
   width: 100%;
-  height: 124px;
+  height: 100px;
   display: flex;
   cursor: pointer;
   background-color: ${(props) =>
-    props.theme === "dark" ? "#111b21" : "#ffff"}; 
+    props.theme === "dark" ? "#111b21" : "#ffff"};
   &:hover {
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#f8f7f7"};
@@ -52,12 +52,19 @@ export const ContentWrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    padding: 15px 0 15px 0;
+    @media (max-width: 1800px) {
+      padding: 15px;
+    }
     img {
       border-radius: 50%;
-      width: 65%;
-      height: 65%;
+      width: 75px;
+      height: 75px;
       object-fit: cover;
+      display: block;
       animation: fadeIn 0.1s;
+      box-sizing: border-box;
     }
   }
   .user-status {
@@ -66,7 +73,6 @@ export const ContentWrapper = styled.section`
     flex-direction: column;
     justify-content: center;
     gap: 4px;
-    padding-left: 2px;
     p {
       font-weight: 400;
       font-size: 20px;
@@ -88,14 +94,13 @@ export const MenuWrapper = styled.section`
   width: 100%;
   height: calc(100% - 248px);
   overflow-y: auto;
-    &::-webkit-scrollbar {
-      width: 7px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: ${(props) =>
-        props.theme === "dark" ? "#435058" : "#9e9d99"};
-      border-radius: 2px;
-    }
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.theme === "dark" ? "#435058" : "#9e9d99")};
+    border-radius: 2px;
+  }
   .icon-group {
     height: 60px;
     display: flex;
@@ -128,6 +133,9 @@ export const MenuWrapper = styled.section`
       list-style: none;
       border-bottom: ${(props) =>
         props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #eeecec"};
+      @media (max-width: 1800px) {
+        font-size: 15px;
+      }
     }
   }
 `;

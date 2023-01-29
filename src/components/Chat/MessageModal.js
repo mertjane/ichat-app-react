@@ -29,10 +29,10 @@ export const Overlay = styled.section`
     box-shadow: ${(props) =>
       props.theme === "dark" ? "none" : "rgba(0, 0, 0, 0.24) 0px 3px 8px"};
     padding: 20px 20px;
-    .text {
+    .modal-text {
       color: ${(props) => (props.theme === "dark" ? "#d6d6da" : "#565b5f")} !important;
       padding-top: 10px;
-      font-size: 30px;
+      font-size: 16px;
       font-weight: 500;
     }
     .btnGroup {
@@ -99,6 +99,8 @@ const MessageModal = ({ open, onClose, currentChat, message, messages }) => {
     dispatch(getMessages({ currentChat, messages }));
   }, [dispatch, onClose, currentChat, message, messages]);
 
+  
+
   if (!open) return null;
   return (
     <Overlay theme={theme}>
@@ -108,7 +110,7 @@ const MessageModal = ({ open, onClose, currentChat, message, messages }) => {
         transition={{ duration: 0.4 }}
         className="modalWrapper"
       >
-        <p className="text">Delete message?</p>
+        <p className="modal-text">Delete message?</p>
         <div className="btnGroup">
           <button onClick={onClose}>CANCEL</button>
           <button onClick={handleDelete}>DELETE</button>

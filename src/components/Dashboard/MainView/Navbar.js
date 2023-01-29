@@ -36,7 +36,7 @@ const Navbar = () => {
     if (open && iconRef.current) {
       const menu = document.querySelector(".dropdownMenu");
       menu.style.top = iconRef.current.offsetTop + iconRef.current.offsetHeight + "px";
-      menu.style.left = iconRef.current.offsetLeft + 300 + "px";
+      menu.style.left = iconRef.current.offsetLeft + 110 + "px"; 
     }
   }, [open]);
 

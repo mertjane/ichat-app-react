@@ -10,13 +10,13 @@ export const Wrapper = styled.div`
 export const NavWrapper = styled.div`
   height: 40px;
   border-right: ${(props) =>
-    props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #f0ededd6"};
+    props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #726e6d63"};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
   background-color: ${(props) =>
-      props.theme === "dark" ? "#2a373f" : "#f8f7f7"};
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
   .userInfo {
     display: flex;
     align-items: center;
@@ -30,6 +30,9 @@ export const NavWrapper = styled.div`
     span {
       color: ${(props) => (props.theme === "dark" ? "#ddddddb9" : "#5a6369")};
       font-weight: 500;
+      @media (max-width: 1800px) {
+        display: none;
+      }
     }
   }
   .BtnGroup {
@@ -38,6 +41,9 @@ export const NavWrapper = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
+    @media (max-width: 1800px) {
+      gap: 0px;
+      }
     .btn {
       color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
       height: 22px;
@@ -52,7 +58,7 @@ export const NavWrapper = styled.div`
     }
   }
   .dropdownMenu {
-    position: fixed;
+    position: absolute;
     width: 140px; 
     height: 124px;
     display: flex;

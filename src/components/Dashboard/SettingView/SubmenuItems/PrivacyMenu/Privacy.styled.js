@@ -45,11 +45,12 @@ export const Wrapper = styled.div`
       justify-content: space-between;
       padding: 14px 0;
       cursor: pointer;
-      label {
+      .box {
         display: flex;
         flex-direction: column;
         font-size: 14.6px;
         line-height: 20px;
+        width: 80%;
         cursor: pointer;
         color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#252525")};
         span {
@@ -75,13 +76,13 @@ export const Wrapper = styled.div`
 `;
 
 export const Label = styled.label`
-  position: absolute;
+  position: relative;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   border: ${(props) =>
     props.theme === "dark" ? "2px solid #d9dee0" : "2px solid #7d7d7e"};
   border-radius: 2px;
-  left: 365px;
+  // left: 365px;
   width: 16px;
   height: 16px;
 `;
@@ -91,6 +92,8 @@ export const CheckBox = styled.input`
   cursor: pointer;
   width: 16px;
   height: 16px;
+  position: relative;
+  left: 40px;
   &::after {
     //content: url(${check});
     display: block;

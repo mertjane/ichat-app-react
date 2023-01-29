@@ -2,13 +2,24 @@ import styled from "styled-components";
 
 export const Wrapper = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   box-shadow: ${(props) =>
     props.theme === "dark" ? "none" : "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"};
-  .iconWrapper {
+  .list-wrapper{
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${(props) =>
+        props.theme === "dark" ? "#435058" : "#9e9d99"};
+      border-radius: 2px;
+    }
+    .iconWrapper {
     padding: 30px 0 10px 0;
     display: flex;
     flex-direction: column;
@@ -68,5 +79,6 @@ export const Wrapper = styled.section`
       line-height: 22px;
       font-weight: 500;
     }
+  }
   }
 `;

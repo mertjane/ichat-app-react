@@ -7,7 +7,7 @@ const ProgressBar = ({ done }) => {
     const newStyle = {
       width: `${done}`,
       height: "100%",
-      backgroundColor: "#25D366",
+      backgroundColor: "#005c4b",
       transition: "1s ease 0.3s"
     };
     setStyle(newStyle);

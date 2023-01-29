@@ -29,9 +29,9 @@ export const MsgWrap = styled.section`
     flex: 2;
     display: flex;
     align-items: center;
-    padding-right: 30px;
+    padding-right: 20px;
     p {
-      width: 100%;
+      width: 65%;
       display: flex;
       flex-direction: column;
       color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#252525")};
@@ -47,12 +47,12 @@ export const MsgWrap = styled.section`
   }
 `;
 export const Label = styled.label`
-  position: absolute;
+  position: relative;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   border: ${(props) => (props.theme === "dark" ? "2px solid #d9dee0" : "2px solid #7d7d7e")}; 
   border-radius: 2px;
-  left: 365px;
+  left: 4px;
   width: 16px;
   height: 16px;
 `;
@@ -62,6 +62,8 @@ export const CheckBox = styled.input`
   cursor: pointer;
   width: 16px;
   height: 16px;
+  position: relative;
+  left: 22px;
     &::after {
       //content: url(${check});
       display: block;
@@ -92,7 +94,6 @@ export const CheckBox = styled.input`
 `;
 export const SoundWrap = styled.section`
   width: 100%;
-  height: 100px;
   display: flex;
   align-items: center;
   background-color: ${(props) =>
@@ -101,12 +102,13 @@ export const SoundWrap = styled.section`
     props.theme === "dark" ? "none" : "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"} ;
   margin-top: 12px;
   .checkboxWrapper {
+    height: 100%;
     flex: 2;
     display: flex;
     align-items: center;
-    padding-right: 30px;
+    padding-right: 20px;
     p {
-      width: 100%;
+      width: 65%;
       display: flex;
       flex-direction: column;
       color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#252525")};

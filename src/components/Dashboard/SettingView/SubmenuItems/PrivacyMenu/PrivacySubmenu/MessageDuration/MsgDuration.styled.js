@@ -4,14 +4,16 @@ import customRadio from "..//..//..//..//..//..//../assets/custom_radio.png";
 
 export const Wrapper = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: ${(props) =>
-    props.theme === "dark" ? "#111b21" : "#ffff"}; 
+    props.theme === "dark" ? "#111b21" : "#ffff"};
   box-shadow: ${(props) =>
-      props.theme === "dark"
-        ? "none"
-        : "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,rgba(0, 0, 0, 0.1) 0px 0px 1px 0px"};
+    props.theme === "dark"
+      ? "none"
+      : "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,rgba(0, 0, 0, 0.1) 0px 0px 1px 0px"};
+  box-sizing: border-box;
   .iconWrapper {
     width: 200px;
     height: 200px;
@@ -27,6 +29,15 @@ export const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     padding: 20px 30px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${(props) =>
+        props.theme === "dark" ? "#435058" : "#9e9d99"};
+      border-radius: 2px;
+    }
     h5 {
       font-weight: 500;
       font-size: 13.4px;
@@ -55,7 +66,7 @@ export const Wrapper = styled.section`
 `;
 
 export const Label = styled.label`
-  position: absolute;
+  position: relative;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   border: ${(props) =>
@@ -66,17 +77,18 @@ export const Label = styled.label`
 `;
 
 export const StyledRadio = styled.input`
+  position: absolute;
   opacity: -1;
   z-index: 1;
   cursor: pointer;
   width: 18px;
   height: 18px;
-    &::after {
-      display: block;
-      color: white;
-      width: 18px;
-      height: 18px;
-    }
+  &::after {
+    display: block;
+    color: white;
+    width: 18px;
+    height: 18px;
+  }
   &:checked {
     border: ${(props) =>
       props.theme === "dark" ? "2px solid #128C7E" : "2px solid #7d7d7e"};
@@ -87,9 +99,9 @@ export const StyledRadio = styled.input`
     &::after {
       content: ${(props) =>
         props.theme === "dark" ? `url(${customRadio})` : `url(${customRadio})`};
-      position: relative;
-      left: 2.4px;
-      bottom: 1.5px;
+      position: absolute;
+      left: 2px;
+      bottom: 1px;
       display: block;
       color: white;
       width: 18px;

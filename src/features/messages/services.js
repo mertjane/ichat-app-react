@@ -19,22 +19,54 @@ export const getMessages = createAsyncThunk(
   }
 );
 
-export const sendMessage = async (
-  { currentChat, newMessage, userId },
+/* export const sendMessage = async (
+  { currentChat, newMessage, userId, image},
   dispatch
 ) => {
   try {
-    const message = {
+    const message = { 
       sender: userId,
       text: newMessage,
       conversationId: currentChat._id,
     };
+    if(image){
+      message.imageUrl = image;
+    }
     const res = await axios.post(`${getMessagesURL}`, message);
     dispatch(sendNewMessage(res.data));
   } catch (err) {
     console.log(err);
   }
+}; */
+
+export const sendMessage = async (
+  { currentChat, newMessage, userId, imageUrl},
+  dispatch
+) => {
+  try {
+    // create a new FormData object
+    const formData = new FormData();
+    // add the image file to the form data
+    formData.append('image', imageUrl);
+    // add the other message details to the form data
+    formData.append('conversationId', currentChat._id);
+    formData.append('sender', userId);
+    formData.append('text', newMessage);
+
+    // make the POST request to the server with the form data
+    const res = await axios.post(`${getMessagesURL}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+    });
+
+    dispatch(sendNewMessage(res.data));
+  } catch (err) {
+    console.log(err);
+  }
 };
+
+
 
 export const removeMessage = async ({ currentChat, message }, dispatch) => {
   try {

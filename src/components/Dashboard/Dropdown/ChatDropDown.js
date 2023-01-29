@@ -1,14 +1,19 @@
-import { useDispatch } from "react-redux";
-import { deleteConversation } from "../../../features/conversation/services";
-import React from "react";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteConversation,
+  getConversations,
+} from "../../../features/conversation/services";
 
 const ChatDropDown = ({ c }) => {
   const dispatch = useDispatch();
+  const { userId } = useSelector((state) => state.auth);
 
-  const handleDeleteChat = () => {
+  const handleDeleteChat = useCallback(async () => {
     const conversationId = c?._id;
-    deleteConversation({ conversationId }, dispatch);
-  };
+    await deleteConversation({ conversationId }, dispatch);
+    dispatch(getConversations({ userId }));
+  }, [c?._id, dispatch, userId]);
 
   return (
     <>

@@ -1,15 +1,14 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 export const activeStyles = css`
-    background-color: ${(props) =>
+  background-color: ${(props) =>
     props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
 `;
 
 export const inactiveStyles = css`
-    background-color: ${(props) =>
+  background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
 `;
-
 
 export const ConversationWrapper = styled.div`
   min-height: 69px;
@@ -26,12 +25,14 @@ export const ConversationWrapper = styled.div`
   &.inactive {
     background-color: #111b21;
   } */
-  // background-color: ${props => props.isActive ? "#2a373f" : "#111b21"};
-  background-color: ${props => props.theme === "dark" && props.isActive && "#2a373f"};
-  background-color: ${props => props.theme === "open" && props.isActive && "#f0f2f5"};
+  // background-color: ${(props) => (props.isActive ? "#2a373f" : "#111b21")};
+  background-color: ${(props) =>
+    props.theme === "dark" && props.isActive && "#2a373f"};
+  background-color: ${(props) =>
+    props.theme === "open" && props.isActive && "#f0f2f5"};
   &:hover {
     background-color: ${(props) =>
-      props.theme === "dark" ? "#2a373f" : "#f0f2f5"}; 
+      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     .wrapper {
       .chatTime {
         .unread-wrapper {
@@ -75,7 +76,8 @@ export const ConversationWrapper = styled.div`
       }
       span {
         font-size: 13px;
-        color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+        color: ${(props) => (props.theme === "dark" ? "#e6e6e69d" : "#677780")};
+        font-weight: 400;
       }
     }
     .chatTime {
@@ -88,7 +90,8 @@ export const ConversationWrapper = styled.div`
       gap: 3px;
       span {
         font-size: 12px;
-        color: ${(props) => (props.theme === "dark" ? "#96969e" : "#677780")};
+        color: ${(props) => (props.theme === "dark" ? "#e6e6e69d" : "#677780")};
+        font-weight: 300;
       }
       .unread-wrapper {
         display: flex;
@@ -124,6 +127,10 @@ export const ConversationWrapper = styled.div`
         flex-direction: column;
         border-radius: 4px;
         left: 380px;
+        @media (max-width: 1800px) {
+          left: 304px;
+          top: ${({ top }) => top}px;
+        }
         top: ${({ top }) => top}px;
         z-index: 9999;
         background-color: ${(props) =>

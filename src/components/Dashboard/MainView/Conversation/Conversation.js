@@ -4,6 +4,7 @@ import { markAsRead } from "../../../../features/messages/messageSlice";
 import { getUserURL } from "../../../../features/apiCalls";
 import { ConversationWrapper } from "./Conversation.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { BsCameraFill } from "react-icons/bs";
 import ChatDropDown from "../../Dropdown/ChatDropDown";
 import axios from "axios";
 import moment from "moment";
@@ -50,12 +51,11 @@ const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
   });
 
   // dropdown positioning
-  let offset = 20;
+  let offset = 35;
 
   useEffect(() => {
     if (openMenu && buttonRef.current) {
       const conversationRect = buttonRef.current.getBoundingClientRect();
-
       const top = conversationRect.top + offset;
       setTop(top);
     }
@@ -105,7 +105,15 @@ const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
       <div className="wrapper">
         <div className="chatInfo">
           <p>{chatList?.name}</p>
-          <span>{c?.lastMessages?.[0]?.text}</span>
+          <span>
+            {c?.lastMessages?.[0]
+              ? c?.lastMessages?.[0]?.imageUrl
+                ? <> <BsCameraFill /> {"photo"} </>
+                : c?.lastMessages?.[0]?.text?.length > 30
+                ? c?.lastMessages?.[0]?.text.substring(0, 30) + "..."
+                : c?.lastMessages?.[0]?.text
+              : "No messages yet"}
+          </span>
         </div>
         <div className="chatTime" ref={buttonRef}>
           <TimeRender />
@@ -119,7 +127,7 @@ const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
             />
           </div>
           <div className={`chatDropdown ${openMenu ? "active" : "inactive"}`}>
-            <ChatDropDown />
+            <ChatDropDown c={c} />
           </div>
         </div>
       </div>

@@ -9,57 +9,59 @@ import { Wrapper, CheckBox, Label } from "./SecurityMenu.styled";
 import { useSelector } from "react-redux";
 
 const SecurityMenu = () => {
-  const { theme } = useSelector((state) => state.user.userInfo)
+  const { theme } = useSelector((state) => state.user.userInfo);
   return (
     <Wrapper theme={theme}>
       <Header />
-      <div className="iconWrapper">
-        <MdLock className="icon" />
-      </div>
-      <div className="contentWrapper">
-        <h3>Your chats and calls are private</h3>
-        <p>
-          With end-to-end encrypton, your personal messages and calls stay
-          between you and the people you choose. Even ichat cannot read or
-          listen to these contents. These contents include:
-        </p>
-      </div>
-      <div className="infoWrapper">
-        <label>
-          <TbMessages className="icon" />
-          Your text and voice messages
-        </label>
-        <label>
-          <BsTelephone className="icon" />
-          Your voice and video calls
-        </label>
-        <label>
-          <ImAttachment className="icon" />
-          Your photos, videos and documents
-        </label>
-        <label>
-          <HiOutlineLocationMarker className="icon" />
-          Your location shares
-        </label>
-        <label>
-          <MdUpdate className="icon" />
-          Your status updates
-        </label>
-        <span>More information</span>
-      </div>
-      <hr />
-      <div className="selectionWrapper">
-        <div className="checkbox">
-          <CheckBox theme={theme} type="checkbox" />
-          <Label theme={theme}/>
-          <span>Show Security notifications on this computer</span>
+      <div className="list-wrapper">
+        <div className="iconWrapper">
+          <MdLock className="icon" />
         </div>
-        <p>
-          Get notified when your security code changes for anyone's phone. If
-          you have more than one device, this setting must be enabled on each
-          device from which you want to receive notifications.{" "}
+        <div className="contentWrapper">
+          <h3>Your chats and calls are private</h3>
+          <p>
+            With end-to-end encrypton, your personal messages and calls stay
+            between you and the people you choose. Even ichat cannot read or
+            listen to these contents. These contents include:
+          </p>
+        </div>
+        <div className="infoWrapper">
+          <label>
+            <TbMessages className="icon" />
+            Your text and voice messages
+          </label>
+          <label>
+            <BsTelephone className="icon" />
+            Your voice and video calls
+          </label>
+          <label>
+            <ImAttachment className="icon" />
+            Your photos, videos and documents
+          </label>
+          <label>
+            <HiOutlineLocationMarker className="icon" />
+            Your location shares
+          </label>
+          <label>
+            <MdUpdate className="icon" />
+            Your status updates
+          </label>
           <span>More information</span>
-        </p>
+        </div>
+        <hr />
+        <div className="selectionWrapper">
+          <div className="checkbox">
+            <CheckBox theme={theme} type="checkbox" />
+            <Label theme={theme} />
+            <span>Show Security notifications</span>
+          </div>
+          <p>
+            Get notified when your security code changes for anyone's phone. If
+            you have more than one device, this setting must be enabled on each
+            device from which you want to receive notifications.{" "}
+            <span>More information</span>
+          </p>
+        </div>
       </div>
     </Wrapper>
   );

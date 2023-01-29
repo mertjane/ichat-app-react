@@ -94,7 +94,7 @@ export const updatedAvatar = async ({ file, avatar, id }, dispatch) => {
   try {
     axios.post(`${updateURL}/${id}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data", 
       },
     });
   } catch (err) {

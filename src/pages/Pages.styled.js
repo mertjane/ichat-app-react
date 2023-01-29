@@ -99,7 +99,9 @@ export const HomeWrapper = styled.div`
   animation: scaleIn 0.3s;
 
   @media (max-width: 1800px) {
-    width: 98%;
+    width: 100%;
+    height: 100%;
+    top: 0px;
   }
 `;
 
