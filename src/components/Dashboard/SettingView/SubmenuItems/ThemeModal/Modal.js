@@ -10,7 +10,7 @@ const Modal = ({ open, onClose }) => {
   const { theme } = useSelector((state) => state.user.userInfo);
   const { userId } = useSelector((state) => state.auth);
 
-  const [selectedTheme, setSelectedTheme] = useState(theme);
+  const [selectedTheme, setSelectedTheme] = useState(theme); 
 
   const handleThemeChange = () => {
     updateTheme({ theme: selectedTheme, userId }, dispatch);

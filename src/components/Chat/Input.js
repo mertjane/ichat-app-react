@@ -13,11 +13,24 @@ const Input = ({
   setNewMessage,
   imageUrl,
   setImageUrl,
+  openRightMenu,
   setOpenPreview,
+  currentChat,
 }) => {
   const [showList, setShowList] = useState(false); // emojiList
   const [openMenu, setOpenMenu] = useState(false); // toggleMenu
   const { theme } = useSelector((state) => state.user.userInfo);
+  const { userId } = useSelector((state) => state.auth);
+  const { blockedContacts, contactList } = useSelector(
+    (state) => state.contacts
+  );
+
+  // blockedUser condition
+  const recipientId = currentChat.members.find((member) => member !== userId);
+  const recipientName = contactList.find(
+    (contact) => contact?._id === recipientId
+  );
+  const isBlocked = blockedContacts.filter(contact => contact?._id === recipientId || contact?._id === userId).length > 0;
 
   const toggleRef = useRef();
 
@@ -40,41 +53,55 @@ const Input = ({
   });
 
   return (
-    <InputWrapper ref={toggleRef} theme={theme} showList={showList}>
-      {showList && (
-        <div className="emoji-container">
-          <ChatEmoji onEmojiClick={onEmojiClick} />
-        </div>
+    <InputWrapper ref={toggleRef} theme={theme} showList={showList} openRightMenu={openRightMenu}>
+      {isBlocked ? (
+        <span className="blocked-text">
+          You cannot send a message to a blocked {recipientName?.name} contact.
+        </span>
+      ) : (
+        <>
+          {showList && (
+            <div className="emoji-container">
+              <ChatEmoji onEmojiClick={onEmojiClick} />
+            </div>
+          )}
+          <div className="inputGroup">
+            <div className="btnGroup">
+              <BsEmojiSmile
+                onClick={() => setShowList(!showList)}
+                className="btn"
+              />
+              <IoMdAttach
+                onClick={() => setOpenMenu(!openMenu)}
+                className={`btn ${openMenu ? "active" : "inactive"}`}
+              />
+            </div>
+            <div className={`input-toggle ${openMenu ? "active" : "inactive"}`}>
+              <ToggleMenu
+                imageUrl={imageUrl}
+                setImageUrl={setImageUrl}
+                setOpenPreview={setOpenPreview}
+              />
+            </div>
+            <form onSubmit={handleForm}>
+              <input
+                value={newMessage}
+                onChange={handleInput}
+                type="text"
+                placeholder="Type a message"
+              />
+            </form>
+            <div className="submit-group">
+              <button type="submit">Send</button>
+              {newMessage !== "" ? (
+                <div className="confirmBtn" />
+              ) : (
+                <div className="micBtn" />
+              )}
+            </div>
+          </div>
+        </>
       )}
-      <div className="inputGroup">
-        <div className="btnGroup">
-          <BsEmojiSmile
-            onClick={() => setShowList(!showList)}
-            className="btn"
-          />
-          <IoMdAttach
-            onClick={() => setOpenMenu(!openMenu)}
-            className={`btn ${openMenu ? "active" : "inactive"}`}
-          />
-        </div>
-        <div className={`input-toggle ${openMenu ? "active" : "inactive"}`}>
-          <ToggleMenu
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            setOpenPreview={setOpenPreview}
-          />
-        </div>
-        <form onSubmit={handleForm} className="textGroup">
-          <input
-            value={newMessage}
-            onChange={handleInput}
-            type="text"
-            placeholder="Type a message"
-          />
-          <button type="submit">Send</button>
-          {newMessage !== "" ? <div className="confirmBtn" /> : <div className="micBtn" />}
-        </form>
-      </div>
     </InputWrapper>
   );
 };

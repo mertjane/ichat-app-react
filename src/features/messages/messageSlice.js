@@ -6,24 +6,26 @@ export const messageSlice = createSlice({
   initialState: {
     isLoading: false,
     userMessages: [],
-    unreadMessages: {},
     error: null,
   },
   reducers: {
     sendNewMessage: (state, action) => {
-      state.userMessages = [action.payload, ...state.userMessages];
-      const { conversationId } = action.payload;
-      state.unreadMessages[conversationId] =
-        (state.unreadMessages[conversationId] || 0) + 1;
-    },
-    markAsRead: (state, action) => {
-      state.unreadMessages[action.payload] = 0;
+      const newMessage = action.payload;
+      newMessage.isSent = true;
+      state.userMessages = [newMessage, ...state.userMessages];
     },
     deleteMessage: (state, action) => {
       state.userMessages = state.userMessages.filter(
         (message) => message._id !== action.payload
       );
-    }
+    },
+    clearChat: (state, action) => {
+      const { conversationId } = action.payload;
+      state.userMessages = state.userMessages.filter(
+        (message) => message.conversationId !== conversationId
+      );
+      state.unreadMessages[conversationId] = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,5 +43,6 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { sendNewMessage, markAsRead, deleteMessage} = messageSlice.actions;
+export const { sendNewMessage, deleteMessage, clearChat } =
+  messageSlice.actions;
 export default messageSlice.reducer;

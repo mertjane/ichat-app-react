@@ -1,44 +1,77 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { startConversation } from "../../../features/conversation/services";
-import { useNavigate } from "react-router-dom";
 import { UsersWrapper } from "./Contacts.styled";
 
 const User = ({ user, _id, avatar, name, about, setCurrentChat }) => {
-  const navigate = useNavigate();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
-  const conversation = useSelector((state) => state.conversations.info)
-  const { theme } = useSelector((state) => state.user.userInfo)
-  
+  const conversation = useSelector((state) => state.conversations.info);
+  const { theme } = useSelector((state) => state.user.userInfo);
+  const { blockedContacts } = useSelector((state) => state.contacts);
+
+  const [newConversation, setNewConversation] = useState();
+
   const [members, setMembers] = useState({
     senderId: userId,
     receiverId: user._id,
   });
 
+  const isBlocked =
+    blockedContacts.filter((contact) => contact?._id === user._id).length > 0; // if user blocked
 
-  const handleNewConversation = () => {
+  /* const handleNewConversation = async () => {
     const getChatId = conversation.find(c => c.members.find(mem => mem === members.receiverId))
     if(!getChatId){
-      startConversation({ members }, dispatch);
+      await startConversation({ members }, dispatch);
       setCurrentChat(getChatId)
     } else {
-      console.log("With this user you already started a chat")
-      console.log("chat", members)
-      navigate("/");
       setCurrentChat(getChatId)
     }
-    setMembers();
-  };
+    setMembers({});
+  }; */
 
+  const handleNewConversation = async () => {
+    const existingConversation = conversation.find((c) =>
+      c.members.find((mem) => mem === members.receiverId)
+    );
+    if (!existingConversation) {
+      const createdConversation = await startConversation(
+        { members },
+        dispatch
+      );
+      setNewConversation(createdConversation);
+      setCurrentChat(newConversation);
+    } else {
+      setCurrentChat(existingConversation);
+    }
+    setMembers({});
+  };
 
   return (
     <UsersWrapper theme={theme} onClick={handleNewConversation} key={_id}>
-      <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
+      {user?.privacy?.profilePhoto && (
+        <img
+          src={
+            !isBlocked
+              ? user?.privacy?.profilePhoto === "none"
+                ? PF + "default.png"
+                : avatar
+                ? PF + avatar
+                : PF + "default.png"
+              : PF + "default.png"
+          }
+          alt="avatar"
+        />
+      )}
       <div className="user-info">
         <label>{name}</label>
-        <span>{about}</span>
+        {user?.privacy?.aboutMe && (
+          <span>
+            {!isBlocked ? (user?.privacy.aboutMe === "none" ? "" : about) : ""}
+          </span>
+        )}
       </div>
     </UsersWrapper>
   );

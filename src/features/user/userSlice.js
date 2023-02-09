@@ -9,6 +9,13 @@ const initialState = {
     avatar: "",
     name: "",
     about: "",
+    privacy: {
+      lastSeen: "everyone",
+      onlineStatus: "everyone",
+      profilePhoto: "everyone",
+      aboutMe: "everyone",
+      readReceipt: true,
+    },
   },
   status: "idle",
   error: null,
@@ -37,6 +44,15 @@ export const userSlice = createSlice({
     changeDrawings: (state, { payload: { drawings } }) => {
       state.userInfo.drawings = drawings;
     },
+    updateSounds: (state, { payload: { sounds } }) => {
+      state.userInfo.sounds = sounds;
+    },
+    updatePrivacy: (state, { payload }) => {
+      state.userInfo.privacy = {
+        ...state.userInfo.privacy,
+        ...payload.privacy,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getDetails.pending, (state) => {
@@ -60,5 +76,7 @@ export const {
   changeTheme,
   changeWallpaper,
   changeDrawings,
+  updateSounds,
+  updatePrivacy
 } = userSlice.actions;
 export default userSlice.reducer;

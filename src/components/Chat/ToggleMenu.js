@@ -3,6 +3,7 @@ import { MdInsertPhoto } from "react-icons/md";
 import { HiDocumentText } from "react-icons/hi";
 
 const ToggleMenu = ({ setImageUrl, setOpenPreview}) => {
+
   return (
     <>
       <BsPersonFill className="icons" title="Person" />
@@ -13,8 +14,9 @@ const ToggleMenu = ({ setImageUrl, setOpenPreview}) => {
         <input
           type="file"
           name="image"
+          multiple
           onChange={(e) => {
-            setImageUrl(e.target.files[0]);
+            setImageUrl(Array.from(e.target.files));
             setOpenPreview(true);
           }}
         />

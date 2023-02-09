@@ -13,7 +13,7 @@ const Avatar = () => {
   return (
     <ContentWrapper theme={theme} onClick={() => navigate("/profile")}>
       <div className="avatar">
-        <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
+        <img src={avatar ? PF + avatar : PF + "default.png"} alt="avatar" />
       </div>
       <div className="user-status">
         <p>{name}</p>

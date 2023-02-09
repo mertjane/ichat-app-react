@@ -1,29 +1,46 @@
-import React from "react";
-import { useSelector, useDispatch} from "react-redux";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { sendMessage } from "../../features/messages/services";
 import { Layer } from "./Preview.styled";
 import { IoMdClose } from "react-icons/io";
 import { BsEmojiSmile } from "react-icons/bs";
 import { RiText, RiBlurOffFill } from "react-icons/ri";
 import { GoPencil } from "react-icons/go";
-import {
-  MdCropRotate,
-  MdUndo,
-  MdRedo,
-  MdOutlineAdd
-} from "react-icons/md";
+import { MdCropRotate, MdUndo, MdRedo, MdOutlineAdd } from "react-icons/md";
 
-const PreviewFile = ({ open, onClose, image, newMessage, currentChat, imageUrl, setImageUrl}) => {
-  const dispatch = useDispatch()
+const PreviewFile = ({
+  open,
+  onClose,
+  image,
+  newMessage,
+  currentChat,
+  imageUrl,
+  setImageUrl,
+  socket
+}) => {
+  const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.user.userInfo);
   const { userId } = useSelector((state) => state.auth);
 
-  const handleConfirm = async () => {
-    await sendMessage({ currentChat, userId, newMessage, imageUrl }, dispatch);
-    setImageUrl("")
-    onClose()
-  }
+  const [selectedImage, setSelectedImage] = useState(image && image[0]);
 
+
+  const handleImageClick = (img) => {
+    setSelectedImage(img);
+  };
+
+  const handleConfirm = async () => {
+    sendMessage({ currentChat, userId, newMessage, imageUrl }, dispatch);
+    const receiverId = currentChat?.members?.find((m) => m !== userId);
+    socket.emit("sendMessage", {
+      conversationId: currentChat._id,
+      senderId: userId,
+      receiverId,
+      image: image,
+    });
+    setImageUrl([]);
+    onClose();
+  };
 
   if (!open) return null;
   return (
@@ -41,20 +58,29 @@ const PreviewFile = ({ open, onClose, image, newMessage, currentChat, imageUrl, 
         </div>
       </div>
       <div className="item-preview">
-        <img src={image} alt="file" />
-      </div>
-      <div className="input-field">
-        <input placeholder="write a message" type="text" />
-        <BsEmojiSmile className="searchBtn" />
+        <img src={selectedImage} alt="file" />
       </div>
       <div className="footer">
+        <div className="input-field">
+          <input placeholder="write a message" type="text" />
+          <BsEmojiSmile className="searchBtn" />
+        </div>
         <div className="group">
-          <img src={image} alt="img-list" />
+          {image?.map((img, i) => (
+            <img
+              key={i}
+              src={img}
+              alt="img-list"
+              className={`images ${img === selectedImage ? "active" : "inactive"}`}
+              onClick={() => handleImageClick(img)}
+            />
+          ))}
           <div className="add">
+            <input type="file" name="image" />
             <MdOutlineAdd className="addBtn" />
           </div>
+          <div onClick={handleConfirm} className="confirmBtn" />
         </div>
-        <div onClick={handleConfirm} className="confirmBtn" />
       </div>
     </Layer>
   );

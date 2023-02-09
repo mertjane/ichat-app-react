@@ -3,6 +3,9 @@ import menuIcon from "../../assets/menu_icon.png";
 import menuIconDark from "../../assets/menu_icon_dark.png";
 import menuIconLight from "../../assets/menu_icon_light.png";
 import menuIconLightOwner from "../../assets/menu_icon-light_owner.png";
+import readReceipt from "../../assets/read_receipt.svg";
+import readReceiptSingleGray from "../../assets/single_receipt_gray.svg";
+import readReceiptDoubleGray from "../../assets/read_receipt_gray.svg";
 
 export const MessageWrapper = styled.div`
   .message {
@@ -19,7 +22,6 @@ export const MessageWrapper = styled.div`
       justify-content: space-between;
       box-sizing: border-box;
       position: relative;
-      padding: 0 6px 0 10px;
       border-radius: 0 7px 7px 7px;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
         rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -35,7 +37,8 @@ export const MessageWrapper = styled.div`
       .message-text {
         width: 100%;
         font-size: 13px;
-        padding: 6px 50px 6px 0;
+        padding: 6px 30px 6px 0;
+        margin: 0 8px;
         font-weight: 500;
         color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
         word-wrap: break-word;
@@ -46,12 +49,13 @@ export const MessageWrapper = styled.div`
         background-color: #ffff;
         width: 230px;
         height: 250px;
-        padding: 5px 0 0px 0;
-        margin: 8px 0;
-        border-radius: 7px;
+        // padding: 5px 0 0px 0;
+        margin: 4px 4px;
+        border-radius: 4px;
         position: relative;
         box-sizing: border-box;
         object-fit: cover;
+        cursor: pointer;
       }
       .messageTime {
         display: flex;
@@ -67,7 +71,7 @@ export const MessageWrapper = styled.div`
         box-sizing: border-box;
         right: 0;
         .time {
-          font-size: 11.4px;
+          font-size: 10.5px;
           color: ${(props) => (props.theme === "dark" ? "#c5c9ca" : "#8f8f8f")};
           display: flex;
           flex-direction: column;
@@ -76,7 +80,8 @@ export const MessageWrapper = styled.div`
           align-items: flex-end;
           justify-content: flex-end;
           bottom: 4px;
-          right: 4px;
+          // right: 26px;
+          right: 6px;
           position: absolute;
           box-sizing: border-box;
         }
@@ -107,8 +112,6 @@ export const MessageWrapper = styled.div`
         display: flex;
         flex-direction: column;
         border-radius: 4px;
-        // left: 535px;
-        // top: 510px;
         left: ${({ left }) => left}px;
         top: ${({ top }) => top}px;
         box-sizing: content-box;
@@ -162,12 +165,17 @@ export const MessageWrapper = styled.div`
         background: ${(props) =>
           props.theme === "dark" ? "#005c4b" : "#dcf8c6"};
         border-radius: 7px 0 7px 7px;
+        min-width: 80px;
         .message-text {
           font-size: 13px;
           font-weight: 500;
           color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
+          padding: 6px 50px 6px 0;
         }
         .messageTime {
+          .time {
+            right: 26px;
+          }
           .menu-icon {
             background-image: ${(props) =>
               props.theme === "dark"
@@ -179,6 +187,65 @@ export const MessageWrapper = styled.div`
             background-position-y: -5px;
           }
         }
+      }
+      .singleTick {
+        width: 12px;
+        height: 12px;
+        background-image: url(${readReceiptSingleGray});
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 8px;
+        right: 8px;
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            scale: 0;
+          }
+          to {
+            opacity: 1;
+            scale: 1;
+          }
+        }
+        animation: scaleIn 500ms ease;
+      }
+      .doubleTick {
+        background-image: url(${readReceiptDoubleGray});
+        width: 17px;
+        height: 17px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 4px;
+        right: 4px;
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            scale: 0;
+          }
+          to {
+            opacity: 1;
+            scale: 1;
+          }
+        }
+        animation: scaleIn 500ms ease;
+        transition-delay: 1s;
+      }
+      .read-receipt{
+        background-image: url(${readReceipt});
+        width: 17px;
+        height: 17px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 4px;
+        right: 4px;
       }
     }
   }

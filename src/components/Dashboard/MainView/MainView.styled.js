@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import searchBtnDark from "../../../assets/search_btn_dark.svg"
+import searchBtnLight from "../../../assets/search_btn_light.svg"
+// import backBtn from "../../../assets/back_btn.svg"
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -16,7 +19,7 @@ export const NavWrapper = styled.div`
   justify-content: space-between;
   padding: 10px 16px;
   background-color: ${(props) =>
-      props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
+    props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
   .userInfo {
     display: flex;
     align-items: center;
@@ -43,7 +46,7 @@ export const NavWrapper = styled.div`
     gap: 10px;
     @media (max-width: 1800px) {
       gap: 0px;
-      }
+    }
     .btn {
       color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
       height: 22px;
@@ -51,15 +54,16 @@ export const NavWrapper = styled.div`
       padding: 8px;
       cursor: pointer;
     }
-    .active{
+    .active {
       border-radius: 50%;
       position: relative;
-      background-color: ${(props) => (props.theme === "dark" ? "#374248" : "#d9dbde")};
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#374248" : "#d9dbde"};
     }
   }
   .dropdownMenu {
     position: absolute;
-    width: 140px; 
+    width: 140px;
     height: 124px;
     display: flex;
     flex-direction: column;
@@ -113,9 +117,11 @@ export const NavWrapper = styled.div`
 
 export const ListContainer = styled.div`
   height: calc(100% - 116px);
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
   &::-webkit-scrollbar {
@@ -150,14 +156,21 @@ export const SearchWrapper = styled.div`
       color: ${(props) => (props.theme === "dark" ? "#ddddddb9" : "#677780")};
       font-weight: 500;
     }
+    &:focus{
+      &::placeholder{
+        opacity: 0;
+      }
+    }
   }
   .searcBtn {
-    color: ${(props) => (props.theme === "dark" ? "#dddddd96" : "#677780")};
+    background-image: ${(props) => (props.theme === "dark" ? `url(${searchBtnDark})` : `url(${searchBtnLight})`)};
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
     border-radius: 6px 0 0 6px;
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
-    padding: 9px;
+    padding: 17px;
   }
   .filterBtn {
     color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};

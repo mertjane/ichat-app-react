@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { getUserURL, updateURL } from "../apiCalls";
 import {
   updateName,
@@ -8,7 +7,10 @@ import {
   changeTheme,
   changeWallpaper,
   changeDrawings,
+  updateSounds,
+  updatePrivacy,
 } from "./userSlice";
+import axios from "axios";
 
 // update user theme
 export const updateTheme = async ({ userId, theme }, dispatch) => {
@@ -17,6 +19,25 @@ export const updateTheme = async ({ userId, theme }, dispatch) => {
     dispatch(changeTheme(res.data));
   } catch (error) {
     console.log(error);
+  }
+};
+
+// update privacy settings
+export const updatePrivacySettings = async (
+  { userId, lastSeen, onlineStatus, profilePhoto, aboutMe, readReceipt },
+  dispatch
+) => {
+  try {
+    const res = await axios.put(`${getUserURL}/${userId}/update-privacy`, {
+      lastSeen,
+      onlineStatus,
+      profilePhoto,
+      aboutMe,
+      readReceipt,
+    });
+    dispatch(updatePrivacy(res.data));
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -36,11 +57,22 @@ export const updateWallpaper = async ({ userId, color }, dispatch) => {
 // on/off drawings
 export const toggleDrawings = async ({ userId, drawings }, dispatch) => {
   try {
-    const res = await axios.put(
-      `${getUserURL}/${userId}/update-chat-drawing`,
-      { drawings }
-    );
+    const res = await axios.put(`${getUserURL}/${userId}/update-chat-drawing`, {
+      drawings,
+    });
     dispatch(changeDrawings(res.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// on/off sounds
+export const toggleSounds = async ({ userId, sounds }, dispatch) => {
+  try {
+    const res = await axios.put(`${getUserURL}/${userId}/update-sounds`, {
+      sounds,
+    });
+    dispatch(updateSounds(res.data));
   } catch (error) {
     console.log(error);
   }
@@ -94,7 +126,7 @@ export const updatedAvatar = async ({ file, avatar, id }, dispatch) => {
   try {
     axios.post(`${updateURL}/${id}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data", 
+        "Content-Type": "multipart/form-data",
       },
     });
   } catch (err) {

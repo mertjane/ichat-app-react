@@ -1,5 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleSounds } from "../../../../../features/user/services";
 import Header from "../../Header";
 import {
   Wrapper,
@@ -7,10 +8,22 @@ import {
   Label,
   CheckBox,
   SoundWrap,
-} from "./NotifyMenu.styled";
+} from "./NotifyMenu.styled"; 
 
 const NotifyMenu = () => {
-  const { theme } = useSelector((state) => state.user.userInfo)
+  const dispatch = useDispatch();
+  const { theme, sounds } = useSelector((state) => state.user.userInfo);
+  const { userId } = useSelector((state) => state.auth); 
+  const [appSounds, setAppSounds] = useState(sounds);
+
+  const handleSoundsChange = async () => {
+    setAppSounds(!appSounds);
+    try {
+      await toggleSounds({ userId, sounds: !appSounds }, dispatch);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Wrapper theme={theme}>
@@ -25,7 +38,7 @@ const NotifyMenu = () => {
             <span>Show notifications for new messages</span>
           </p>
           <CheckBox theme={theme} type="checkbox" />
-          <Label theme={theme}/>
+          <Label theme={theme} />
         </div>
       </MsgWrap>
       <SoundWrap theme={theme}>
@@ -34,8 +47,13 @@ const NotifyMenu = () => {
             Sounds
             <span>Incoming messages are notified with voice alerts</span>
           </p>
-          <CheckBox theme={theme} type="checkbox" />
-          <Label theme={theme}/>
+          <CheckBox
+            checked={sounds}
+            onChange={handleSoundsChange}
+            theme={theme}
+            type="checkbox"
+          />
+          <Label theme={theme} />
         </div>
       </SoundWrap>
     </Wrapper>

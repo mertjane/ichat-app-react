@@ -1,23 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "..//..//..//..//Header";
 import ContactList from "./ContactList/ContactList";
 import ListModal from "./Modals/ListModal";
-import { useSelector, useDispatch } from "react-redux";
-import { getBlockedContacts } from "../../../../../../../features/contacts/services";
+import { useSelector} from "react-redux";
 import { Wrapper } from "./BlockedUsers.styled";
 import { IoMdPersonAdd } from "react-icons/io";
 
 const BlockedUsers = () => {
-  const dispatch = useDispatch();
   const [openListModal, setOpenListModal] = useState(false);
 
   const { blockedContacts } = useSelector((state) => state.contacts);
-  const { userId } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.user.userInfo);
 
-  useEffect(() => {
-    dispatch(getBlockedContacts({ userId }));
-  }, [dispatch, userId]);
+  console.log(blockedContacts)
 
   return (
     <Wrapper theme={theme}>

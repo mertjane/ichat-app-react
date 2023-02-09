@@ -9,13 +9,14 @@ export const Wrapper = styled.section`
   flex-direction: column;
   box-sizing: border-box;
   .contentWrapper {
-    height: 100%; 
+    height: auto; 
     display: flex;
     flex-direction: column;
     background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"}; 
     padding: 20px 30px;
     overflow-y: auto;
+    box-sizing: border-box;
     &::-webkit-scrollbar {
       width: 7px;
     }

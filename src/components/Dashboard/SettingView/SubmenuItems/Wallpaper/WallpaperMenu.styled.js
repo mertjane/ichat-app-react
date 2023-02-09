@@ -99,7 +99,7 @@ export const CheckBox = styled.input`
   &:checked + ${Label} {
     background: ${(props) => (props.theme === "dark" ? "#00a884" : "#005c4b")};
     border: ${(props) =>
-      props.theme === "dark" ? "2px solid #00a884" : "2px solid #7d7d7e"};
+      props.theme === "dark" ? "2px solid #00a884" : "2px solid #005c4b"};
     &::after {
       content: url(${check});
       position: relative;

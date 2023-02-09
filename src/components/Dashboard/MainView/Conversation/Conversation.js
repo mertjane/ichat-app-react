@@ -1,41 +1,27 @@
 import { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { markAsRead } from "../../../../features/messages/messageSlice";
-import { getUserURL } from "../../../../features/apiCalls";
+import { useSelector } from "react-redux";
 import { ConversationWrapper } from "./Conversation.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { BsCameraFill } from "react-icons/bs";
 import ChatDropDown from "../../Dropdown/ChatDropDown";
-import axios from "axios";
 import moment from "moment";
 
-const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
-  const dispatch = useDispatch();
+const Conversation = ({ c, setCurrentChat, currentChat }) => {
   const { userId } = useSelector((state) => state.auth);
-  const { unreadMessages } = useSelector((state) => state.messages);
+  const { contactList, blockedContacts} = useSelector((state) => state.contacts);
   const { theme } = useSelector((state) => state.user.userInfo);
 
-  const [chatList, setChatList] = useState();
   const [openMenu, setOpenMenu] = useState(false);
   const [top, setTop] = useState(170);
 
+  const friend = c.members.find((member) => member !== userId);
+  const friendData = contactList.find((contact) => contact._id === friend);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const isBlocked =
+    blockedContacts.filter((contact) => contact?._id === friend).length > 0; // if user blocked
+
   const dropdownRef = useRef();
   const buttonRef = useRef();
-
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
-  useEffect(() => {
-    const getUser = async () => {
-      const friendId = c?.members?.find((c) => c !== userId);
-      try {
-        const res = await axios(`${getUserURL}/${friendId}`);
-        setChatList(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
-  }, [c.members, userId]);
 
   // dropdown listener
   useEffect(() => {
@@ -80,54 +66,63 @@ const Conversation = ({ c, setCurrentChat, socket, currentChat }) => {
     }
   };
 
-  useEffect(() => {
-    socket?.on("newNotification", (data) => {
-      const { conversationId } = data;
-      dispatch(markAsRead(conversationId));
-    });
-  }, [socket, dispatch]);
-
   return (
     <ConversationWrapper
       isActive={currentChat?._id === c?._id}
       theme={theme}
       ref={dropdownRef}
       top={top}
-      onClick={() => {
-        setCurrentChat(c);
-        dispatch(markAsRead(c?._id));
-      }}
+      onClick={() => setCurrentChat(c)}
     >
-      <img
-        src={chatList?.avatar ? PF + chatList.avatar : PF + "user.png"}
-        alt="avatar"
-      />
+      <div className="image-wrapper">
+        {friendData?.privacy?.profilePhoto && (
+          <img
+            src={
+              !isBlocked
+                ? friendData?.privacy?.profilePhoto === "none"
+                  ? PF + "default.png"
+                  : friendData?.avatar
+                  ? PF + friendData.avatar
+                  : PF + "default.png"
+                : PF + "default.png"
+            }
+            alt="avatar"
+          />
+        )}
+      </div>
       <div className="wrapper">
         <div className="chatInfo">
-          <p>{chatList?.name}</p>
+          <p>{friendData?.name}</p>
           <span>
-            {c?.lastMessages?.[0]
-              ? c?.lastMessages?.[0]?.imageUrl
-                ? <> <BsCameraFill /> {"photo"} </>
-                : c?.lastMessages?.[0]?.text?.length > 30
-                ? c?.lastMessages?.[0]?.text.substring(0, 30) + "..."
-                : c?.lastMessages?.[0]?.text
-              : "No messages yet"}
+            {c?.lastMessages?.[0] ? (
+              c?.lastMessages?.[0]?.imageUrl ? (
+                <>
+                  {" "}
+                  <BsCameraFill /> {"photo"}{" "}
+                </>
+              ) : c?.lastMessages?.[0]?.text?.length > 30 ? (
+                c?.lastMessages?.[0]?.text.substring(0, 30) + "..."
+              ) : (
+                c?.lastMessages?.[0]?.text
+              )
+            ) : (
+              "No messages yet"
+            )}
           </span>
         </div>
         <div className="chatTime" ref={buttonRef}>
           <TimeRender />
           <div className="unread-wrapper">
-            {unreadMessages?.[c?._id] > 0 && (
+            {/* {unreadMessages?.[c?._id] > 0 && (
               <span className="notification">{unreadMessages?.[c?._id]}</span>
-            )}
+            )} */}
             <MdKeyboardArrowDown
               className="optionBtn"
               onClick={() => setOpenMenu(!openMenu)}
             />
           </div>
           <div className={`chatDropdown ${openMenu ? "active" : "inactive"}`}>
-            <ChatDropDown c={c} />
+            <ChatDropDown setCurrentChat={setCurrentChat} c={c} />
           </div>
         </div>
       </div>

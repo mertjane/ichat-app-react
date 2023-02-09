@@ -24,21 +24,28 @@ import ProfilePhoto from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/
 import AboutMe from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/AboutMe/AboutMe";
 import MsgDuration from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/MessageDuration/MsgDuration";
 import BlockedUsers from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/BlockedContacts/BlockedUsers";
+import SlideMenu from "../ChatSlideMenu/SlideMenu";
 
 export const Wrapper = styled.div`
   width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "none")};
+  background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "#f0f2f5")};
   border-right: ${(props) =>
     props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #f0ededd6"};
+  @media (max-width: 1800px) {
+    width: 32%;
+  }
 `;
 export const ChatWrapper = styled.div`
-  width: 73%;
+  width: ${(props) => (props.openRightMenu === true ? "46%" : "73%")};
   height: 100%;
   display: flex;
   flex-direction: column;
+  @media (max-width: 1800px) {
+    width: 68%;
+  }
   .svg-box {
     width: 100%;
     height: 100%;
@@ -64,7 +71,7 @@ export const ChatWrapper = styled.div`
       position: relative;
       top: 110px;
       font-size: 12.8px;
-      color: ${(props) => (props.theme === "dark" ? "#96969e" : "#949393")};
+      color: ${(props) => (props.theme === "dark" ? "#7e8488" : "#949393")};
       width: 50%;
       text-align: center;
     }
@@ -74,18 +81,30 @@ export const ChatWrapper = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 7px;
-    background-color: #008069;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#008069" : "#25d366"};
   }
 `;
 
 const Dashboard = () => {
   const { theme } = useSelector((state) => state.user.userInfo);
+  const { userId } = useSelector((state) => state.auth);
   const [currentChat, setCurrentChat] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [openRightMenu, setOpenRightMenu] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     setSocket(io(process.env.REACT_APP_SOCKET_ENDPOINT));
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("user-online", userId);
+      socket.on("user-disconnect-from-server", () => setIsOnline(false));
+    }
+  }, [socket, userId])
+
 
   return (
     <>
@@ -95,9 +114,9 @@ const Dashboard = () => {
             path="/"
             element={
               <Main
-                socket={socket}
                 setCurrentChat={setCurrentChat}
                 currentChat={currentChat}
+                socket={socket}
               />
             }
           />
@@ -138,12 +157,16 @@ const Dashboard = () => {
           <Route path="/profile" element={<ProfileView />} />
         </Routes>
       </Wrapper>
-      <ChatWrapper theme={theme}>
+      <ChatWrapper theme={theme} openRightMenu={openRightMenu}>
         {currentChat ? (
           <Chat
+            openRightMenu={openRightMenu}
+            setOpenRightMenu={setOpenRightMenu}
             socket={socket}
             currentChat={currentChat}
             setCurrentChat={setCurrentChat}
+            isOnline={isOnline}
+            setIsOnline={setIsOnline}
           />
         ) : (
           <>
@@ -165,6 +188,7 @@ const Dashboard = () => {
           </>
         )}
       </ChatWrapper>
+      {openRightMenu && <SlideMenu currentChat={currentChat} onClose={() => setOpenRightMenu(false)}/>}
     </>
   );
 };

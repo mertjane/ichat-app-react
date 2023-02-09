@@ -11,21 +11,15 @@ export const inactiveStyles = css`
 `;
 
 export const ConversationWrapper = styled.div`
-  min-height: 69px;
+  height: 70px;
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  box-sizing: border-box;
   background-color: ${(props) =>
     props.theme === "dark" ? "#111b21" : "#ffff"};
-  padding: 4px 0 0 12px;
+  // padding: 4px 0 0 12px;
   cursor: pointer;
-  /* &.active {
-    background-color: #2a373f;
-  }
-  &.inactive {
-    background-color: #111b21;
-  } */
-  // background-color: ${(props) => (props.isActive ? "#2a373f" : "#111b21")};
   background-color: ${(props) =>
     props.theme === "dark" && props.isActive && "#2a373f"};
   background-color: ${(props) =>
@@ -33,6 +27,7 @@ export const ConversationWrapper = styled.div`
   &:hover {
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
+
     .wrapper {
       .chatTime {
         .unread-wrapper {
@@ -48,20 +43,34 @@ export const ConversationWrapper = styled.div`
       }
     }
   }
-  img {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    object-fit: cover;
+  .image-wrapper {
+    height: 100%;
+    width: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    @media (max-width: 1800px) {
+      width: 20%;
+      }
+    img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   }
   .wrapper {
     height: 100%;
-    width: 100%;
+    width: 82%;
     box-sizing: border-box;
     display: flex;
     padding-right: 12px;
     border-bottom: ${(props) =>
       props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #dddd"};
+      @media (max-width: 1800px) {
+      width: 80%;
+      }
     .chatInfo {
       width: 75%;
       display: flex;

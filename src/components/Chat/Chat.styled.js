@@ -59,6 +59,69 @@ export const NavWrapper = styled.div`
       height: 25px;
       width: 25px;
       cursor: pointer;
+      padding: 8px;
+    }
+    & .active {
+      border-radius: 50%;
+      position: relative;
+      background-color: ${(props) =>
+        props.theme === "dark" ? "#374248" : "#d9dbde"};
+    }
+  }
+  .navbar-dropdown {
+    position: absolute;
+    width: 210px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    // left: ${({ left }) => left}px;
+    // top: ${({ top }) => top}px;
+    right: 20px;
+    top: 56px;
+    box-sizing: content-box;
+    z-index: 9999;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#ffff"};
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+      rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+      rgba(0, 0, 0, 0.1) 0px 0px 0px 1px inset;
+    &.active {
+      opacity: 1;
+      visibility: visible;
+      // transform: translateY(0);
+      // transition: var(--speed) ease;
+      @keyframes dropdownIn {
+        from {
+          scale: 0;
+        }
+        to {
+          scale: 1;
+        }
+      }
+      animation: dropdownIn 0.3s ease;
+    }
+    &.inactive {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-20px);
+      transition: var(--speed) ease;
+    }
+    .list-item {
+      overflow: hidden;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 18px;
+      font-size: 14px;
+      text-decoration: none;
+      color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#54656f")};
+      cursor: pointer;
+      &:hover {
+        background-color: ${(props) =>
+          props.theme === "dark" ? "#111b21" : "#e4e2de78"};
+      }
     }
   }
 `;
@@ -116,33 +179,43 @@ export const ChatBoxContainer = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-  height: ${(props) => (props.showList ? `700px` : `50px`)};
-  width: auto;
-  padding: 10px 20px 10px 16px;
+  height: ${(props) => (props.showList ? `700px` : `90px`)};
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.showList ? `flex-end` : `center`)};
   gap: 24px;
   display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  .blocked-text {
+    color: ${(props) => (props.theme === "dark" ? "#a8b9bec6" : "#5a6369")};
+    font-size: 13.4px;
+  }
   .inputGroup {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 12px;
     box-sizing: border-box;
+    position: relative;
+    margin-bottom: ${(props) => (props.showList ? `8px` : `0`)};
     .btnGroup {
+      height: 100%;
+      width: ${(props) => (props.openRightMenu === true ? "14%" : "9%")};
       position: relative;
-      width: 90px;
-      height: 50px;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
+      justify-content: center;
+      @media (max-width: 1800px) {
+        width: 14%;
+      }
       .btn {
         display: flex;
         color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
-        height: 30px;
-        width: 30px;
+        height: 24px;
+        width: 24px;
         cursor: pointer;
         padding: 8px;
       }
@@ -153,26 +226,40 @@ export const InputWrapper = styled.div`
           props.theme === "dark" ? "#374248" : "#d9dbde"};
       }
     }
-    .textGroup {
-      width: 100%;
+    form {
+      width: ${(props) => (props.openRightMenu === true ? "80%" : "85%")};
       height: 50px;
       display: flex;
       align-items: center;
-      gap: 24px;
+      @media (max-width: 1800px) {
+        width: 80%;
+      }
       input {
         padding: 14px;
-        width: 93%;
+        width: 100%;
+        height: 14px;
         border: none;
         border-radius: 8px;
         outline: none;
         background-color: ${(props) =>
-          props.theme === "dark" ? "#404d55" : "#fffff"};
+          props.theme === "dark" ? "#404d55cc" : "#fffff"};
         color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
         ::placeholder {
           color: ${(props) =>
             props.theme === "dark" ? "#ddddddb2" : "#677780"};
           font-weight: 500;
         }
+      }
+    }
+    .submit-group {
+      height: 100%;
+      width: ${(props) => (props.openRightMenu === true ? "11%" : "6%")};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      @media (max-width: 1800px) {
+        width: 11%;
       }
       button {
         padding: 6px 16px;
@@ -186,38 +273,40 @@ export const InputWrapper = styled.div`
       }
       .confirmBtn {
         display: flex;
-        background-image: ${(props) => (props.theme === "dark" ? `url(${confirmBtnDark})` : `url(${confirmBtnLight})`)};
+        background-image: ${(props) =>
+          props.theme === "dark"
+            ? `url(${confirmBtnDark})`
+            : `url(${confirmBtnLight})`};
         background-repeat: no-repeat;
         background-position: center;
-        height: 30px;
-        width: 30px;
+        height: 24px;
+        width: 24px;
         cursor: pointer;
       }
       .micBtn {
-        display: flex;
-        background-image: ${(props) => (props.theme === "dark" ? `url(${micBtnDark})` : `url(${micBtnLight})`)};
+        background-image: ${(props) =>
+          props.theme === "dark"
+            ? `url(${micBtnDark})`
+            : `url(${micBtnLight})`};
         background-repeat: no-repeat;
         background-position: center;
-        height: 30px;
-        width: 30px;
+        height: 24px;
+        width: 24px;
         cursor: pointer;
       }
-
     }
     // toggle menu
     .input-toggle {
       position: absolute;
-      max-height: min-content;
+      height: min-content;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
       background: transparent;
-      left: 473px;
-      bottom: 80px;
-      // left: ${({ left }) => left}px;
-      // top: ${({ top }) => top}px;
-      box-sizing: content-box;
+      left: 43px;
+      bottom: 70px;
+      box-sizing: border-box;
       z-index: 9999;
       &.active {
         opacity: 1;
@@ -232,7 +321,7 @@ export const InputWrapper = styled.div`
           }
           to {
             //scale: 1;
-            height: 260px;
+            height: 250px;
             opacity: 1;
           }
         }
@@ -255,45 +344,48 @@ export const InputWrapper = styled.div`
         padding: 11px;
         border-radius: 50%;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        cursor: pointer;
       }
       .icons:nth-child(2) {
         background-color: #5f66cd;
         padding: 11px;
         border-radius: 50%;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        cursor: pointer;
       }
       .icons:nth-child(3) {
         background-color: #d3396d;
         padding: 11px;
         border-radius: 50%;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        cursor: pointer;
       }
       .icons:nth-child(4) {
         background-color: #bf59cf;
         padding: 11px;
         border-radius: 50%;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        cursor: pointer;
       }
       .item {
+        width: 100%;
+        cursor: pointer;
         input {
           position: absolute;
-          left: 1px;
           opacity: 0;
+          left: 2px;
           cursor: pointer;
-          width: 50px;
-          height: 50px;
+          width: 20px;
+          height: 20px;
         }
       }
     }
   }
-  // file preview
-  .preview-container {
-  }
+
   // emoji menu
   .emoji-container {
-    // position: absolute;
-    // left: 27%;
-    // bottom: 6.9%;
+    box-sizing: border-box;
+    width: 100%;
     z-index: 999;
     visibility: ${(props) => (props.showList ? `visible` : `hidden`)};
     @keyframes scaleIn {

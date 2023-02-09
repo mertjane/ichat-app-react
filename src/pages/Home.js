@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDetails } from "../features/user/services";
 import { getConversations } from "../features/conversation/services";
+import { getContacts, getBlockedContacts} from "../features/contacts/services";
 import { HomeWrapper } from "./Pages.styled";
 import Dashboard from "../components/Dashboard";
 import Skeleton from "../components/Skeleton/Skeleton";
@@ -22,10 +23,9 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getDetails({ userId }));
-  }, [userId, dispatch]);
-
-  useEffect(() => {
     dispatch(getConversations({ userId }));
+    dispatch(getContacts({ userId }));
+    dispatch(getBlockedContacts({ userId }));
   }, [userId, dispatch]);
 
   return (

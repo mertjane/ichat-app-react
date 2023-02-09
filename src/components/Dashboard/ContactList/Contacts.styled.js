@@ -90,6 +90,9 @@ export const UsersWrapper = styled.section`
     color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#111b21d3")};
     border-bottom: ${(props) =>
       props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #dddd"};
+    label{
+      cursor: pointer;
+    }
     span {
       font-size: 14px;
       color: ${(props) => (props.theme === "dark" ? "#96969e" : "#929191")};

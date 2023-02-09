@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendNewMessage, deleteMessage } from "./messageSlice";
+import { sendNewMessage, deleteMessage, clearChat} from "./messageSlice";
 import { getMessagesURL } from "../apiCalls";
 import axios from "axios";
 
@@ -19,54 +19,47 @@ export const getMessages = createAsyncThunk(
   }
 );
 
-/* export const sendMessage = async (
-  { currentChat, newMessage, userId, image},
-  dispatch
-) => {
-  try {
-    const message = { 
-      sender: userId,
-      text: newMessage,
-      conversationId: currentChat._id,
-    };
-    if(image){
-      message.imageUrl = image;
-    }
-    const res = await axios.post(`${getMessagesURL}`, message);
-    dispatch(sendNewMessage(res.data));
-  } catch (err) {
-    console.log(err);
-  }
-}; */
 
 export const sendMessage = async (
-  { currentChat, newMessage, userId, imageUrl},
+  { currentChat, newMessage, userId, imageUrl },
   dispatch
 ) => {
   try {
-    // create a new FormData object
-    const formData = new FormData();
-    // add the image file to the form data
-    formData.append('image', imageUrl);
-    // add the other message details to the form data
-    formData.append('conversationId', currentChat._id);
-    formData.append('sender', userId);
-    formData.append('text', newMessage);
+    if (Array.isArray(imageUrl)) {
+      imageUrl.forEach(async (image) => {
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("conversationId", currentChat._id);
+        formData.append("sender", userId);
+        formData.append("text", newMessage);
 
-    // make the POST request to the server with the form data
-    const res = await axios.post(`${getMessagesURL}`, formData, {
+        const res = await axios.post(`${getMessagesURL}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        dispatch(sendNewMessage(res.data));
+      });
+    } else {
+      const formData = new FormData();
+      if (imageUrl) {
+        formData.append("image", imageUrl);
+      } else {
+        formData.append("conversationId", currentChat._id);
+        formData.append("sender", userId);
+        formData.append("text", newMessage);
+      }
+      const res = await axios.post(`${getMessagesURL}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
-    });
-
-    dispatch(sendNewMessage(res.data));
+      });
+      dispatch(sendNewMessage(res.data));
+    }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
-
-
 
 export const removeMessage = async ({ currentChat, message }, dispatch) => {
   try {
@@ -78,3 +71,14 @@ export const removeMessage = async ({ currentChat, message }, dispatch) => {
     console.log(err);
   }
 };
+
+export const clearMessages = async ({ currentChat }, dispatch) => {
+  try {
+    const res = await axios.delete(
+      `${getMessagesURL}/${currentChat._id}`
+    );
+    dispatch(clearChat(res.data));
+  } catch (error) {
+    console.log(error)
+  }
+}

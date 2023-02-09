@@ -43,7 +43,7 @@ const Navbar = () => {
   return (
     <NavWrapper theme={theme} ref={menuRef}>
       <div className="userInfo">
-        <img src={avatar ? PF + avatar : PF + "user.png"} alt="user" />
+        <img src={avatar ? PF + avatar : PF + "default.png"} alt="user" />
         <span>{name}</span>
       </div>
       <div className="BtnGroup" ref={iconRef}>

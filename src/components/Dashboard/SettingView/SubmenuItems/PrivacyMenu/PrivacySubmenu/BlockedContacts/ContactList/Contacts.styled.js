@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import avatar from "..//..//..//..//..//..//..//..//assets/user.png";
+import avatar from "..//..//..//..//..//..//..//..//assets/default.png";
 
 export const StyledList = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: ${(props) =>
-    props.theme === "dark" ? "#111b21" : "#ffff"}; 
+    props.theme === "dark" ? "#111b21" : "#ffff"};
+  box-sizing: border-box;
   .list-items {
     display: flex;
     align-items: center;

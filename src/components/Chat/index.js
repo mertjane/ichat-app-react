@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Wrapper, ChatBoxContainer } from "./Chat.styled";
 import { sendMessage, getMessages } from "../../features/messages/services";
 import incomingMsg from "../../assets/incoming.mp3";
+import messageSend from "../../assets/message_send.mp3";
 import Navbar from "./Navbar";
 import Message from "./Message";
 import Input from "./Input";
@@ -11,13 +12,19 @@ import Spinner from "../Loading/Spinner";
 import _ from "lodash";
 import moment from "moment";
 
-const Chat = ({ currentChat, socket }) => {
+const Chat = ({
+  socket,
+  currentChat,
+  setCurrentChat,
+  isOnline,
+  setIsOnline,
+  openRightMenu,
+  setOpenRightMenu,
+}) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
-  const { userMessages, unreadMessages } = useSelector(
-    (state) => state.messages
-  );
-  const { theme, drawings, chatWallpaper } = useSelector(
+  const { userMessages } = useSelector((state) => state.messages);
+  const { theme, drawings, chatWallpaper, sounds } = useSelector(
     (state) => state.user.userInfo
   );
 
@@ -26,12 +33,11 @@ const Chat = ({ currentChat, socket }) => {
   const [arrivalMessage, setArrivalMessage] = useState([]);
   const [istyping, setIsTyping] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState(null);
-  const [isOnline, setIsOnline] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [openPreview, setOpenPreview] = useState(false); // file view
-  const [imageUrl, setImageUrl] = useState(""); // file view
+  const [imageUrl, setImageUrl] = useState([]); // image upload
 
   const scrollRef = useRef();
   const containerRef = useRef(null);
@@ -57,18 +63,34 @@ const Chat = ({ currentChat, socket }) => {
     }
   });
 
+  const targetUserId = currentChat?.members?.filter((m) => m !== userId)[0]; // opposite user of currentChat
+
   useEffect(() => {
     socket.emit("addUser", userId);
     socket.on("getUsers", (users) => {
       setOnlineUsers(users);
     });
-    socket.emit("user-online");
+    socket.on(
+      "user-online-status",
+      ({ userId: targetUserId, isOnline: targetUserIsOnline }) => {
+        if (targetUserId !== userId) {
+          setIsOnline(targetUserIsOnline);
+        }
+      }
+    );
+    // Trigger checkUserOnlineStatus when chat between two users is opened
+    if (currentChat._id) {
+      const checkUserOnlineStatus = (targetUserId) => {
+        socket.emit("check-user-online", targetUserId, (isOnline) => {
+          setIsOnline(isOnline);
+        });
+      };
+      checkUserOnlineStatus(targetUserId);
+    }
     socket.emit("join-chat", currentChat._id);
-    socket.on("user-online-from-server", () => setIsOnline(true));
     socket.on("start-typing-from-server", () => setIsTyping(true));
     socket.on("stop-typing-from-server", () => setIsTyping(false));
-    socket.on("user-disconnect-from-server", () => setIsOnline(false));
-  }, [socket, currentChat._id, userId]);
+  }, [socket, currentChat._id, userId, targetUserId, setIsOnline]);
 
   // fething messages
   useEffect(() => {
@@ -96,10 +118,11 @@ const Chat = ({ currentChat, socket }) => {
       roomId: currentChat._id,
     });
     if (typingTimeout) clearTimeout(typingTimeout);
-
     setTypingTimeout(
       setTimeout(() => {
-        socket.emit("stop-typing");
+        socket.emit("stop-typing", {
+          roomId: currentChat._id,
+        });
       }, 200)
     );
   };
@@ -115,11 +138,9 @@ const Chat = ({ currentChat, socket }) => {
       text: newMessage,
     });
     setNewMessage("");
-    //update the unread message count for the receiver
-    if (unreadMessages[currentChat._id]) {
-      unreadMessages[currentChat._id]++;
-    } else {
-      unreadMessages[currentChat._id] = 1;
+    if (sounds) {
+      // check the value of sounds from Redux state
+      new Audio(messageSend).play(); // play the audio if sounds is true
     }
   };
 
@@ -130,10 +151,14 @@ const Chat = ({ currentChat, socket }) => {
         conversationId: currentChat._id,
         sender: data.senderId,
         text: data.text,
+        imageUrl: data.image,
       });
-      new Audio(incomingMsg).play();
+      if (sounds) {
+        // check the value of sounds from Redux state
+        new Audio(incomingMsg).play(); // play the audio if sounds is true
+      }
     });
-  }, [currentChat._id, socket]);
+  }, [currentChat._id, socket, sounds, imageUrl]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -145,12 +170,21 @@ const Chat = ({ currentChat, socket }) => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [userMessages, imageUrl, openPreview]);
 
+  const blobs = Array.from(
+    imageUrl,
+    (file) => new Blob([file], { type: file.type })
+  );
+  const images = blobs.map((blob) => URL.createObjectURL(blob));
+
   return (
     <Wrapper theme={theme}>
       <Navbar
         isOnline={isOnline}
         istyping={istyping}
         currentChat={currentChat}
+        setCurrentChat={setCurrentChat}
+        messages={messages}
+        setOpenRightMenu={setOpenRightMenu}
       />
       {openPreview === true ? (
         <PreviewFile
@@ -159,7 +193,8 @@ const Chat = ({ currentChat, socket }) => {
           currentChat={currentChat}
           newMessage={newMessage}
           open={openPreview}
-          image={URL.createObjectURL(imageUrl)}
+          image={images}
+          socket={socket}
           onClose={() => setOpenPreview(false)}
         />
       ) : (
@@ -184,6 +219,7 @@ const Chat = ({ currentChat, socket }) => {
                     .map((m) => (
                       <div key={m._id} ref={scrollRef}>
                         <Message
+                          isOnline={isOnline}
                           currentChat={currentChat}
                           imageUrl={imageUrl}
                           messages={messages}
@@ -196,12 +232,14 @@ const Chat = ({ currentChat, socket }) => {
               ))}
           </ChatBoxContainer>
           <Input
+            openRightMenu={openRightMenu}
             setImageUrl={setImageUrl}
             setOpenPreview={setOpenPreview}
             handleForm={handleForm}
             handleInput={handleInput}
             newMessage={newMessage}
             setNewMessage={setNewMessage}
+            currentChat={currentChat}
           />
         </>
       )}

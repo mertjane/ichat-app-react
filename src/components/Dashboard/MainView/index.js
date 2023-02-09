@@ -4,7 +4,7 @@ import Search from "./Search";
 import ChatList from "./ChatList";
 import { Wrapper } from "./MainView.styled";
 
-const Main = ({ setCurrentChat, socket, currentChat }) => {
+const Main = ({ setCurrentChat, currentChat, socket}) => {
   const [query, setQuery] = useState("");
 
   return (
@@ -12,8 +12,8 @@ const Main = ({ setCurrentChat, socket, currentChat }) => {
       <Navbar />
       <Search onChange={(e) => setQuery(e.target.value)} />
       <ChatList
-        query={query}
         socket={socket}
+        query={query}
         setCurrentChat={setCurrentChat}
         currentChat={currentChat}
       />

@@ -38,11 +38,14 @@ const User = ({ _id, avatar, username, user }) => {
 
   return (
     <UserWrapper theme={theme} key={_id}>
-      <img
-        src={avatar ? PF + avatar : PF + "user.png"}
-        alt="avatar"
-        className="avatar"
-      />
+      {user?.[0]?.privacy?.profilePhoto && (
+        <img
+          src={
+            user?.[0]?.privacy?.profilePhoto === "none" ? PF + "default.png" : PF + avatar
+          }
+          alt="avatar"
+        />
+      )}
       <div className="user-info">
         <label>{username}</label>
         {username !== currentUsername && (

@@ -45,7 +45,7 @@ export const Overlay = styled.div`
       button {
         height: 45px;
         width: 110px;
-        color: #128c7e;
+        color: #00a884;
         background-color: ${(props) =>
           props.theme === "dark" ? "#2a373f" : "#ffff"};
         font-weight: 600;
@@ -69,18 +69,17 @@ export const Overlay = styled.div`
       .confirm-btn {
         height: 45px;
         width: 180px;
-        color: ${(props) =>
-            props.theme === "dark" ? "#111b21" : "#ffff"};;
-        font-weight: 500;
+        color: ${(props) => (props.theme === "dark" ? "#111b21" : "#ffff")};
+        font-weight: 600;
         font-size: 14px;
-        background-color: #128c7e;
+        background-color: #00a884;
         outline: none;
         border-radius: 3px;
         border: none;
         cursor: pointer;
         :hover {
           background-color: ${(props) =>
-            props.theme === "dark" ? "#1b9e8f" : "#19aa99d6"};
+            props.theme === "dark" ? "#0cb691" : "#19aa99d6"};
           transition: 600ms all ease;
         }
       }
@@ -95,10 +94,20 @@ const WarningModal = ({ open, onClose, friendId, friendName }) => {
 
   const handleUnblock = useCallback(async () => {
     await unBlockUser({ userId, friendId }, dispatch);
+    await dispatch(getBlockedContacts({ userId }));
     onClose();
-    toast.success(`${friendName} is unblocked`, { position: "bottom-left" });
-    dispatch(getBlockedContacts({ userId }));
-  }, [userId, friendName, dispatch, friendId, onClose]);
+    if (theme === "dark") {
+      toast.warning(`${friendName} is unblocked`, {
+        position: "bottom-left",
+        theme: "dark",
+      });
+    } else {
+      toast.warning(`${friendName} is unblocked`, {
+        position: "bottom-left",
+        theme: "light",
+      });
+    }
+  }, [userId, friendName, dispatch, friendId, onClose, theme]);
 
   if (!open) return null;
   return (
@@ -109,7 +118,7 @@ const WarningModal = ({ open, onClose, friendId, friendName }) => {
         transition={{ duration: 0.4 }}
         className="modal-wrapper"
       >
-        <span>Unblock {friendName}</span>
+        <span>Unblock {friendName} ?</span>
         <div className="btnGroup">
           <button onClick={onClose}>CANCEL</button>
           <button onClick={handleUnblock} className="confirm-btn">

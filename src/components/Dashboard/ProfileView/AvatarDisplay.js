@@ -30,7 +30,7 @@ const AvatarDisplay = () => {
         onMouseEnter={() => setDisplay(true)}
         onMouseLeave={() => setDisplay(false)}
       >
-        <img src={avatar ? PF + avatar : PF + "user.png"} alt="avatar" />
+        <img src={avatar ? PF + avatar : PF + "default.png"} alt="avatar" />
         {display === true ? (
           <label>
             <input

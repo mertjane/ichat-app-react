@@ -1,55 +1,102 @@
-import { useState, useEffect } from "react";
-import { getUserURL } from "../../features/apiCalls";
+import { useState, useEffect, useRef } from "react";
 import { NavWrapper } from "./Chat.styled";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import NavbarDropdown from "../Dashboard/Dropdown/NavbarDropdown";
 
-const Navbar = ({ currentChat, istyping, isOnline}) => {
+const Navbar = ({
+  currentChat,
+  setCurrentChat,
+  istyping,
+  isOnline,
+  messages,
+  setOpenRightMenu
+}) => {
+  const dropdownRef = useRef();
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const { contactList, blockedContacts } = useSelector(
+    (state) => state.contacts
+  );
   const { userId } = useSelector((state) => state.auth);
-  const { theme } = useSelector((state) => state.user.userInfo)
-  const [user, setUser] = useState([]);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { theme } = useSelector((state) => state.user.userInfo);
 
-  useEffect(() => {
-    const friendId = currentChat?.members?.find((m) => m !== userId);
-    const getUser = async () => {
-      try {
-        const res = await axios(`${getUserURL}/${friendId}`);
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
-  }, [currentChat.members, userId]);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const friend = currentChat?.members.find((member) => member !== userId);
+  const friendData = contactList.find((contact) => contact?._id === friend);
+
+  const isBlocked =
+    blockedContacts.filter((contact) => contact?._id === friend).length > 0; // if user blocked
+
 
   const StatusDisplay = () => {
-    if (istyping) {
+    if (isBlocked) {
+      return <></>;
+    } else if (friendData?.privacy?.onlineStatus === 'none') {
+      return <></>;
+    } else if (istyping) {
       return <span className="status-text">typing...</span>;
-    } else if(isOnline) {
+    } else if (isOnline) {
       return <span className="status-text">online</span>;
-    } else if(!istyping && isOnline){
-      return <span className="status-text">online</span>
+    } else if (!istyping && isOnline) {
+      return <span className="status-text">online</span>;
     } else {
-      return <></>
+      return <></>;
     }
   };
+
+  // dropdown listener
+  useEffect(() => {
+    const handler = (e) => {
+      if (!dropdownRef.current.contains(e.target)) {
+        setOpenMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+  
 
   return (
     <NavWrapper theme={theme}>
       <div className="contactInfo">
-        <img
-          src={user?.avatar ? PF + user.avatar : PF + "user.png"}
-          alt="avatar"
-        />
+        {friendData?.privacy?.profilePhoto && (
+          <img
+            src={
+              !isBlocked
+                ? friendData?.privacy?.profilePhoto === "none"
+                  ? PF + "default.png"
+                  : friendData?.avatar
+                  ? PF + friendData.avatar
+                  : PF + "default.png"
+                : PF + "default.png"
+            }
+            alt="avatar"
+          />
+        )}
         <span className="displayName">
-        {user?.name}
-        {<StatusDisplay />}
+          {friendData?.name}
+          {<StatusDisplay />}
         </span>
       </div>
       <div className="btnGroup">
-        <BsThreeDotsVertical className="btn" />
+        <BsThreeDotsVertical
+          onClick={() => setOpenMenu(!openMenu)}
+          className={`btn ${openMenu ? "active" : "inactive"}`}
+        />
+      </div>
+      <div
+        ref={dropdownRef}
+        className={`navbar-dropdown ${openMenu ? "active" : "inactive"}`}
+      >
+        <NavbarDropdown
+          messages={messages}
+          currentChat={currentChat}
+          setCurrentChat={setCurrentChat}
+          setOpenRightMenu={setOpenRightMenu}
+        />
       </div>
     </NavWrapper>
   );

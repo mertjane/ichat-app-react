@@ -79,8 +79,8 @@ export const FormWrapper = styled.div`
 /************************ HOME STYLES *********************/
 
 export const HomeWrapper = styled.div`
-  width: 80%;
-  height: 93%;
+  width: 85%;
+  height: 95.5%;
   position: absolute;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
     rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,

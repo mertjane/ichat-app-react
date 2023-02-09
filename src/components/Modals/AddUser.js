@@ -26,7 +26,6 @@ const AddUser = ({ open, onClose }) => {
     setQuery(e.target.value);
   }
 
-
   if (!open) return null;
 
   return (

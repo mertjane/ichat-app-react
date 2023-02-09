@@ -19,7 +19,7 @@ const WallpaperMenu = () => {
   const { userId } = useSelector((state) => state.auth);
   const [color, setColor] = useState(chatWallpaper);
 
-  const [chatDrawings, setChatDrawings] = useState(drawings); // default value is true
+  const [chatDrawings, setChatDrawings] = useState(drawings); // default value is true 
 
   const handleClick = () => {
     updateWallpaper({ color: color, userId }, dispatch);
