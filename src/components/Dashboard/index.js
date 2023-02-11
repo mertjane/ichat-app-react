@@ -25,13 +25,15 @@ import AboutMe from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/About
 import MsgDuration from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/MessageDuration/MsgDuration";
 import BlockedUsers from "./SettingView/SubmenuItems/PrivacyMenu/PrivacySubmenu/BlockedContacts/BlockedUsers";
 import SlideMenu from "../ChatSlideMenu/SlideMenu";
+import SlideSearch from "../ChatSlideMenu/SlideSearch";
 
 export const Wrapper = styled.div`
   width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => (props.theme === "dark" ? "#111b21" : "#f0f2f5")};
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#111b21" : "#f0f2f5"};
   border-right: ${(props) =>
     props.theme === "dark" ? "1px solid #ffffff2b" : "1px solid #f0ededd6"};
   @media (max-width: 1800px) {
@@ -39,7 +41,10 @@ export const Wrapper = styled.div`
   }
 `;
 export const ChatWrapper = styled.div`
-  width: ${(props) => (props.openRightMenu === true ? "46%" : "73%")};
+  width: ${(props) =>
+    props.openRightMenu === true || props.openSlideSearch === true
+      ? "46%"
+      : "73%"};
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -92,7 +97,9 @@ const Dashboard = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [socket, setSocket] = useState(null);
   const [openRightMenu, setOpenRightMenu] = useState(false);
+  const [openSlideSearch, setOpenSlideSearch] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     setSocket(io(process.env.REACT_APP_SOCKET_ENDPOINT));
@@ -103,8 +110,15 @@ const Dashboard = () => {
       socket.emit("user-online", userId);
       socket.on("user-disconnect-from-server", () => setIsOnline(false));
     }
-  }, [socket, userId])
+  }, [socket, userId]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on("get-notification", (data) => {
+        setNotifications((prev) => [...prev, data]);
+      });
+    }
+  }, [socket]);
 
   return (
     <>
@@ -116,7 +130,8 @@ const Dashboard = () => {
               <Main
                 setCurrentChat={setCurrentChat}
                 currentChat={currentChat}
-                socket={socket}
+                notifications={notifications}
+                setNotifications={setNotifications}
               />
             }
           />
@@ -157,9 +172,15 @@ const Dashboard = () => {
           <Route path="/profile" element={<ProfileView />} />
         </Routes>
       </Wrapper>
-      <ChatWrapper theme={theme} openRightMenu={openRightMenu}>
+      <ChatWrapper
+        theme={theme}
+        openRightMenu={openRightMenu}
+        openSlideSearch={openSlideSearch}
+      >
         {currentChat ? (
           <Chat
+            openSlideSearch={openSlideSearch}
+            setOpenSlideSearch={setOpenSlideSearch}
             openRightMenu={openRightMenu}
             setOpenRightMenu={setOpenRightMenu}
             socket={socket}
@@ -188,7 +209,18 @@ const Dashboard = () => {
           </>
         )}
       </ChatWrapper>
-      {openRightMenu && <SlideMenu currentChat={currentChat} onClose={() => setOpenRightMenu(false)}/>}
+      {openRightMenu && (
+        <SlideMenu
+          currentChat={currentChat}
+          onClose={() => setOpenRightMenu(false)}
+        />
+      )}
+      {openSlideSearch && (
+        <SlideSearch
+          currentChat={currentChat}
+          onClose={() => setOpenSlideSearch(false)}
+        />
+      )}
     </>
   );
 };

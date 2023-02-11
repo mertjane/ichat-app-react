@@ -11,7 +11,7 @@ export const MessageWrapper = styled.div`
   .message {
     display: flex;
     .messageContent {
-      max-width: 50%;
+      max-width: 65%;
       min-height: 30px;
       min-width: 70px;
       white-space: pre-wrap;
@@ -167,6 +167,7 @@ export const MessageWrapper = styled.div`
         border-radius: 7px 0 7px 7px;
         min-width: 80px;
         .message-text {
+          width: auto;
           font-size: 13px;
           font-weight: 500;
           color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#33383b")};
@@ -199,20 +200,21 @@ export const MessageWrapper = styled.div`
         box-sizing: border-box;
         bottom: 8px;
         right: 8px;
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            scale: 0;
-          }
-          to {
-            opacity: 1;
-            scale: 1;
-          }
-        }
-        animation: scaleIn 500ms ease;
       }
       .doubleTick {
         background-image: url(${readReceiptDoubleGray});
+        width: 17px;
+        height: 17px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 4px;
+        right: 4px;
+      }
+      .read-receipt{
+        background-image: url(${readReceipt});
         width: 17px;
         height: 17px;
         background-repeat: no-repeat;
@@ -234,18 +236,6 @@ export const MessageWrapper = styled.div`
         }
         animation: scaleIn 500ms ease;
         transition-delay: 1s;
-      }
-      .read-receipt{
-        background-image: url(${readReceipt});
-        width: 17px;
-        height: 17px;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        position: absolute;
-        box-sizing: border-box;
-        bottom: 4px;
-        right: 4px;
       }
     }
   }

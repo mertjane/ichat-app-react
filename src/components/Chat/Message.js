@@ -1,18 +1,23 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MessageDropdown from "../Dashboard/Dropdown/MessageDropdown";
 import moment from "moment";
 import { MessageWrapper } from "./Message.styled";
 import { useSelector } from "react-redux";
 import MediaView from "./MediaView";
 
-const Message = ({ message, own, currentChat, imageUrl, isOnline }) => {
+
+const Message = ({ message, own, currentChat, imageUrl, socket, isOnline }) => {
   const { theme, privacy } = useSelector((state) => state.user.userInfo);
+  const { userMessages } = useSelector((state) => state.messages);
   const [openMenu, setOpenMenu] = useState(false); // dropdown
   const [openModal, setOpenModal] = useState(false); // dropdown subModal
   const [openMedia, setOpenMedia] = useState(false); // media messages modal
-  const [isSent, setIsSent] = useState(false);
   const [top, setTop] = useState(0);
   const [left, setLeft] = useState(0);
+
+  const readReceipts = userMessages.filter(
+    (userMessage) => userMessage.isRead === true
+  );
 
   const dropdownRef = useRef();
   const buttonRef = useRef();
@@ -47,12 +52,6 @@ const Message = ({ message, own, currentChat, imageUrl, isOnline }) => {
     }
   }, [buttonRef, openMenu, offset, leftOffset]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsSent(true);
-    }, 500);
-  }, []);
-
   return (
     <MessageWrapper
       imageUrl={imageUrl}
@@ -83,33 +82,21 @@ const Message = ({ message, own, currentChat, imageUrl, isOnline }) => {
             <span className="time">
               {moment(message?.createdAt).format("HH:mm")}
             </span>
-            {privacy.readReceipt === false || message.isSent === true ? (
-              isSent === false ? (
+            {privacy.readReceipt === true ? (
+              message.isReceived === false ? (
                 <div className="singleTick" />
               ) : (
-                <div className="doubleTick" />
+                <div
+                  className={
+                    readReceipts?.includes(message)
+                      ? "read-receipt"
+                      : "doubleTick"
+                  }
+                />
               )
             ) : (
               <div className="doubleTick" />
             )}
-            {privacy.readReceipt === true || message.isSent === true ? (
-              isSent === false ? (
-                <div className="singleTick" />
-              ) : (
-                isOnline === false ? <div className="doubleTick" /> : <div className="read-receipt" />
-              )
-            ) : (
-              <div className="doubleTick" />
-            )}
-            {/* message.isSent === true ? (
-              isSent === false ? (
-                <div className="singleTick" />
-              ) : (
-                <div className="doubleTick" />
-              )
-            ) : (
-              <div className="doubleTick" />
-            ) */}
           </div>
           <div
             className={`messageDropdown ${openMenu ? "active" : "inactive"}`}
@@ -127,4 +114,4 @@ const Message = ({ message, own, currentChat, imageUrl, isOnline }) => {
   );
 };
 
-export default Message;
+export default React.memo(Message);

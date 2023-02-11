@@ -9,8 +9,12 @@ const Navbar = ({
   setCurrentChat,
   istyping,
   isOnline,
+  lastSeen,
   messages,
-  setOpenRightMenu
+  openRightMenu,
+  setOpenRightMenu,
+  openSlideSearch,
+  setOpenSlideSearch,
 }) => {
   const dropdownRef = useRef();
   const [openMenu, setOpenMenu] = useState(false);
@@ -28,11 +32,16 @@ const Navbar = ({
   const isBlocked =
     blockedContacts.filter((contact) => contact?._id === friend).length > 0; // if user blocked
 
+  /* useEffect(() => {
+    if(privacy.lastSeen !== "none" && currentChat){
+      setLastSeen(`${moment().format('L') + " " + moment().format("HH:mm")}`)
+    }
+  }, [currentChat, privacy.lastSeen]) */
 
   const StatusDisplay = () => {
     if (isBlocked) {
       return <></>;
-    } else if (friendData?.privacy?.onlineStatus === 'none') {
+    } else if (friendData?.privacy?.onlineStatus === "none") {
       return <></>;
     } else if (istyping) {
       return <span className="status-text">typing...</span>;
@@ -40,7 +49,9 @@ const Navbar = ({
       return <span className="status-text">online</span>;
     } else if (!istyping && isOnline) {
       return <span className="status-text">online</span>;
-    } else {
+    } /* else if(!isOnline && !istyping && friendData?.privacy?.lastSeen !== "none"){
+      return <span className="last-seen-status">last seen {lastSeen}</span>;
+    }  */ else {
       return <></>;
     }
   };
@@ -57,10 +68,9 @@ const Navbar = ({
       document.removeEventListener("mousedown", handler);
     };
   });
-  
 
   return (
-    <NavWrapper theme={theme}>
+    <NavWrapper openRightMenu={openRightMenu} theme={theme}>
       <div className="contactInfo">
         {friendData?.privacy?.profilePhoto && (
           <img
@@ -82,6 +92,10 @@ const Navbar = ({
         </span>
       </div>
       <div className="btnGroup">
+        <div
+          className="searchBtn"
+          onClick={() => setOpenSlideSearch(!openSlideSearch)}
+        />
         <BsThreeDotsVertical
           onClick={() => setOpenMenu(!openMenu)}
           className={`btn ${openMenu ? "active" : "inactive"}`}
@@ -95,6 +109,7 @@ const Navbar = ({
           messages={messages}
           currentChat={currentChat}
           setCurrentChat={setCurrentChat}
+          openRightMenu={openRightMenu}
           setOpenRightMenu={setOpenRightMenu}
         />
       </div>

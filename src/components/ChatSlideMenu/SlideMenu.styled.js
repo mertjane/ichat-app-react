@@ -15,7 +15,7 @@ export const SlideMenuWrapper = styled.div`
   .header {
     height: 40px;
     display: flex;
-    align-items: center;
+    align-items: center; 
     background-color: ${(props) =>
       props.theme === "dark" ? "#2a373f" : "#f0f2f5"};
     padding: 10px 30px;

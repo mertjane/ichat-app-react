@@ -1,5 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendNewMessage, deleteMessage, clearChat} from "./messageSlice";
+import {
+  sendNewMessage,
+  deleteMessage,
+  clearChat,
+  messageReceivedCheck,
+  updateMessageReadStatus
+} from "./messageSlice";
 import { getMessagesURL } from "../apiCalls";
 import axios from "axios";
 
@@ -18,7 +24,6 @@ export const getMessages = createAsyncThunk(
     }
   }
 );
-
 
 export const sendMessage = async (
   { currentChat, newMessage, userId, imageUrl },
@@ -61,6 +66,27 @@ export const sendMessage = async (
   }
 };
 
+export const updateReceivedCheck = async ({ currentChat }, dispatch) => {
+  try {
+    const res = await axios.put(`${getMessagesURL}/${currentChat._id}`);
+    dispatch(messageReceivedCheck(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateReadReceipt = async ({ currentChat, receiverId}, dispatch) => {
+  try {
+    const res = await axios.put(`${getMessagesURL}/${currentChat._id}/update-isRead`, {
+      isRead: true,
+      sender: receiverId
+    });
+    dispatch(updateMessageReadStatus(res.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const removeMessage = async ({ currentChat, message }, dispatch) => {
   try {
     const res = await axios.delete(
@@ -74,11 +100,9 @@ export const removeMessage = async ({ currentChat, message }, dispatch) => {
 
 export const clearMessages = async ({ currentChat }, dispatch) => {
   try {
-    const res = await axios.delete(
-      `${getMessagesURL}/${currentChat._id}`
-    );
+    const res = await axios.delete(`${getMessagesURL}/${currentChat._id}`);
     dispatch(clearChat(res.data));
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};

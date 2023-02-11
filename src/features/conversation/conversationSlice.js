@@ -9,9 +9,6 @@ export const conversationSlice = createSlice({
     error: null,
   },
   reducers: {
-    /* loadConversations: (state, action) => {
-      state.info = action.payload;
-    }, */
     newConversation: (state, action) => {
       state.info = [...state.info, action.payload];
     },

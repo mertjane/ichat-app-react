@@ -10,9 +10,23 @@ export const messageSlice = createSlice({
   },
   reducers: {
     sendNewMessage: (state, action) => {
-      const newMessage = action.payload;
-      newMessage.isSent = true;
-      state.userMessages = [newMessage, ...state.userMessages];
+      state.userMessages = [action.payload, ...state.userMessages];
+    },
+    messageReceivedCheck: (state, action) => {
+      state.userMessages = state.userMessages.map((message) => {
+        if (message.conversationId === action.payload) {
+          return { ...message, isReceived: true };
+        }
+        return message;
+      });
+    },
+    updateMessageReadStatus: (state, action) => {
+      state.userMessages = state.userMessages.map((message) => {
+        if (message.conversationId === action.payload.conversationId) {
+          return { ...message, isRead: true };
+        }
+        return message;
+      });
     },
     deleteMessage: (state, action) => {
       state.userMessages = state.userMessages.filter(
@@ -24,7 +38,6 @@ export const messageSlice = createSlice({
       state.userMessages = state.userMessages.filter(
         (message) => message.conversationId !== conversationId
       );
-      state.unreadMessages[conversationId] = 0;
     },
   },
   extraReducers: (builder) => {
@@ -43,6 +56,12 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { sendNewMessage, deleteMessage, clearChat } =
-  messageSlice.actions;
+export const {
+  sendNewMessage,
+  deleteMessage,
+  clearChat,
+  updateMessage,
+  messageReceivedCheck,
+  updateMessageReadStatus,
+} = messageSlice.actions;
 export default messageSlice.reducer;

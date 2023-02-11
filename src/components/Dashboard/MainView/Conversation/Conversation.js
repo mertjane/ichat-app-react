@@ -6,11 +6,18 @@ import { BsCameraFill } from "react-icons/bs";
 import ChatDropDown from "../../Dropdown/ChatDropDown";
 import moment from "moment";
 
-const Conversation = ({ c, setCurrentChat, currentChat }) => {
+const Conversation = ({
+  c,
+  setCurrentChat,
+  currentChat,
+  setNotifications,
+  notifications,
+}) => {
   const { userId } = useSelector((state) => state.auth);
-  const { contactList, blockedContacts} = useSelector((state) => state.contacts);
+  const { contactList, blockedContacts } = useSelector(
+    (state) => state.contacts
+  );
   const { theme } = useSelector((state) => state.user.userInfo);
-
   const [openMenu, setOpenMenu] = useState(false);
   const [top, setTop] = useState(170);
 
@@ -22,6 +29,10 @@ const Conversation = ({ c, setCurrentChat, currentChat }) => {
 
   const dropdownRef = useRef();
   const buttonRef = useRef();
+
+  const relatedChat = notifications.filter(
+    (chat) => chat.conversationId === c._id
+  );
 
   // dropdown listener
   useEffect(() => {
@@ -72,7 +83,10 @@ const Conversation = ({ c, setCurrentChat, currentChat }) => {
       theme={theme}
       ref={dropdownRef}
       top={top}
-      onClick={() => setCurrentChat(c)}
+      onClick={() => {
+        setCurrentChat(c);
+        setNotifications([]);
+      }}
     >
       <div className="image-wrapper">
         {friendData?.privacy?.profilePhoto && (
@@ -113,9 +127,9 @@ const Conversation = ({ c, setCurrentChat, currentChat }) => {
         <div className="chatTime" ref={buttonRef}>
           <TimeRender />
           <div className="unread-wrapper">
-            {/* {unreadMessages?.[c?._id] > 0 && (
-              <span className="notification">{unreadMessages?.[c?._id]}</span>
-            )} */}
+            {relatedChat?.length > 0 && (
+              <span className="notification">{relatedChat.length}</span>
+            )}
             <MdKeyboardArrowDown
               className="optionBtn"
               onClick={() => setOpenMenu(!openMenu)}

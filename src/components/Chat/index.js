@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Wrapper, ChatBoxContainer } from "./Chat.styled";
-import { sendMessage, getMessages } from "../../features/messages/services";
+import {
+  sendMessage,
+  getMessages,
+  updateReceivedCheck,
+  updateReadReceipt,
+} from "../../features/messages/services";
 import incomingMsg from "../../assets/incoming.mp3";
 import messageSend from "../../assets/message_send.mp3";
 import Navbar from "./Navbar";
@@ -11,6 +16,7 @@ import PreviewFile from "./PreviewFile";
 import Spinner from "../Loading/Spinner";
 import _ from "lodash";
 import moment from "moment";
+import { getConversations } from "../../features/conversation/services";
 
 const Chat = ({
   socket,
@@ -20,11 +26,13 @@ const Chat = ({
   setIsOnline,
   openRightMenu,
   setOpenRightMenu,
+  openSlideSearch,
+  setOpenSlideSearch
 }) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
   const { userMessages } = useSelector((state) => state.messages);
-  const { theme, drawings, chatWallpaper, sounds } = useSelector(
+  const { theme, drawings, chatWallpaper, sounds, privacy} = useSelector(
     (state) => state.user.userInfo
   );
 
@@ -34,6 +42,7 @@ const Chat = ({
   const [istyping, setIsTyping] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  /* const [lastSeen, setLastSeen] = useState(`${moment().format('L') + " " + moment().format("HH:mm")}`) // emit lastSeen */
   const [isLoading, setIsLoading] = useState(false);
 
   const [openPreview, setOpenPreview] = useState(false); // file view
@@ -72,7 +81,7 @@ const Chat = ({
     });
     socket.on(
       "user-online-status",
-      ({ userId: targetUserId, isOnline: targetUserIsOnline }) => {
+      ({ userId: targetUserId, isOnline: targetUserIsOnline}) => {
         if (targetUserId !== userId) {
           setIsOnline(targetUserIsOnline);
         }
@@ -83,6 +92,7 @@ const Chat = ({
       const checkUserOnlineStatus = (targetUserId) => {
         socket.emit("check-user-online", targetUserId, (isOnline) => {
           setIsOnline(isOnline);
+          /* setLastSeen(lastSeen) */
         });
       };
       checkUserOnlineStatus(targetUserId);
@@ -127,22 +137,45 @@ const Chat = ({
     );
   };
 
-  const handleForm = async (e) => {
-    e.preventDefault();
-    sendMessage({ currentChat, userId, newMessage }, dispatch);
-    const receiverId = currentChat?.members?.find((m) => m !== userId);
-    socket.emit("sendMessage", {
-      conversationId: currentChat._id,
-      senderId: userId,
-      receiverId,
-      text: newMessage,
-    });
-    setNewMessage("");
-    if (sounds) {
-      // check the value of sounds from Redux state
-      new Audio(messageSend).play(); // play the audio if sounds is true
-    }
-  };
+
+  const handleForm = useCallback(
+    async (e) => {
+      e.preventDefault();
+      sendMessage({ currentChat, userId, newMessage }, dispatch);
+      const receiverId = currentChat?.members?.find((m) => m !== userId);
+      socket.emit("sendMessage", {
+        conversationId: currentChat._id,
+        senderId: userId,
+        receiverId,
+        text: newMessage,
+      });
+      setNewMessage("");
+      if (sounds) {
+        // check the value of sounds from Redux state
+        new Audio(messageSend).play(); // play the audio if sounds is true
+      }
+      await updateReceivedCheck({ currentChat }, dispatch);
+      socket.emit("send-notification", {
+        conversationId: currentChat._id,
+        receiver: receiverId,
+        sender: userId,
+        unreadMessages: currentChat.unreadMessages,
+      })
+      await dispatch(getConversations({ userId }));
+      setTimeout(() => {
+        dispatch(getMessages({ currentChat, messages: messages[0] }));
+      }, 1000);
+    },
+    [
+      dispatch,
+      currentChat,
+      sounds,
+      userId,
+      socket,
+      newMessage,
+      messages
+    ]
+  );
 
   // arrival messages
   useEffect(() => {
@@ -164,7 +197,11 @@ const Chat = ({
     arrivalMessage &&
       currentChat?.members?.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, currentChat]);
+      if (isOnline) {
+        const receiverId = currentChat?.members?.find((m) => m !== userId);
+        updateReadReceipt({ currentChat, receiverId }, dispatch);
+      }
+  }, [arrivalMessage, currentChat, dispatch, isOnline, userId]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -179,12 +216,17 @@ const Chat = ({
   return (
     <Wrapper theme={theme}>
       <Navbar
+        /* lastSeen={lastSeen}
+        setLastSeen={setLastSeen} */
         isOnline={isOnline}
         istyping={istyping}
         currentChat={currentChat}
         setCurrentChat={setCurrentChat}
         messages={messages}
+        openRightMenu={openRightMenu}
         setOpenRightMenu={setOpenRightMenu}
+        openSlideSearch={openSlideSearch}
+        setOpenSlideSearch={setOpenSlideSearch}
       />
       {openPreview === true ? (
         <PreviewFile
@@ -219,6 +261,8 @@ const Chat = ({
                     .map((m) => (
                       <div key={m._id} ref={scrollRef}>
                         <Message
+                          socket={socket}
+                          onlineUsers={onlineUsers}
                           isOnline={isOnline}
                           currentChat={currentChat}
                           imageUrl={imageUrl}

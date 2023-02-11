@@ -5,6 +5,8 @@ import confirmBtnLight from "../../assets/confirm_btn_light.svg";
 import confirmBtnDark from "../../assets/confirm_btn_dark.svg";
 import micBtnDark from "../../assets/mic_btn_dark.svg";
 import micBtnLight from "../../assets/mic_btn_light.svg";
+import searchBtnLight from "../../assets/search_btn_light.svg";
+import searcBtnDark from "../../assets/search_btn_dark.svg";
 import svg1 from "../../assets/1.svg";
 import svg2 from "../../assets/2.svg";
 import svg3 from "../../assets/3.svg";
@@ -30,7 +32,7 @@ export const NavWrapper = styled.div`
   .contactInfo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     img {
       height: 40px;
       width: 40px;
@@ -39,12 +41,17 @@ export const NavWrapper = styled.div`
     }
     .displayName {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 400;
       color: ${(props) => (props.theme === "dark" ? "#d9dee0" : "#111b21d3")};
       display: flex;
       flex-direction: column;
       .status-text {
-        font-size: 14px;
+        font-size: 13.5px;
+        font-weight: 400;
+        color: ${(props) => (props.theme === "dark" ? "#96969e" : "#555555dd")};
+      }
+      .last-seen-status {
+        font-size: 13.4px;
         font-weight: 500;
         color: ${(props) => (props.theme === "dark" ? "#96969e" : "#555555dd")};
       }
@@ -53,11 +60,24 @@ export const NavWrapper = styled.div`
   .btnGroup {
     width: auto;
     display: flex;
-    gap: 12px;
+    align-items: center;
+    gap: 25px;
+    .searchBtn {
+      background-image: ${(props) =>
+        props.theme === "dark"
+          ? `url(${searcBtnDark})`
+          : `url(${searchBtnLight})`};
+      height: 20px;
+      width: 20px;
+      cursor: pointer;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
     .btn {
-      color: ${(props) => (props.theme === "dark" ? "#8696a0" : "#677780")};
-      height: 25px;
-      width: 25px;
+      color: ${(props) => (props.theme === "dark" ? "#AEBAC1" : "#677780")};
+      height: 22px;
+      width: 22px;
       cursor: pointer;
       padding: 8px;
     }
@@ -77,7 +97,7 @@ export const NavWrapper = styled.div`
     border-radius: 4px;
     // left: ${({ left }) => left}px;
     // top: ${({ top }) => top}px;
-    right: 20px;
+    right: ${(props) => (props.openRightMenu === true ? "460px" : "20px")};
     top: 56px;
     box-sizing: content-box;
     z-index: 9999;
@@ -139,7 +159,7 @@ export const ChatBoxContainer = styled.div`
   background-color: ${(props) =>
     props.chatWallpaper && `${props.chatWallpaper}`};
   background-size: contain;
-  padding: 40px;
+  padding: 40px 70px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -155,7 +175,7 @@ export const ChatBoxContainer = styled.div`
   .day-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     margin: 10px 0;
     .text {
       color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};
