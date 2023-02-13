@@ -1,8 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { ConversationWrapper } from "./Conversation.styled";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { BsCameraFill } from "react-icons/bs";
+import {
+  clearNewNotifications,
+  getConversations,
+} from "../../../../features/conversation/services";
 import ChatDropDown from "../../Dropdown/ChatDropDown";
 import moment from "moment";
 
@@ -13,6 +17,7 @@ const Conversation = ({
   setNotifications,
   notifications,
 }) => {
+  const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
   const { contactList, blockedContacts } = useSelector(
     (state) => state.contacts
@@ -30,8 +35,11 @@ const Conversation = ({
   const dropdownRef = useRef();
   const buttonRef = useRef();
 
-  const relatedChat = notifications.filter(
+  const instantMessageCount = notifications.filter(
     (chat) => chat.conversationId === c._id
+  );
+  const newMessageCount = c.notifications?.filter(
+    (chat) => chat.sender !== userId
   );
 
   // dropdown listener
@@ -58,24 +66,65 @@ const Conversation = ({
     }
   }, [buttonRef, openMenu, offset]);
 
-  const TimeRender = () => {
+  const TimeRender = ({ c }) => {
     const today = new Date();
-    const chatDate = new Date(c.lastMessages?.[0]?.createdAt);
-    const difference = today.getTime() - chatDate.getTime();
-    Math.ceil(difference / (1000 * 3600 * 24));
+    const messageDate = new Date(c?.lastMessages?.[0]?.createdAt);
+    const difference = today.getTime() - messageDate.getTime();
 
     if (difference <= 86400000) {
-      return (
-        <span>{moment(c?.lastMessages?.[0]?.createdAt).format("LT")}</span>
-      );
+      const currentDate = new Date();
+      const messageDate = new Date(c?.lastMessages?.[0]?.createdAt);
+      if (currentDate.getDate() === messageDate.getDate()) {
+        return (
+          <span>{moment(c?.lastMessages?.[0]?.createdAt).format("HH:mm")}</span>
+        );
+      } else {
+        return <span>Yesterday</span>;
+      }
     } else if (difference > 86400000 && difference < 604800000) {
       return (
         <span>{moment(c?.lastMessages?.[0]?.createdAt).format("dddd")}</span>
       );
     } else {
-      return <span>{moment(c?.lastMessages?.[0]?.createdAt).format("l")}</span>;
+      return <span>{moment(c?.lastMessages?.[0]?.createdAt).format("L")}</span>;
     }
   };
+
+  const NewMessageRender = ({ newMessageCount, instantMessageCount }) => {
+    if (!instantMessageCount?.length > 0) {
+      if (newMessageCount?.length > 0) {
+        return <span className="notification">{newMessageCount?.length}</span>;
+      }
+    } else if (!newMessageCount?.length > 0) {
+      if (instantMessageCount?.length > 0) {
+        return (
+          <span className="notification">{instantMessageCount?.length}</span>
+        );
+      }
+    }
+  };
+
+  const handleChatClick = useCallback(async () => {
+    if (!currentChat) {
+      setCurrentChat(c);
+    }
+    if (instantMessageCount?.length > 0) {
+      await setNotifications([]);
+    }
+    if (newMessageCount?.length > 0) {
+      await clearNewNotifications({ c, userId }, dispatch);
+      await dispatch(getConversations({ userId }));
+    }
+  }, [
+    c,
+    currentChat,
+    dispatch,
+    userId,
+    setCurrentChat,
+    setNotifications,
+    newMessageCount?.length,
+    instantMessageCount?.length,
+  ]);
 
   return (
     <ConversationWrapper
@@ -83,10 +132,7 @@ const Conversation = ({
       theme={theme}
       ref={dropdownRef}
       top={top}
-      onClick={() => {
-        setCurrentChat(c);
-        setNotifications([]);
-      }}
+      onClick={handleChatClick}
     >
       <div className="image-wrapper">
         {friendData?.privacy?.profilePhoto && (
@@ -125,11 +171,12 @@ const Conversation = ({
           </span>
         </div>
         <div className="chatTime" ref={buttonRef}>
-          <TimeRender />
+          <TimeRender c={c} />
           <div className="unread-wrapper">
-            {relatedChat?.length > 0 && (
-              <span className="notification">{relatedChat.length}</span>
-            )}
+            <NewMessageRender
+              newMessageCount={newMessageCount}
+              instantMessageCount={instantMessageCount}
+            />
             <MdKeyboardArrowDown
               className="optionBtn"
               onClick={() => setOpenMenu(!openMenu)}

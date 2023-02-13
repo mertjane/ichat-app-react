@@ -17,6 +17,15 @@ export const conversationSlice = createSlice({
         (conversation) => conversation._id !== action.payload
       );
     },
+    clearNotification: (state, action) => {
+      const newInfo = state.info.map((conversation) => {
+        const newNotifications = conversation.notifications.filter(
+          (notification) => notification.sender !== action.payload.userId
+        );
+        return { ...conversation, notifications: newNotifications };
+      });
+      return { ...state, info: newInfo };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,5 +43,6 @@ export const conversationSlice = createSlice({
   },
 });
 
-export const { newConversation, deleteChat} = conversationSlice.actions;
+export const { newConversation, deleteChat, clearNotification } =
+  conversationSlice.actions;
 export default conversationSlice.reducer;

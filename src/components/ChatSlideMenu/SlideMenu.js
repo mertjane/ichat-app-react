@@ -1,9 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import {useCallback} from "react";
+import { useSelector, useDispatch} from "react-redux";
 import { SlideMenuWrapper } from "./SlideMenu.styled";
 import { IoIosArrowForward } from "react-icons/io";
+import { blockUser, unBlockUser, getBlockedContacts} from "../../features/contacts/services";
+import { deleteConversation } from "../../features/conversation/services";
 
-const SlideMenu = ({ onClose, currentChat }) => {
+const SlideMenu = ({ onClose, currentChat, setCurrentChat}) => {
+  const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.user.userInfo);
   const { userMessages } = useSelector((state) => state.messages);
   const { userId } = useSelector((state) => state.auth);
@@ -17,6 +20,21 @@ const SlideMenu = ({ onClose, currentChat }) => {
   const isBlocked =
     blockedContacts.filter((contact) => contact?._id === friend).length > 0; // if user blocked
   const images = userMessages.filter((message) => message.imageUrl); // filter currentChat messages including image
+
+  const handleBlockUser = useCallback(async() => {
+    await blockUser({userId, friendId: friend}, dispatch)
+    await dispatch(getBlockedContacts({ userId }));
+  }, [dispatch, userId, friend])
+
+  const handleUnBlockUser = useCallback(async() => {
+    await unBlockUser({userId, friendId: friend}, dispatch)
+    await dispatch(getBlockedContacts({ userId }));
+  }, [dispatch, userId, friend])
+
+  const handleDeleteChat = async () => {
+    await deleteConversation({conversationdId: currentChat._id}, dispatch)
+    setCurrentChat(null)
+  }
 
   return (
     <SlideMenuWrapper theme={theme}>
@@ -63,11 +81,18 @@ const SlideMenu = ({ onClose, currentChat }) => {
         </div>
       </div>
       <div className="footer">
-        <div className="item-box">
+        {!isBlocked ? (
+          <div className="item-box" onClick={handleBlockUser}>
           <div className="block-icon"/>
           <p>{friendData?.name} block your contact</p>
         </div>
-        <div className="item-box">
+        ) : (
+          <div className="item-box" onClick={handleUnBlockUser}>
+          <div className="block-icon"/>
+          <p>{friendData?.name} unblock your contact</p>
+        </div>
+        )}
+        <div className="item-box" onClick={handleDeleteChat}>
           <div className="delete-chat-icon"/>
           <p>delete chat</p>
         </div>

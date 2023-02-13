@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMessages } from "./services";
+import { getMessages, loadMoreMessages} from "./services";
 
 export const messageSlice = createSlice({
   name: "messages",
   initialState: {
     isLoading: false,
     userMessages: [],
+    hasMore: true,
     error: null,
   },
   reducers: {
@@ -52,7 +53,21 @@ export const messageSlice = createSlice({
       .addCase(getMessages.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(loadMoreMessages.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loadMoreMessages.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userMessages = [...state.userMessages, ...action.payload];
+        if (action.payload.length < 30) {
+          state.hasMore = false;
+        }
+      })
+      .addCase(loadMoreMessages.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
   },
 });
 

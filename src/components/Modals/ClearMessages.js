@@ -20,14 +20,15 @@ const ClearMessages = ({
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.user.userInfo);
   const { userId } = useSelector((state) => state.auth);
+  const { userMessages } = useSelector((state) => state.messages);
 
   let conversationId = currentChat._id;
 
   const handleClearChat = useCallback(async () => {
     if (action === "clear") {
-      if (messages.length > 0) {
+      if (userMessages.length > 0) {
         await clearMessages({ currentChat }, dispatch);
-        if (theme === "dark") {
+        if (theme === "dark") { 
           toast.success("Messages cleared", {
             position: "bottom-left",
             theme: "dark",
@@ -78,6 +79,7 @@ const ClearMessages = ({
     currentChat,
     dispatch,
     messages,
+    userMessages.length,
     onClose,
     userId,
     theme,

@@ -25,6 +25,20 @@ export const getMessages = createAsyncThunk(
   }
 );
 
+export const loadMoreMessages = createAsyncThunk(
+  "messages/loadMoreMessages",
+  async (params, thunkAPI) => {
+    const { currentChat, offset} = params;
+    try {
+      const res = await axios.get(`${getMessagesURL}/${currentChat?._id}?limit=30&offset=${offset + 30}`);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 export const sendMessage = async (
   { currentChat, newMessage, userId, imageUrl },
   dispatch

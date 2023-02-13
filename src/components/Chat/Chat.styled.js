@@ -148,7 +148,6 @@ export const NavWrapper = styled.div`
 
 export const ChatBoxContainer = styled.div`
   height: 100%;
-  // background-color: #1d2326;
   background-image: ${(props) =>
     props.theme === "dark" ? `url(${chatDarkBack})` : `url(${chatBack})`};
   ${(props) =>
@@ -170,7 +169,7 @@ export const ChatBoxContainer = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     background: ${(props) =>
-      props.theme === "dark" ? "#435058ab" : "#9e9d99"};
+      props.theme === "dark" ? "#435058ab" : "#9e9d99ac"};
   }
   .day-wrapper {
     display: flex;
@@ -194,6 +193,39 @@ export const ChatBoxContainer = styled.div`
           ? "none"
           : `rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
         rgba(0, 0, 0, 0.3) 0px 1px 3px -1px`};
+    }
+  }
+  .scrollBtn {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: ${(props) =>
+      props.theme === "dark" ? "#2a373f" : "#ffff"};
+    position: absolute;
+    padding: 5px;
+    right: 14px;
+    bottom: 95px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        scale: 0;
+      }
+      to {
+        opacity: 1;
+        scale: 1;
+      }
+    }
+    animation: scaleIn 250ms ease;
+    .back-down-btn {
+      width: 32px;
+      height: 32px;
+      color: ${(props) => (props.theme === "dark" ? "#AEBAC1" : "#677780")};
     }
   }
 `;
@@ -223,7 +255,10 @@ export const InputWrapper = styled.div`
     margin-bottom: ${(props) => (props.showList ? `8px` : `0`)};
     .btnGroup {
       height: 100%;
-      width: ${(props) => (props.openRightMenu === true ? "14%" : "9%")};
+      width: ${(props) =>
+        props.openRightMenu === true || props.openSlideSearch === true
+          ? "14%"
+          : "9%"};
       position: relative;
       display: flex;
       align-items: center;
@@ -247,7 +282,10 @@ export const InputWrapper = styled.div`
       }
     }
     form {
-      width: ${(props) => (props.openRightMenu === true ? "80%" : "85%")};
+      width: ${(props) =>
+        props.openRightMenu === true || props.openSlideSearch === true
+          ? "80%"
+          : "85%"};
       height: 50px;
       display: flex;
       align-items: center;
@@ -273,7 +311,10 @@ export const InputWrapper = styled.div`
     }
     .submit-group {
       height: 100%;
-      width: ${(props) => (props.openRightMenu === true ? "11%" : "6%")};
+      width: ${(props) =>
+        props.openRightMenu === true || props.openSlideSearch === true
+          ? "11%"
+          : "6%"};
       display: flex;
       align-items: center;
       justify-content: center;
@@ -324,7 +365,7 @@ export const InputWrapper = styled.div`
       align-items: center;
       gap: 16px;
       background: transparent;
-      left: 43px;
+      left: 49px;
       bottom: 70px;
       box-sizing: border-box;
       z-index: 9999;

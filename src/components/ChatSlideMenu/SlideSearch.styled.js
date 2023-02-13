@@ -49,7 +49,7 @@ export const SlideSearchWrapper = styled.div`
       props.theme === "dark" ? "#111b21" : "#ffff"};
     padding: 10px 0px;
     border-bottom: ${(props) =>
-        props.theme === "dark" ? "1px solid #ffffff14" : "1px solid #dddd"};
+      props.theme === "dark" ? "1px solid #ffffff14" : "1px solid #dddd"};
     input {
       padding: 8px;
       border: none;
@@ -91,12 +91,11 @@ export const SlideSearchWrapper = styled.div`
     text-align: center;
     overflow-y: auto;
     &::-webkit-scrollbar {
-      width: 7px;
+      width: 6px;
     }
     &::-webkit-scrollbar-thumb {
       background: ${(props) =>
-        props.theme === "dark" ? "#435058" : "#9e9d99"};
-      border-radius: 2px;
+        props.theme === "dark" ? "#435058ab" : "#9e9d99ac"};
     }
     h4 {
       font-weight: 400;

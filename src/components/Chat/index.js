@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Wrapper, ChatBoxContainer } from "./Chat.styled";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import {
   sendMessage,
   getMessages,
+  loadMoreMessages,
   updateReceivedCheck,
   updateReadReceipt,
 } from "../../features/messages/services";
+import { getConversations } from "../../features/conversation/services";
 import incomingMsg from "../../assets/incoming.mp3";
 import messageSend from "../../assets/message_send.mp3";
 import Navbar from "./Navbar";
@@ -16,7 +19,6 @@ import PreviewFile from "./PreviewFile";
 import Spinner from "../Loading/Spinner";
 import _ from "lodash";
 import moment from "moment";
-import { getConversations } from "../../features/conversation/services";
 
 const Chat = ({
   socket,
@@ -27,12 +29,12 @@ const Chat = ({
   openRightMenu,
   setOpenRightMenu,
   openSlideSearch,
-  setOpenSlideSearch
+  setOpenSlideSearch,
 }) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
-  const { userMessages } = useSelector((state) => state.messages);
-  const { theme, drawings, chatWallpaper, sounds, privacy} = useSelector(
+  const { userMessages, hasMore } = useSelector((state) => state.messages);
+  const { theme, drawings, chatWallpaper, sounds } = useSelector(
     (state) => state.user.userInfo
   );
 
@@ -44,12 +46,14 @@ const Chat = ({
   const [onlineUsers, setOnlineUsers] = useState([]);
   /* const [lastSeen, setLastSeen] = useState(`${moment().format('L') + " " + moment().format("HH:mm")}`) // emit lastSeen */
   const [isLoading, setIsLoading] = useState(false);
+  const [offset, setOffset] = useState(0);
 
   const [openPreview, setOpenPreview] = useState(false); // file view
   const [imageUrl, setImageUrl] = useState([]); // image upload
 
   const scrollRef = useRef();
   const containerRef = useRef(null);
+  const [backToDown, setBackToDown] = useState(false);
 
   // Grouping Messages && Time rendering
   const groups = _.groupBy(userMessages, (m) => {
@@ -68,7 +72,7 @@ const Chat = ({
     } else if (difference > 86400000 && difference < 604800000) {
       return moment(m.createdAt).format("dddd");
     } else {
-      return moment(m.createdAt).format("l");
+      return moment(m.createdAt).format("L");
     }
   });
 
@@ -81,7 +85,7 @@ const Chat = ({
     });
     socket.on(
       "user-online-status",
-      ({ userId: targetUserId, isOnline: targetUserIsOnline}) => {
+      ({ userId: targetUserId, isOnline: targetUserIsOnline }) => {
         if (targetUserId !== userId) {
           setIsOnline(targetUserIsOnline);
         }
@@ -109,17 +113,30 @@ const Chat = ({
 
   // scroll behavior
   const handleScroll = useCallback(
-    (e) => {
+    async (e) => {
       const { scrollTop } = e.target;
-      if (scrollTop === 0 && userMessages.length >= 30) {
+      if (scrollTop === 0 && userMessages.length >= 30 && hasMore) {
         setIsLoading(true);
-        console.log("at the top");
+        setTimeout(() => {
+          setOffset(offset + 30);
+          dispatch(loadMoreMessages({ currentChat, offset }));
+        }, 1000);
       } else {
         setIsLoading(false);
       }
+      if (scrollTop < 400) {
+        setBackToDown(true);
+      } else {
+        setBackToDown(false);
+      }
     },
-    [userMessages.length]
+    [userMessages.length, currentChat, dispatch, offset, hasMore]
   );
+
+  const scrollDown = () => {
+    containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
+    setBackToDown(false);
+  };
 
   // message sending
   const handleInput = (e) => {
@@ -137,7 +154,6 @@ const Chat = ({
     );
   };
 
-
   const handleForm = useCallback(
     async (e) => {
       e.preventDefault();
@@ -154,27 +170,19 @@ const Chat = ({
         // check the value of sounds from Redux state
         new Audio(messageSend).play(); // play the audio if sounds is true
       }
-      await updateReceivedCheck({ currentChat }, dispatch);
+      updateReceivedCheck({ currentChat }, dispatch);
       socket.emit("send-notification", {
         conversationId: currentChat._id,
         receiver: receiverId,
         sender: userId,
         unreadMessages: currentChat.unreadMessages,
-      })
+      });
       await dispatch(getConversations({ userId }));
       setTimeout(() => {
         dispatch(getMessages({ currentChat, messages: messages[0] }));
       }, 1000);
     },
-    [
-      dispatch,
-      currentChat,
-      sounds,
-      userId,
-      socket,
-      newMessage,
-      messages
-    ]
+    [dispatch, currentChat, sounds, userId, socket, newMessage, messages]
   );
 
   // arrival messages
@@ -197,10 +205,10 @@ const Chat = ({
     arrivalMessage &&
       currentChat?.members?.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
-      if (isOnline) {
-        const receiverId = currentChat?.members?.find((m) => m !== userId);
-        updateReadReceipt({ currentChat, receiverId }, dispatch);
-      }
+    if (isOnline) {
+      const receiverId = currentChat?.members?.find((m) => m !== userId);
+      updateReadReceipt({ currentChat, receiverId }, dispatch);
+    }
   }, [arrivalMessage, currentChat, dispatch, isOnline, userId]);
 
   useEffect(() => {
@@ -274,8 +282,14 @@ const Chat = ({
                     ))}
                 </div>
               ))}
+            {backToDown && (
+              <div onClick={scrollDown} className="scrollBtn">
+                <MdKeyboardArrowDown className="back-down-btn" />
+              </div>
+            )}
           </ChatBoxContainer>
           <Input
+            openSlideSearch={openSlideSearch}
             openRightMenu={openRightMenu}
             setImageUrl={setImageUrl}
             setOpenPreview={setOpenPreview}

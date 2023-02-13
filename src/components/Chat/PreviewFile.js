@@ -36,7 +36,8 @@ const PreviewFile = ({
       conversationId: currentChat._id,
       senderId: userId,
       receiverId,
-      image: image,
+      text: newMessage,
+      image: imageUrl,
     });
     setImageUrl([]);
     onClose();

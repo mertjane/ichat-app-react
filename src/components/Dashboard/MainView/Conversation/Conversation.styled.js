@@ -52,7 +52,7 @@ export const ConversationWrapper = styled.div`
     box-sizing: border-box;
     @media (max-width: 1800px) {
       width: 20%;
-      }
+    }
     img {
       height: 50px;
       width: 50px;
@@ -68,9 +68,9 @@ export const ConversationWrapper = styled.div`
     padding-right: 12px;
     border-bottom: ${(props) =>
       props.theme === "dark" ? "1px solid #ffffff22" : "1px solid #dddd"};
-      @media (max-width: 1800px) {
+    @media (max-width: 1800px) {
       width: 80%;
-      }
+    }
     .chatInfo {
       width: 75%;
       display: flex;
@@ -98,9 +98,9 @@ export const ConversationWrapper = styled.div`
       padding-right: 8px;
       gap: 3px;
       span {
-        font-size: 12px;
+        font-size: 11.6px;
         color: ${(props) => (props.theme === "dark" ? "#e6e6e69d" : "#677780")};
-        font-weight: 300;
+        font-weight: 400;
       }
       .unread-wrapper {
         display: flex;
@@ -115,9 +115,21 @@ export const ConversationWrapper = styled.div`
           color: ${(props) => (props.theme === "dark" ? "black" : "#fff")};
           font-weight: 700;
           border-radius: 50%;
-          width: 17px;
+          min-width: 17px;
+          max-width: min-content;
           padding: 3px;
           text-align: center;
+          @keyframes scaleIn {
+            from {
+              opacity: 0;
+              scale: 0;
+            }
+            to {
+              opacity: 1;
+              scale: 1;
+            }
+          }
+          animation: scaleIn 250ms ease;
         }
         .optionBtn {
           color: ${(props) => (props.theme === "dark" ? "#aebac1" : "#677780")};

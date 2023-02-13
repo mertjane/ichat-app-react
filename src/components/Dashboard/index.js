@@ -212,6 +212,7 @@ const Dashboard = () => {
       {openRightMenu && (
         <SlideMenu
           currentChat={currentChat}
+          setCurrentChat={setCurrentChat}
           onClose={() => setOpenRightMenu(false)}
         />
       )}

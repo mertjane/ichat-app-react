@@ -14,6 +14,7 @@ const Input = ({
   imageUrl,
   setImageUrl,
   openRightMenu,
+  openSlideSearch,
   setOpenPreview,
   currentChat,
 }) => {
@@ -30,7 +31,10 @@ const Input = ({
   const recipientName = contactList.find(
     (contact) => contact?._id === recipientId
   );
-  const isBlocked = blockedContacts.filter(contact => contact?._id === recipientId || contact?._id === userId).length > 0;
+  const isBlocked =
+    blockedContacts.filter(
+      (contact) => contact?._id === recipientId || contact?._id === userId
+    ).length > 0;
 
   const toggleRef = useRef();
 
@@ -53,7 +57,13 @@ const Input = ({
   });
 
   return (
-    <InputWrapper ref={toggleRef} theme={theme} showList={showList} openRightMenu={openRightMenu}>
+    <InputWrapper
+      ref={toggleRef}
+      theme={theme}
+      showList={showList}
+      openRightMenu={openRightMenu}
+      openSlideSearch={openSlideSearch}
+    >
       {isBlocked ? (
         <span className="blocked-text">
           You cannot send a message to a blocked {recipientName?.name} contact.
